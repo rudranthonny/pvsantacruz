@@ -409,6 +409,14 @@ return [
                     'text' => 'Marcas',
                     'url'  => '#',
                 ],
+                [
+                    'text' => 'Almacenes',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Monedas',
+                    'url'  => '#',
+                ],
             ],
         ],
     ],
