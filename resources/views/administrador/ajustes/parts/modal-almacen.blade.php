@@ -37,16 +37,6 @@
                         @empty
                         @endforelse
                     </tbody>
-                    <tfoot class="table-light">
-                        <tr>
-                            <td>Nombre</td>
-                            <td>Telefono</td>
-                            <td>Pais</td>
-                            <td>Cuidad</td>
-                            <td>Email</td>
-                            <td>Codigo Postal</td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
             <div class="modal-footer">
