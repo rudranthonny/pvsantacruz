@@ -7,7 +7,6 @@
 @stop
 @section('content')
     @livewire('ajuste-sistema')
-    @livewireScripts
 @stop
 
 @section('css')
