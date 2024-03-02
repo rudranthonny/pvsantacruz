@@ -394,9 +394,14 @@ return [
             ],
         ],
         [
-            'text'    => 'Ajustes',
-            'icon'    => 'fas fa-fw fa-share',
+            'text'    => 'Configuraciones',
+            'icon'    => 'fas fa-cogs',
             'submenu' => [
+                [
+                    'text' => 'Ajustes de Sistemas',
+                    'icon'    => 'fas fa-cog',
+                    'route'  => 'admin.configuracion.ajustesistema',
+                ],
                 [
                     'text' => 'Cambiar Logo',
                     'url'  => '#',
