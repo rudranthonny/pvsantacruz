@@ -416,7 +416,7 @@ return [
                 ],
                 [
                     'text' => 'Almacenes',
-                    'url'  => '#',
+                    'route'  => 'admin.almacen',
                 ],
                 [
                     'text' => 'Monedas',

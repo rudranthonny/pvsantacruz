@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Almacen;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,6 +23,7 @@ class DatabaseSeeder extends Seeder
 
         // llamar al sembrador de datos en Moneda
         $this->call(MonedaSeeder::class);
+        $this->call(AlmacenSeeder::class);
 
     }
 }
