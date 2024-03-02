@@ -415,7 +415,7 @@ return [
                 ],
                 [
                     'text' => 'Monedas',
-                    'url'  => '#',
+                    'route'  => 'moneda',
                 ],
             ],
         ],

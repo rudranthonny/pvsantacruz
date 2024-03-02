@@ -18,5 +18,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // llamar al sembrador de datos en Moneda
+        $this->call(MonedaSeeder::class);
+
     }
 }
