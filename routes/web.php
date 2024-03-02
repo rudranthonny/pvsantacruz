@@ -27,4 +27,4 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::view("moneda","ajustes.moneda")->name("moneda");
+//Route::view("moneda","ajustes.moneda")->name("moneda");
