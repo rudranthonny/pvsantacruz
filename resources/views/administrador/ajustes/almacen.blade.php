@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Moneda')
+@section('title', 'Almacen')
 
 @section('content_header')
-    <h1>Moneda</h1>
+    <h1></h1>
 @stop
 
 @section('content')
@@ -11,9 +11,11 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+    <link href="{{ asset('css/css_bootstrap.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
 @stop
