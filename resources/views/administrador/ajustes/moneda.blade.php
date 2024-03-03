@@ -11,9 +11,11 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+    <link href="{{ asset('css/css_bootstrap.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
 @stop

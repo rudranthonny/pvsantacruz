@@ -19,7 +19,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <span>Almacenes</span>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modalAlmacen">Añadir</button>
+                                data-bs-target="#modalMoneda">Añadir</button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -41,7 +41,7 @@
                                         <td>{{ $moneda->simbolo }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#modalAlmacen"
+                                                data-bs-target="#modalMoneda"
                                                 wire:click="editar('{{ $moneda->id }}')">editar</button>
                                             <button class="btn btn-danger">eliminar</button>
                                         </td>
@@ -59,7 +59,7 @@
                             </tfoot>
                         </table>
                     </div>
-                    @include('administrador.ajustes.parts.almacen-modal')
+                    @include('administrador.ajustes.parts.moneda-modal')
                 </div>
             </div>
         </div>
