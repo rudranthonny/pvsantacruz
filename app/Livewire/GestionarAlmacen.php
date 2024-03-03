@@ -11,15 +11,18 @@ class GestionarAlmacen extends Component
     public AlmacenForm $almacenForm;
     public $almacens;
     public $almacenEdits;
+    public $titlemodal;
 
     public function mount()
     {
         $this->almacens = Almacen::all();
         $this->almacenEdits = array();
+        $this->titlemodal = 'Añadir';
     }
 
     public function editar($almacen_id)
     {
+        $this->titlemodal = 'Editar';
         $this->almacenEdits = Almacen::find($almacen_id);
     }
 

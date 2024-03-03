@@ -1,6 +1,4 @@
 <div>
-    <p>Welcome to this beautiful admin panel.</p>
-    <h3>Aqui va ir las monedas</h3>
     @foreach ($monedas as $moneda)
         <table>
             <tr>
