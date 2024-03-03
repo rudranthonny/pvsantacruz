@@ -33,11 +33,11 @@ class AlmacenForm extends Form
 
     }
 
-    public function store(){
+    public function store()
+    {
+        $this->validate();
 
+        Almacen::create($this->all());
     }
 
-    public function save(){
-
-    }
 }
