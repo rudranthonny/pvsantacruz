@@ -24,15 +24,13 @@ class MonedaForm extends Form
     }
 
     public function update(){
-
+        $this->validate();
+        $this->moneda->update($this->all());
     }
 
     public function store()
     {
         $this->validate();
-
         Moneda::create($this->all());
     }
-
-    //
 }
