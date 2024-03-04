@@ -29,10 +29,6 @@ class AlmacenForm extends Form
         $this->codigo_postal = $almacen->codigo_postal;
     }
 
-    public function update(){
-
-    }
-
     public function store()
     {
         $this->validate();
