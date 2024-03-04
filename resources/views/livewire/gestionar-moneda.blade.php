@@ -30,7 +30,7 @@
                                     <th>Codigo Moneda</th>
                                     <th>Nombre Moneda</th>
                                     <th>Simbolo</th>
-                                    <th>Accion</th>
+                                    <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,7 +54,7 @@
                                     <td>Codigo Moneda</td>
                                     <td>Nombre Moneda</td>
                                     <td>Simbolo</td>
-                                    <td>Accion</td>
+                                    <td>Acción</td>
                                 </tr>
                             </tfoot>
                         </table>

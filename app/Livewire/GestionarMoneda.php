@@ -15,7 +15,6 @@ class GestionarMoneda extends Component
 
     public function mount()
     {
-        $this->monedas = Moneda::all(); //metodo
         $this->titlemodal = "Añadir";
     }
 
@@ -36,6 +35,7 @@ class GestionarMoneda extends Component
 
     public function render()
     {
+        $this->monedas = Moneda::all(); //consulta a la BD select * from
         return view('livewire.gestionar-moneda');
     }
 
