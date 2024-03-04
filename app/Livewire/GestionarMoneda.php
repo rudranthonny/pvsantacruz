@@ -5,38 +5,49 @@ namespace App\Livewire;
 use App\Livewire\Forms\MonedaForm;
 use App\Models\Moneda;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class GestionarMoneda extends Component
 {
+
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public MonedaForm $monedasForm;
-    public $monedas; //propiedad
+    public $search = '';
+    public $titlemodal = 'Añadir';
+    public $pagina = 5;
 
-    public $titlemodal;
+    public function mount(){   }
 
-    public function mount()
-    {
-        $this->titlemodal = "Añadir";
+    public function updatedSearch(){
+        $this->resetPage();
     }
 
-    public function editar(Moneda $moneda_id)
+    public function modal(Moneda $moneda = null)
     {
-        $this->titlemodal = 'Editar';
-        $this->monedasForm->set($moneda_id);
-        //$moneda=Moneda::find($moneda_id);
-        //$moneda->nombre_moneda='Money';
-        //$moneda->save();
-    }
-
-    public function guardar(){
-        $this->monedasForm->store();
+        $this->reset('titlemodal');
         $this->monedasForm->reset();
+        if ($moneda->id == true) {
+            $this->titlemodal = 'Editar';
+            $this->monedasForm->set($moneda);
+        }
+    }
 
+    public function guardar()
+    {
+        if (isset($this->monedasForm->moneda->id)) {$this->monedasForm->update();}
+        else {$this->monedasForm->store();}
+        $this->dispatch('cerrar_modal_moneda');
+    }
+
+    public function eliminar(Moneda $moneda){
+        $moneda->delete();
     }
 
     public function render()
     {
-        $this->monedas = Moneda::all(); //consulta a la BD select * from
-        return view('livewire.gestionar-moneda');
+        $monedas = Moneda::where('nombre_moneda','like','%'.$this->search.'%')->paginate($this->pagina); //metodo
+        return view('livewire.gestionar-moneda',compact('monedas'));
     }
 
 }

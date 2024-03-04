@@ -10,11 +10,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="modalMonedaLabel">{{ $titlemodal }}</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="cerrar_modal_moneda_x"></button>
             </div>
             <div class="modal-body">
                 <form wire:submit="guardar" id="formularioMoneda">
-
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <label for="nombre" class="form-label">Codigo Moneda <span class="text-danger">*</span></label>
