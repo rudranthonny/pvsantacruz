@@ -20,7 +20,7 @@
                             <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="nombre" placeholder="Ingrese Nombre"
                                 required wire:model="almacenForm.nombre">
-                            @error('content')
+                            @error('almacenForm.nombre')
                                 <span class="error">{{ $message }}</span>
                             @enderror
                         </div>

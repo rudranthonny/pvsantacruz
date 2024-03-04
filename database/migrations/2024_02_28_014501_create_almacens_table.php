@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('almacens', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('telefono');
-            $table->string('pais');
-            $table->string('ciudad');
-            $table->string('email');
-            $table->string('codigo_postal');
+            $table->string('nombre')->unique();
+            $table->string('telefono')->nullable();
+            $table->string('pais')->nullable();
+            $table->string('ciudad')->nullable();
+            $table->string('email')->nullable();
+            $table->string('codigo_postal')->nullable();
             $table->timestamps();
         });
     }

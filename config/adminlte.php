@@ -323,22 +323,18 @@ return [
             'submenu' => [
                 [
                     'text' => 'Lista de Productos',
+                    'route'  => 'admin.productos',
+                ],
+                [
+                    'text' => 'Categorias',
                     'url'  => '#',
                 ],
                 [
-                    'text'    => 'Añadir Producto',
-                    'url'     => '#',
+                    'text' => 'Marcas',
+                    'route'  => 'admin.marcas',
                 ],
                 [
-                    'text' => 'Importar Productos',
-                    'url'  => '#',
-                ],
-                [
-                    'text' => 'Exportar Productos',
-                    'url'  => '#',
-                ],
-                [
-                    'text' => 'Imprimir Codigos de Barra',
+                    'text' => 'Unidades',
                     'url'  => '#',
                 ],
             ],
@@ -404,14 +400,6 @@ return [
                 ],
                 [
                     'text' => 'Cambiar Logo',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'Categorias',
-                    'url'     => '#',
-                ],
-                [
-                    'text' => 'Marcas',
                     'url'  => '#',
                 ],
                 [

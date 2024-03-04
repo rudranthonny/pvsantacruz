@@ -15,7 +15,7 @@ class GestionarAlmacen extends Component
 
     public AlmacenForm $almacenForm;
 
-    public $titlemodal = 'Añadir';
+    public $titlemodal = 'Añadir Almacen';
     public $search = '';
     public $pagina = 5;
 
@@ -28,7 +28,7 @@ class GestionarAlmacen extends Component
         $this->reset('titlemodal');
         $this->almacenForm->reset();
         if ($almacen->id == true) {
-            $this->titlemodal = 'Editar';
+            $this->titlemodal = 'Editar Almacen';
             $this->almacenForm->set($almacen);
         }
     }

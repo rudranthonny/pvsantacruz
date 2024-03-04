@@ -19,7 +19,7 @@
                             <label for="nombre" class="form-label">Codigo Moneda <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="codigom" placeholder="Ingrese Codigo Moneda"
                                 required wire:model="monedasForm.codigo_moneda">
-                            @error('content')
+                            @error('monedasForm.codigo_moneda')
                                 <span class="error">{{ $message }}</span>
                             @enderror
                         </div>
