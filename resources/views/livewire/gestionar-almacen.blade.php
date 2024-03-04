@@ -62,12 +62,12 @@
                                                         data-bs-toggle="modal" data-bs-target="#modalAlmacen"
                                                         wire:click="modal('{{ $almacen->id }}')"><i
                                                             class="fas fa-edit"></i></button>
-                                                            <button type="button" class="btn btn-danger"
-                                                            wire:click="eliminar({{ $almacen->id }})"
-                                                            id="eliminar-almacen-{{ $almacen->id }}"
-                                                            wire:confirm="Estas seguro de Eliminar esta Almacen">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
+                                                    <button type="button" class="btn btn-danger"
+                                                        wire:click="eliminar({{ $almacen->id }})"
+                                                        id="eliminar-almacen-{{ $almacen->id }}"
+                                                        wire:confirm="Estas seguro de Eliminar esta Almacen">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @empty
@@ -107,3 +107,11 @@
         </div>
     </div>
 </div>
+
+@script
+    <script>
+        $wire.on('cerrar_modal_almacen', reservacion => {
+            ventana = document.getElementById('cerrar_modal_almacen_x').click();
+        });
+    </script>
+@endscript

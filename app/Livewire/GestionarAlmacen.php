@@ -37,7 +37,7 @@ class GestionarAlmacen extends Component
     {
         $this->almacenForm->store();
         $this->almacenForm->reset();
-        $this->dispatch('cerrar_modal_moneda');
+        $this->dispatch('cerrar_modal_almacen');
     }
 
     public function eliminar(Almacen $almacen){
@@ -47,8 +47,7 @@ class GestionarAlmacen extends Component
 
     public function render()
     {
-        $almacens = Almacen::where('nombre','like','%'.$this->search.'%')->paginate($this->pagina); //metodo
-        // dd($almacens);
+        $almacens = Almacen::where('nombre','like','%'.$this->search.'%')->paginate($this->pagina);
         return view('livewire.gestionar-almacen', compact('almacens'));
     }
 }
