@@ -36,8 +36,12 @@ class AlmacenForm extends Form
     public function store()
     {
         $this->validate();
-
-        Almacen::create($this->all());
+        if (isset($this->almacen)) {
+            $this->almacen->update($this->all());
+            $this->almacen->save();
+        } else {
+            Almacen::create($this->all());
+        }
     }
 
 }
