@@ -27,8 +27,9 @@
                             <div class="col-12">
                                 <label class="visually-hidden" for="buscar_moneda">Username</label>
                                 <div class="input-group">
-                                <div class="input-group-text"><i class="fas fa-search"></i></div>
-                                <input type="text" class="form-control" id="buscar_moneda" placeholder="Buscar Moneda" wire:model.live='search'>
+                                    <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                    <input type="text" class="form-control" id="buscar_moneda"
+                                        placeholder="Buscar Moneda" wire:model.live='search'>
                                 </div>
                             </div>
                         </div>
@@ -50,14 +51,15 @@
                                                 <td>{{ $moneda->nombre_moneda }}</td>
                                                 <td>{{ $moneda->simbolo }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#modalMoneda"
-                                                        wire:click="modal('{{ $moneda->id }}')"><i class="fas fa-edit"></i></button>
-                                                    <button
-                                                        type="button" class="btn btn-danger"
-                                                        wire:click="eliminar({{$moneda->id}})" id="eliminar-moneda-{{$moneda->id}}"
+                                                    <button type="button" class="btn btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#modalMoneda"
+                                                        wire:click="modal('{{ $moneda->id }}')"><i
+                                                            class="fas fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-danger"
+                                                        wire:click="eliminar({{ $moneda->id }})"
+                                                        id="eliminar-moneda-{{ $moneda->id }}"
                                                         wire:confirm="Estas seguro de Eliminar esta Moneda">
-                                                       <i class="fas fa-trash"></i>
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -69,14 +71,14 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-sm-9">
-                                {{$monedas->links()}}
+                                {{ $monedas->links() }}
                             </div>
                             <div class="col-12 col-sm-3" style="text-align: right;" wire:model.live='pagina'>
                                 <select class="form-select">
                                     <option value="5">5</option>
                                     <option value="10">10</option>
                                     <option value="100">100</option>
-                                  </select>
+                                </select>
                             </div>
 
                         </div>

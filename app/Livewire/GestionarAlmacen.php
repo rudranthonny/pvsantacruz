@@ -5,33 +5,50 @@ namespace App\Livewire;
 use App\Livewire\Forms\AlmacenForm;
 use App\Models\Almacen;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class GestionarAlmacen extends Component
 {
-    public AlmacenForm $almacenForm;
-    public $almacens;
-    public $titlemodal;
+    use WithPagination;
 
-    public function mount()
-    {
-        $this->almacens = Almacen::all();
-        $this->titlemodal = 'Añadir';
+    protected $paginationTheme = 'bootstrap';
+
+    public AlmacenForm $almacenForm;
+
+    public $titlemodal = 'Añadir';
+    public $search = '';
+    public $pagina = 5;
+
+    public function updatedSearch(){
+        $this->resetPage();
     }
 
-    public function editar(Almacen $almacen_id)
+    public function modal(Almacen $almacen = null)
     {
-        $this->titlemodal = 'Editar';
-        $this->almacenForm->set($almacen_id);
+        $this->reset('titlemodal');
+        $this->almacenForm->reset();
+        if ($almacen->id == true) {
+            $this->titlemodal = 'Editar';
+            $this->almacenForm->set($almacen);
+        }
     }
 
     public function guardar()
     {
         $this->almacenForm->store();
         $this->almacenForm->reset();
+        $this->dispatch('cerrar_modal_moneda');
+    }
+
+    public function eliminar(Almacen $almacen){
+        $almacen->delete();
+        $this->updatedSearch();
     }
 
     public function render()
     {
-        return view('livewire.gestionar-almacen');
+        $almacens = Almacen::where('nombre','like','%'.$this->search.'%')->paginate($this->pagina); //metodo
+        // dd($almacens);
+        return view('livewire.gestionar-almacen', compact('almacens'));
     }
 }
