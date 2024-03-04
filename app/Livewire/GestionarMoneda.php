@@ -42,6 +42,7 @@ class GestionarMoneda extends Component
 
     public function eliminar(Moneda $moneda){
         $moneda->delete();
+        $this->updatedSearch();
     }
 
     public function render()

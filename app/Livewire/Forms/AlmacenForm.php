@@ -34,7 +34,7 @@ class AlmacenForm extends Form
         $this->validate();
         if (isset($this->almacen)) {
             $this->almacen->update($this->all());
-            $this->almacen->save();
+            //$this->almacen->save();
         } else {
             Almacen::create($this->all());
         }
