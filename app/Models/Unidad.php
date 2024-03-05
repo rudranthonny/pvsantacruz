@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categoria extends Model
+class Unidad extends Model
 {
-    protected $fillable = ["cat_cod","name"];
+    protected $fillable = ['name_cor','unidad','operador','valor'];
     use HasFactory;
 }

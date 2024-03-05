@@ -4,7 +4,7 @@
     <div>
         <div class="row">
             <div class="col-12 fs-6">
-                <span class="fs-3 fw-bold">Marcas</span> Configuraciones | Marcas
+                <span class="fs-3 fw-bold">Marcas</span> Productos | Marcas
             </div>
             <div class="col-12">
                 <hr>

@@ -328,7 +328,7 @@ return [
                 ],
                 [
                     'text' => 'Categorias',
-                    'url'  => '#',
+                    'url'  => 'admin.categorias',
                     'icon' => 'fas fa-folder',
                 ],
                 [
@@ -417,7 +417,7 @@ return [
                 ],
                 [
                     'text' => 'Monedas',
-                    'route'  => 'moneda',
+                    'route'  => 'admin.moneda',
                 ],
             ],
         ],
