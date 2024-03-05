@@ -324,18 +324,27 @@ return [
                 [
                     'text' => 'Lista de Productos',
                     'route'  => 'admin.productos',
+                    'icon' => 'fas fa-copy',
                 ],
                 [
                     'text' => 'Categorias',
                     'url'  => '#',
+                    'icon' => 'fas fa-folder',
                 ],
                 [
                     'text' => 'Marcas',
                     'route'  => 'admin.marcas',
+                    'icon' => 'fas fa-tags'
                 ],
                 [
                     'text' => 'Unidades',
                     'url'  => '#',
+                    'icon' => 'fas fa-thumbtack'
+                ],
+                [
+                    'text' => 'Codigo Barra',
+                    'icon' => 'fas fa-barcode',
+                    'route'  => 'admin.codigo_barra',
                 ],
             ],
         ],
