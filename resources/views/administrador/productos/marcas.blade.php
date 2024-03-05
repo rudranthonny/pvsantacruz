@@ -18,9 +18,4 @@
 @section('js')
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-    <!--<script>
-         Livewire.on('cerrar_modal_moneda', reservacion => {
-            ventana = document.getElementById('cerrar_modal_moneda_x').click();
-        });
-    </script>-->
 @stop
