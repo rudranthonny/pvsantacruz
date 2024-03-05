@@ -328,7 +328,7 @@ return [
                 ],
                 [
                     'text' => 'Categorias',
-                    'url'  => 'admin.categorias',
+                    'route'  => 'admin.categorias',
                     'icon' => 'fas fa-folder',
                 ],
                 [

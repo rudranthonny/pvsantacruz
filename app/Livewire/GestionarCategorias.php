@@ -26,7 +26,7 @@ class GestionarCategorias extends Component
     public function modal(Categoria $categoria = null)
     {
         $this->reset('titlemodal');
-        $this->marcasForm->reset();
+        $this->categoriasForm->reset();
         if ($categoria->id == true) {
             $this->titlemodal = 'Editar';
             $this->categoriasForm->set($categoria);
@@ -47,7 +47,7 @@ class GestionarCategorias extends Component
 
     public function render()
     {
-        $categorias = Categoria::where('cat_cod','like','%'.$this->search.'%')->paginate($this->pagina); //metodo
+        $categorias = Categoria::where('name','like','%'.$this->search.'%')->paginate($this->pagina); //metodo
         return view('livewire.gestionar-categorias', compact('categorias'));
     }
 }

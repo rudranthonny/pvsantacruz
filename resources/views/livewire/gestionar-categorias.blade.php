@@ -20,7 +20,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <span><b>Listado de Categorias</b></span>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modalCategorias" wire:click='modal'><i class="fas fa-plus"></i></button>
+                                data-bs-target="#modalCategoria" wire:click='modal'><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -48,10 +48,10 @@
                                         @forelse ($categorias as $categoria)
                                             <tr class="text-center">
                                                 <td>{{ $categoria->cat_cod }}</td>
-                                                <td>{{ $categoria->name_cor }}</td>
+                                                <td>{{ $categoria->name }}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#modalCategorias"
+                                                        data-bs-toggle="modal" data-bs-target="#modalCategoria"
                                                         wire:click="modal('{{ $categoria->id }}')"><i
                                                             class="fas fa-edit"></i></button>
                                                     <button type="button" class="btn btn-danger"

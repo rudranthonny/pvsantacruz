@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Gestionar Marcas')
+@section('title', 'Gestionar Categorias')
 
 @section('content_header')
     <h1></h1>
