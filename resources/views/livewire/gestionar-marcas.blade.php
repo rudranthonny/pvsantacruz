@@ -4,7 +4,7 @@
     <div>
         <div class="row">
             <div class="col-12 fs-6">
-                <span class="fs-3 fw-bold">Monedas</span> Configuraciones | Monedas
+                <span class="fs-3 fw-bold">Marcas</span> Configuraciones | Marcas
             </div>
             <div class="col-12">
                 <hr>
@@ -18,19 +18,19 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
-                            <span><b>Listado de Monedas</b></span>
+                            <span><b>Listado de Marcas</b></span>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modalMoneda" wire:click='modal'><i class="fas fa-plus"></i></button>
+                                data-bs-target="#modalMarca" wire:click='modal'><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
                             <div class="col-12">
-                                <label class="visually-hidden" for="buscar_moneda">Username</label>
+                                <label class="visually-hidden" for="buscar_marca">Username</label>
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
-                                    <input type="text" class="form-control" id="buscar_moneda"
-                                        placeholder="Buscar Moneda" wire:model.live='search'>
+                                    <input type="text" class="form-control" id="buscar_marca"
+                                        placeholder="Buscar Marca" wire:model.live='search'>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr class="text-center">
-                                            <th>Codigo Moneda</th>
+                                            <th>Imagen de Marca</th>
                                             <th>Nombre Moneda</th>
                                             <th>Simbolo</th>
                                             <th>Accion</th>
