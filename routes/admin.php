@@ -7,3 +7,4 @@ Route::view("moneda","administrador.ajustes.moneda")->name("moneda");
 Route::view("almacen","administrador.ajustes.almacen")->name("admin.almacen");
 Route::view("productos","administrador.productos.productos")->name("admin.productos");
 Route::view("marcas","administrador.productos.marcas")->name("admin.marcas");
+Route::view("categorias","administrador.productos.categorias")->name("admin.categorias");
