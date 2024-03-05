@@ -2,31 +2,34 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\AjusteSistemaForm;
 use App\Models\Configuracion;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class AjusteSistema extends Component
 {
-    public Configuracion $configuracion;
+    use WithFileUploads;
+    public AjusteSistemaForm $ajustesistemaform;
+    public $imagen_logo;
+    public $iteration=1;
 
-    public $rules = [
-        'configuracion.moneda_predeterminada' => '',
-        'configuracion.email_predeterminado' => '',
-        'configuracion.logo' => '',
-        'configuracion.name' => '',
-        'configuracion.telefono_empresa' => '',
-        'configuracion.desarrollador' => '',
-        'configuracion.pie_pagina' => '',
-        'configuracion.direccion' => '',
-        'configuracion.pagina_factura' => '',
-        'configuracion.pie_pagina_factura' => '',
-        'configuracion.cotizacion_stock' => '',
-        'configuracion.almacen_id' => '',
-    ];
+    public function mount(){
+        $this->reset('imagen_logo');
+        $configuracion = Configuracion::find(1);
+        $this->ajustesistemaform->reset();
+        if ($configuracion) {
+            $this->ajustesistemaform->set($configuracion);
+        }
+    }
 
-    public function mount(){$this->configuracion = new Configuracion();}
+    public function save(){
+        if (isset($this->ajustesistemaform->configuracion->id)) {$this->ajustesistemaform->update($this->imagen_logo);}
+        else { $this->ajustesistemaform->store($this->imagen_logo);}
+        $this->mount();
+    }
 
-    public function save() {$this->configuracion->save();}
-
-    public function render(){return view('livewire.ajuste-sistema');}
+    public function render(){
+        $this->iteration++;
+        return view('livewire.ajuste-sistema');}
 }
