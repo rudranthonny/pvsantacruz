@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('unidads', function (Blueprint $table) {
             $table->id();
-            $table->string('name_cor');
-            $table->string('unidad');
-            $table->string('operador');
-            $table->string('valor');
+            $table->string('name');
+            $table->string('name_cor')->nullable();
+            $table->string('unidadb')->nullable();
+            $table->string('operador')->nullable();
+            $table->string('valor')->nullable();
             $table->timestamps();
         });
     }

@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Unidad extends Model
 {
-    protected $fillable = ['name_cor','unidad','operador','valor'];
+    protected $fillable = ['name','name_cor','unidadb','operador','valor'];
     use HasFactory;
 }

@@ -338,7 +338,7 @@ return [
                 ],
                 [
                     'text' => 'Unidades',
-                    'url'  => '#',
+                    'route'  => 'admin.unidades',
                     'icon' => 'fas fa-thumbtack'
                 ],
                 [

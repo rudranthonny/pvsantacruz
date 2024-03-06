@@ -14,36 +14,41 @@ class UnidadSeeder extends Seeder
     public function run(): void
     {
         $unidad = new Unidad();
+        $unidad -> name = "Kilo";
         $unidad -> name_cor = "kg";
-        $unidad -> unidad = "Unidad";
+        $unidad -> unidadb = "Unidad";
         $unidad -> operador = "/";
         $unidad -> valor = "1";
         $unidad -> save();
 
         $unidad = new Unidad();
+        $unidad -> name = "Metro";
         $unidad -> name_cor = "mt";
-        $unidad -> unidad = "metro";
+        $unidad -> unidadb = "metro";
         $unidad -> operador = ".";
         $unidad -> valor = "2";
         $unidad -> save();
 
         $unidad = new Unidad();
+        $unidad -> name = "Volumen";
         $unidad -> name_cor = "oz";
-        $unidad -> unidad = "volumen";
+        $unidad -> unidadb = "volumen";
         $unidad -> operador = "Oz";
         $unidad -> valor = "3";
         $unidad -> save();
 
         $unidad = new Unidad();
+        $unidad -> name = "Litro";
         $unidad -> name_cor = "lt";
-        $unidad -> unidad = "Litro";
+        $unidad -> unidadb = "Litro";
         $unidad -> operador = "L";
         $unidad -> valor = "4";
         $unidad -> save();
 
         $unidad = new Unidad();
+        $unidad -> name = "Suma";
         $unidad -> name_cor = "suma";
-        $unidad -> unidad = "Unidad";
+        $unidad -> unidadb = "Unidad";
         $unidad -> operador = "+";
         $unidad -> valor = "5";
         $unidad -> save();
