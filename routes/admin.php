@@ -14,4 +14,6 @@ Route::view("codigo_barra","administrador.productos.codigo_barra")->name("admin.
 Route::view("categorias","administrador.productos.categorias")->name("admin.categorias");
 Route::view("unidades","administrador.productos.unidades")->name("admin.unidades");
 Route::get('search/{id}/buscar_productos',[AdminController::class,'buscar_productos'])->name('search.buscar_productos');
+#compras
+Route::view("compras","administrador.compras.compra")->name("admin.compras");
 

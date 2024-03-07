@@ -372,7 +372,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Lista de Compras',
-                    'url'  => '#',
+                    'route'  => 'admin.compras',
                 ],
                 [
                     'text'    => 'Añadir Compras',
