@@ -48,7 +48,13 @@
                                     <tbody>
                                         @forelse ($marcas as $marca)
                                             <tr class="text-center">
-                                                <td>{{ $marca->image }}</td>
+                                                <td>
+                                                    @if ($marca->image)
+                                                    <img src="{{asset($marca->image)}}" class="img-thumbnail" alt="" width="64px;">
+                                                    @else
+                                                    <img src="{{asset('imagenes/no-image.png')}}" class="img-thumbnail" alt="" width="64px;">
+                                                    @endif
+                                                </td>
                                                 <td>{{ $marca->name }}</td>
                                                 <td>{{ $marca->description }}</td>
                                                 <td>

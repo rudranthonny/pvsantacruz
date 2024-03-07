@@ -29,9 +29,9 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-sm-12">
                             <label for="pais" class="form-label">Imagen de la Marca</label>
-                            <input type="text" class="form-control" id="simbolo" placeholder="Ingrese Imagen de la Marca" wire:model="marcasForm.image">
+                            <input type="file" class="form-control" id="imagen-{{$iteration}}" placeholder="Ingrese Imagen de la Marca" wire:model.live="imagen_marca">
                         </div>
 
                     </div>
