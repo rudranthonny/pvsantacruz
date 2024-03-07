@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('compras', function (Blueprint $table) {
             $table->id();
             $table->string('fecha');
-            $table->string('refe')->nullable();
-            $table->string('prove')->nullable();
-            $table->string('almacen')->nullable();
-            $table->string('estado')->nullable();
-            $table->string('total')->nullable();
-            $table->string('pagado')->nullable();
-            $table->string('debido')->nullable();
-            $table->string('estado_pago')->nullable();
+            $table->unsignedBigInteger('proveedor_id');
+            $table->unsignedBigInteger('almacen_id');
+            $table->double('impuesto_orden')->default(0);
+            $table->double('impuesto_descuento')->default(0);
+            $table->double('impuesto_envio')->default(0);
+            $table->char('estado_compra')->nullable();
+            $table->longText('nota')->nullable();
+            $table->foreign('proveedor_id')->references('id')->on('proveedors');
+            $table->foreign('almacen_id')->references('id')->on('almacens');
             $table->timestamps();
         });
     }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('producto_almacens', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('producto_id')->nullable();
+            $table->unsignedBigInteger('almacen_id')->nullable();
+            $table->integer('stock')->default(0);
             $table->timestamps();
         });
     }
