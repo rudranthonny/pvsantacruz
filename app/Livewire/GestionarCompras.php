@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\ComprasForm;
+use App\Models\Almacen;
 use App\Models\Compra;
+use App\Models\Proveedor;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -47,7 +49,9 @@ class GestionarCompras extends Component
 
     public function render()
     {
-        $compras = Compra::where('prove','like','%'.$this->search.'%')->paginate($this->pagina); //metodo
-        return view('livewire.gestionar-compras', compact('compras'));
+        $compras = Compra::paginate($this->pagina); //metodo
+        $proveedors = Proveedor::all();
+        $almacens = Almacen::all();
+        return view('livewire.gestionar-compras', compact('compras','proveedors','almacens'));
     }
 }

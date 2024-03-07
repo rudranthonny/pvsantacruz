@@ -26,7 +26,7 @@
                     <div class="card-body">
                         <div class="row mb-4">
                             <div class="col-12">
-                                <label class="visually-hidden" for="buscar_compras">Username</label>
+                                <label class="visually-hidden" for="buscar_compras">Buscar Compra</label>
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
                                     <input type="text" class="form-control" id="buscar_compras"

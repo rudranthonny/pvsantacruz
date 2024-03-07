@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('pais')->nullable();
             $table->string('ciudad')->nullable();
             $table->string('numero_impuesto')->nullable();
-            $table->longText('dirección')->nullable();
+            $table->longText('direccion')->nullable();
             $table->timestamps();
         });
     }
