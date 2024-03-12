@@ -67,7 +67,7 @@
                                                 <td class="align-middle">{{ $producto->designacion }}</td>
                                                 <td class="align-middle">{{ $producto->codigo }}</td>
                                                 <td class="align-middle">{{ $producto->marca }}</td>
-                                                <td class="align-middle">{{ $producto->categoria }}</td>
+                                                <td class="align-middle">{{ $producto->categoria->name }}</td>
                                                 <td class="align-middle">{{ $producto->precio }}</td>
                                                 <td class="align-middle">{{ $producto->unidad }}</td>
                                                 <td class="align-middle">{{ $producto->cantidad }}</td>

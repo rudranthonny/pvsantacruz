@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Producto;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -18,7 +17,7 @@ class ProductoForm extends Form
     public $tipo;
     public $codigo;
     public $marca;
-    public $categoria;
+    public $categoria_id;
     public $precio;
     public $unidad;
     public $cantidad;
@@ -31,7 +30,7 @@ class ProductoForm extends Form
         $this->tipo = $producto->tipo;
         $this->codigo = $producto->codigo;
         $this->marca = $producto->marca;
-        $this->categoria = $producto->categoria;
+        $this->categoria_id = $producto->categoria_id;
         $this->precio = $producto->precio;
         $this->unidad = $producto->unidad;
         $this->cantidad = $producto->cantidad;

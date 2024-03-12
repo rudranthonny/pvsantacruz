@@ -3,7 +3,10 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\ProductoForm;
+use App\Models\Categoria;
+use App\Models\Marca;
 use App\Models\Producto;
+use App\Models\Unidad;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
@@ -52,7 +55,10 @@ class GestionarProductos extends Component
 
     public function render()
     {
+        $categorias = Categoria::all();
+        $marcas = Marca::all();
+        $unidades = Unidad::all();
         $productos = Producto::where('designacion','like','%'.$this->search.'%')->paginate($this->pagina);
-        return view('livewire.gestionar-productos', compact('productos'));
+        return view('livewire.gestionar-productos', compact('productos', 'categorias', 'marcas', 'productos'));
     }
 }
