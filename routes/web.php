@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArchivoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,4 +28,4 @@ Route::middleware([
     })->name('dashboard');
 });
 
-//Route::view("moneda","ajustes.moneda")->name("moneda");
+Route::get('producto_img/{archivo}', [ArchivoController::class, 'imagen'])->middleware('auth');

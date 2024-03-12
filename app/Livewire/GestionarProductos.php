@@ -5,11 +5,13 @@ namespace App\Livewire;
 use App\Livewire\Forms\ProductoForm;
 use App\Models\Producto;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
 
 class GestionarProductos extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -18,6 +20,8 @@ class GestionarProductos extends Component
     public $titlemodal = 'Añadir Producto';
     public $search = '';
     public $pagina = 5;
+    public $imagen_producto;
+    public $iteration = 1;
 
     public function updatedSearch(){
         $this->resetPage();
@@ -25,7 +29,8 @@ class GestionarProductos extends Component
 
     public function modal(Producto $producto = null)
     {
-        $this->reset('titlemodal');
+        $this->reset('titlemodal', 'imagen_producto');
+        $this->iteration++;
         $this->productoForm->reset();
         if ($producto->id == true) {
             $this->titlemodal = 'Editar Producto';
@@ -35,7 +40,7 @@ class GestionarProductos extends Component
 
     public function guardar()
     {
-        $this->productoForm->store();
+        $this->productoForm->store($this->imagen_producto);
         $this->productoForm->reset();
         $this->dispatch('cerrar_modal_producto');
     }
