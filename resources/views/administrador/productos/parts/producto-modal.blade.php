@@ -26,7 +26,7 @@
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <label for="imagen" class="form-label">Imagen</label>
-                            <input type="text" class="form-control" id="imagen" placeholder="Ingrese Imagen" wire:model="productoForm.imagen">
+                            <input type="file" class="form-control" id="imagen-{{$iteration}}" placeholder="Ingrese Imagen" wire:model.live="imagen_producto">
                         </div>
                     </div>
                     <div class="row mb-3">

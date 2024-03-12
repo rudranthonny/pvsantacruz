@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Producto;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -22,7 +23,8 @@ class ProductoForm extends Form
     public $unidad;
     public $cantidad;
 
-    public function set(Producto $producto){
+    public function set(Producto $producto)
+    {
         $this->producto = $producto;
         $this->designacion = $producto->designacion;
         $this->imagen = $producto->imagen;
@@ -35,18 +37,41 @@ class ProductoForm extends Form
         $this->cantidad = $producto->cantidad;
     }
 
-    public function update(){
+    public function update()
+    {
         $this->producto->update($this->all());
-        //$this->producto->save();
     }
 
-    public function store()
+    public function store($imagen = null)
     {
         $this->validate();
         if (isset($this->producto)) {
             $this->update();
         } else {
-            Producto::create($this->all());
+            $this->producto = Producto::create($this->all());
         }
+
+        if ($imagen) {
+            $this->eliminar_imagen_producto();
+            $this->subir_imagen_producto($imagen);
+        }
+    }
+
+    public function eliminar_imagen_producto()
+    {
+        if ($this->producto->imagen) {
+            $filePath = storage_path('app/' . $this->producto->imagen);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+    }
+
+    public function subir_imagen_producto($imagen)
+    {
+        $extension = $imagen->extension();
+        $img_producto = $imagen->storeAs('producto_img', $this->producto->id . "-" . strtotime(date('Y-m-d h:i:s')) . "." . $extension);
+        $this->producto->imagen = $img_producto;
+        $this->producto->save();
     }
 }

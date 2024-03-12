@@ -54,16 +54,24 @@
                                     <tbody>
                                         @forelse ($productos as $producto)
                                             <tr>
-                                                <td>{{ $producto->imagen }}</td>
-                                                <td>{{ $producto->tipo }}</td>
-                                                <td>{{ $producto->designacion }}</td>
-                                                <td>{{ $producto->codigo }}</td>
-                                                <td>{{ $producto->marca }}</td>
-                                                <td>{{ $producto->categoria }}</td>
-                                                <td>{{ $producto->precio }}</td>
-                                                <td>{{ $producto->unidad }}</td>
-                                                <td>{{ $producto->cantidad }}</td>
-                                                <td>
+                                                <td class="align-middle">
+                                                    @if ($producto->imagen)
+                                                        <img src="{{ asset($producto->imagen) }}" class="img-thumbnail"
+                                                            alt="" width="64px;">
+                                                    @else
+                                                        <img src="{{ asset('imagenes/no-image.png') }}"
+                                                            class="img-thumbnail" alt="" width="64px;">
+                                                    @endif
+                                                </td>
+                                                <td class="align-middle">{{ $producto->tipo }}</td>
+                                                <td class="align-middle">{{ $producto->designacion }}</td>
+                                                <td class="align-middle">{{ $producto->codigo }}</td>
+                                                <td class="align-middle">{{ $producto->marca }}</td>
+                                                <td class="align-middle">{{ $producto->categoria }}</td>
+                                                <td class="align-middle">{{ $producto->precio }}</td>
+                                                <td class="align-middle">{{ $producto->unidad }}</td>
+                                                <td class="align-middle">{{ $producto->cantidad }}</td>
+                                                <td class="align-middle">
                                                     <button type="button" class="btn btn-primary"
                                                         data-bs-toggle="modal" data-bs-target="#modalProducto"
                                                         wire:click="modal('{{ $producto->id }}')"><i
