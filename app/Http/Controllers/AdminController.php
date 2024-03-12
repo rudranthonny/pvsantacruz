@@ -31,4 +31,21 @@ class AdminController extends Controller
         return $listaempleados;
     }
 
+    public function buscar_productos_compra(Request $request)
+    {
+        $term = $request->get('term');
+        $querys = Producto::Where(function($query) use ($term) {
+            $query->where('designacion','like','%' . $term.'%')
+                    ->orWhere('codigo', 'like', '%' . $term.'%');
+        })->get();
+
+        foreach ($querys as $query) {
+            $query['label'] =  $query->codigo."-".$query->designacion;
+        }
+
+        $listaempleados = $querys;
+        if ($querys->count() == 0) { $listaempleados['label'] = 'Sin resultados';}
+        return $listaempleados;
+    }
+
 }

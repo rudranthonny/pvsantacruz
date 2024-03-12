@@ -46,11 +46,14 @@
                     <!--buscar modal-->
                     <div class="row my-4">
                         <div class="col-12">
-                            <label class="visually-hidden" for="buscar_compras">Buscar Compra</label>
+                            <input type="hidden" id="buscar_producto_oculto" wire:model.live='buscar_producto_oculto'>
+                        </div>
+                        <div class="col-12">
+                            <label class="visually-hidden" for="buscar_producto">Buscar Compra</label>
                             <div class="input-group">
                                 <div class="input-group-text"><i class="fas fa-search"></i></div>
-                                <input type="text" class="form-control" id="buscar_compras"
-                                    placeholder="Escanear / Buscar producto por nombre de código" wire:model.live=''>
+                                <input type="text" class="form-control" id="buscar_producto"
+                                    placeholder="Escanear / Buscar producto por nombre de código" wire:model.live='buscar_producto'>
                             </div>
                         </div>
                     </div>

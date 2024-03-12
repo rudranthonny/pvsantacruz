@@ -21,6 +21,7 @@ class ComprasForm extends Form
     public $pagado;
     public $debido;
     public $estado_pago;
+    public $detalle_compra = [];
 
     public function set(Compra $compra){
         $this->compra = $compra;
