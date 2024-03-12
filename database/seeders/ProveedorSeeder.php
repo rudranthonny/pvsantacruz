@@ -14,6 +14,7 @@ class ProveedorSeeder extends Seeder
     public function run(): void
     {
         $n_proveedor = new Proveedor();
+        $n_proveedor->codigo = '1' ;
         $n_proveedor->name = 'RAPIMARCAS SAS' ;
         $n_proveedor->email = 'RAPIMARCA@com.co' ;
         $n_proveedor->telefono = '7865132' ;

@@ -385,12 +385,12 @@ return [
             'icon' => 'fas fa-fw fa-user',
             'submenu' => [
                 [
-                    'text' => 'Cambiar Logo',
-                    'url'  => '#',
+                    'text' => 'Clientes',
+                    'route'  => 'admin.cliente',
                 ],
                 [
-                    'text'    => 'Categorias',
-                    'url'     => '#',
+                    'text'    => 'Proveedores',
+                    'route'     => 'admin.proveedor',
                 ],
                 [
                     'text' => 'Marcas',

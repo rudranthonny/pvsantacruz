@@ -17,3 +17,6 @@ Route::get('search/{id}/buscar_productos', [AdminController::class, 'buscar_prod
 Route::get('search/buscar_productos_compras',[AdminController::class,'buscar_productos_compra'])->name('search.buscar_productos_compra');
 #compras
 Route::view("compras", "administrador.compras.compra")->name("admin.compras");
+#personas
+Route::view("cliente", "administrador.personas.cliente")->name("admin.cliente");
+Route::view("proveedor", "administrador.personas.proveedor")->name("admin.proveedor");
