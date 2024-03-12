@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('designacion');
             $table->string('codigo')->nullable();
             $table->string('marca')->nullable();
-            $table->string('categoria')->nullable();
+            $table->string('categoria_id')->nullable();
             $table->double('precio')->nullable();
             $table->string('unidad')->nullable();
             $table->integer('cantidad')->nullable();
