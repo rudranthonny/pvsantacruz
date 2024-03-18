@@ -52,9 +52,7 @@ class ProductoForm extends Form
 
         if ($imagen) {
             $this->eliminar_imagen($this->producto->imagen);
-            $img = $this->subir_imagen($imagen, $this->producto->id, "producto_img");
-            $this->producto->imagen = $img;
-            $this->producto->save();
+            $this->producto->update(["imagen" => $this->subir_imagen($imagen, $this->producto->id, "producto_img")]);
         }
     }
 
