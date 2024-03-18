@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('tipo')->nullable();
             $table->string('designacion');
             $table->string('codigo')->nullable();
-            $table->string('marca')->nullable();
-            $table->string('categoria_id')->nullable();
             $table->double('precio')->nullable();
-            $table->string('unidad')->nullable();
             $table->integer('cantidad')->nullable();
+            $table->string('marca_id')->nullable();
+            $table->string('categoria_id')->nullable();
+            $table->string('unidad_id')->nullable();
             $table->timestamps();
         });
     }

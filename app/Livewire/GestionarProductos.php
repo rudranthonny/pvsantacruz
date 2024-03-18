@@ -35,6 +35,7 @@ class GestionarProductos extends Component
         $this->reset('titlemodal', 'imagen_producto');
         $this->iteration++;
         $this->productoForm->reset();
+        $this->productoForm->resetValidation();
         if ($producto->id == true) {
             $this->titlemodal = 'Editar Producto';
             $this->productoForm->set($producto);
@@ -45,6 +46,7 @@ class GestionarProductos extends Component
     {
         $this->productoForm->store($this->imagen_producto);
         $this->productoForm->reset();
+        $this->productoForm->resetValidation();
         $this->dispatch('cerrar_modal_producto');
     }
 
@@ -59,6 +61,6 @@ class GestionarProductos extends Component
         $marcas = Marca::all();
         $unidades = Unidad::all();
         $productos = Producto::where('designacion','like','%'.$this->search.'%')->paginate($this->pagina);
-        return view('livewire.gestionar-productos', compact('productos', 'categorias', 'marcas', 'productos'));
+        return view('livewire.gestionar-productos', compact('productos', 'categorias', 'marcas', 'unidades'));
     }
 }
