@@ -393,8 +393,8 @@ return [
                     'route'     => 'admin.proveedor',
                 ],
                 [
-                    'text' => 'Marcas',
-                    'url'  => '#',
+                    'text'    => 'Usuarios',
+                    'route'     => 'admin.usuario',
                 ],
             ],
         ],

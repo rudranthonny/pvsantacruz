@@ -27,6 +27,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name',
+        'lastname',
+        'telefono',
+        'username',
         'email',
         'password',
     ];
@@ -60,4 +63,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+    public function almacensuser(){
+        return $this->hasMany(AlmacenUser::class,'user_id');
+    }
 }

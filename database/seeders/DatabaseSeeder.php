@@ -17,8 +17,11 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         \App\Models\User::factory()->create([
-            'name' => 'Test User',
+            'name' => 'Administrador',
+            'lastname' => 'Rodriguez',
+            'telefono' => '+51 934 665 704',
             'email' => 'test@example.com',
+            'username' => 'usuario',
         ]);
 
         // llamar al sembrador de datos en Moneda
