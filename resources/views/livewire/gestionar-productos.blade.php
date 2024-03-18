@@ -55,21 +55,16 @@
                                         @forelse ($productos as $producto)
                                             <tr>
                                                 <td class="align-middle">
-                                                    @if ($producto->imagen)
-                                                        <img src="{{ asset($producto->imagen) }}" class="img-thumbnail"
-                                                            alt="" width="64px;">
-                                                    @else
-                                                        <img src="{{ asset('imagenes/no-image.png') }}"
-                                                            class="img-thumbnail" alt="" width="64px;">
-                                                    @endif
+                                                    <img src="{{ asset($producto->imagen) }}" class="img-thumbnail"
+                                                        alt="" width="64px;">
                                                 </td>
                                                 <td class="align-middle">{{ $producto->tipo }}</td>
                                                 <td class="align-middle">{{ $producto->designacion }}</td>
                                                 <td class="align-middle">{{ $producto->codigo }}</td>
-                                                <td class="align-middle">{{ $producto->marca }}</td>
-                                                <td class="align-middle">{{ $producto->categoria->name }}</td>
+                                                <td class="align-middle">{{ optional($producto->marca)->name }}</td>
+                                                <td class="align-middle">{{ optional($producto->categoria)->name }}</td>
                                                 <td class="align-middle">{{ $producto->precio }}</td>
-                                                <td class="align-middle">{{ $producto->unidad }}</td>
+                                                <td class="align-middle">{{ optional($producto->unidad)->name }}</td>
                                                 <td class="align-middle">{{ $producto->cantidad }}</td>
                                                 <td class="align-middle">
                                                     <button type="button" class="btn btn-primary"

@@ -3,7 +3,9 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Producto;
-use Livewire\Attributes\Rule;
+use App\Models\Unidad;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -11,15 +13,14 @@ class ProductoForm extends Form
 {
     public ?Producto $producto;
 
-    #[Rule('required')]
     public $designacion;
     public $imagen;
     public $tipo;
     public $codigo;
-    public $marca;
+    public $marca_id;
     public $categoria_id;
+    public $unidad_id;
     public $precio;
-    public $unidad;
     public $cantidad;
 
     public function set(Producto $producto)
@@ -29,21 +30,24 @@ class ProductoForm extends Form
         $this->imagen = $producto->imagen;
         $this->tipo = $producto->tipo;
         $this->codigo = $producto->codigo;
-        $this->marca = $producto->marca;
+        $this->marca_id = $producto->marca_id;
         $this->categoria_id = $producto->categoria_id;
         $this->precio = $producto->precio;
-        $this->unidad = $producto->unidad;
+        $this->unidad_id = $producto->unidad_id;
         $this->cantidad = $producto->cantidad;
     }
 
     public function update()
     {
+        $this->validate(['codigo' => Rule::unique('productos')->ignore($this->producto)]);
+
         $this->producto->update($this->all());
     }
 
     public function store($imagen = null)
     {
         $this->validate();
+
         if (isset($this->producto)) {
             $this->update();
         } else {
@@ -72,5 +76,38 @@ class ProductoForm extends Form
         $img_producto = $imagen->storeAs('producto_img', $this->producto->id . "-" . strtotime(date('Y-m-d h:i:s')) . "." . $extension);
         $this->producto->imagen = $img_producto;
         $this->producto->save();
+    }
+
+    public function rules()
+    {
+        return [
+            'designacion' => 'required',
+            'marca_id' => [
+                'required',
+                Rule::exists('marcas', 'id')
+            ],
+            'categoria_id' => [
+                'required',
+                Rule::exists('categorias', 'id')
+            ],
+            'unidad_id' => [
+                'required',
+                Rule::exists('unidads', 'id')
+            ],
+            'codigo' => [
+                'required',
+                'min:5',
+            ],
+            'precio' => [
+                'required',
+                'numeric',
+                'gt:0'
+            ],
+            'cantidad' => [
+                'required',
+                'numeric',
+                'gt:0'
+            ],
+        ];
     }
 }

@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         // llamar al sembrador de datos en Moneda
         $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
-        //$this->call(ProductoSeeder::class);
+        $this->call(ProductoSeeder::class);
         $this->call(MarcaSeeder::class);
         $this->call(CategoriaSeeder::class);
         $this->call(UnidadSeeder::class);

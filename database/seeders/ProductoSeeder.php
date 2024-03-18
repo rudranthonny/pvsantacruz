@@ -18,11 +18,11 @@ class ProductoSeeder extends Seeder
         $producto -> tipo = "tipo1";
         $producto -> designacion = "designacion producto1";
         $producto -> codigo = "codigo1";
-        $producto -> marca = "marca1";
-        $producto -> categoria_id = "1";
         $producto -> precio = "75";
-        $producto -> unidad = "unidad1";
         $producto -> cantidad = "15";
+        $producto -> marca_id = "1";
+        $producto -> categoria_id = "1";
+        $producto -> unidad_id = "1";
         $producto -> save();
 
         $producto = new Producto();
@@ -30,11 +30,11 @@ class ProductoSeeder extends Seeder
         $producto -> tipo = "tipo2";
         $producto -> designacion = "designacion producto2";
         $producto -> codigo = "codigo2";
-        $producto -> marca = "marca2";
-        $producto -> categoria_id = "2";
         $producto -> precio = "100";
-        $producto -> unidad = "unidad2";
         $producto -> cantidad = "20";
+        $producto -> marca_id = "2";
+        $producto -> categoria_id = "2";
+        $producto -> unidad_id = "2";
         $producto -> save();
     }
 }

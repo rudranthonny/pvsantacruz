@@ -11,7 +11,7 @@ class AlmacenForm extends Form
 {
     public ?Almacen $almacen;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $nombre;
     public $telefono;
     public $pais;
