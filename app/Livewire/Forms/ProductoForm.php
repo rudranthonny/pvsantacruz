@@ -3,14 +3,14 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Producto;
-use App\Models\Unidad;
-use Illuminate\Support\Facades\Validator;
+use App\Traits\ImagenTrait;
 use Illuminate\Validation\Rule;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class ProductoForm extends Form
 {
+    use ImagenTrait;
+
     public ?Producto $producto;
 
     public $designacion;
@@ -48,34 +48,14 @@ class ProductoForm extends Form
     {
         $this->validate();
 
-        if (isset($this->producto)) {
-            $this->update();
-        } else {
-            $this->producto = Producto::create($this->all());
-        }
+        (isset($this->producto)) ? $this->update() : $this->producto = Producto::create($this->all());
 
         if ($imagen) {
-            $this->eliminar_imagen_producto();
-            $this->subir_imagen_producto($imagen);
+            $this->eliminar_imagen($this->producto->imagen);
+            $img = $this->subir_imagen($imagen, $this->producto->id, "producto_img");
+            $this->producto->imagen = $img;
+            $this->producto->save();
         }
-    }
-
-    public function eliminar_imagen_producto()
-    {
-        if ($this->producto->imagen) {
-            $filePath = storage_path('app/' . $this->producto->imagen);
-            if (file_exists($filePath)) {
-                unlink($filePath);
-            }
-        }
-    }
-
-    public function subir_imagen_producto($imagen)
-    {
-        $extension = $imagen->extension();
-        $img_producto = $imagen->storeAs('producto_img', $this->producto->id . "-" . strtotime(date('Y-m-d h:i:s')) . "." . $extension);
-        $this->producto->imagen = $img_producto;
-        $this->producto->save();
     }
 
     public function rules()

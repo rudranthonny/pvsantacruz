@@ -28,4 +28,4 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('producto_img/{archivo}', [ArchivoController::class, 'imagen'])->middleware('auth');
+Route::get('archivo/{path}/{archivo}', [ArchivoController::class, 'imagen'])->middleware('auth');
