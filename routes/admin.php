@@ -21,3 +21,5 @@ Route::view("compras", "administrador.compras.compra")->name("admin.compras");
 Route::view("cliente", "administrador.personas.cliente")->name("admin.cliente");
 Route::view("proveedor", "administrador.personas.proveedor")->name("admin.proveedor");
 Route::view("usuario", "administrador.personas.usuario")->name("admin.usuario");
+#ventas
+Route::view("pos", "administrador.ventas.pos")->name("admin.ventas.pos");
