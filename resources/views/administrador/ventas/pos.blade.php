@@ -61,6 +61,12 @@
             top: 0;
             width: 100%;
         }
+
+        .custom-img {
+            border-radius: 50%;
+            height: 36px;
+            width: 36px;
+        }
     </style>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -91,38 +97,31 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="card card-order">
-                            <div class="main-header">
-                                <div class="logo">
+                            <div class="row justify-content-between">
+                                <div class="logo col-1">
                                     <a href="/admin" class="">
                                         <img src="/imagenes/11896760Imagen1.jpg" alt="" width="60"
                                             height="60">
                                     </a>
                                 </div>
-                                <div class="mx-auto"></div>
-                                <div class="header-part-right">
+                                <div class="col-2">
+
                                     <div class="dropdown">
-                                        <div id="dropdown-1"
-                                            class="dropdown b-dropdown m-md-2 user col align-self-end btn-group">
-                                            <button id="dropdown-1__BV_toggle_" aria-haspopup="true"
-                                                aria-expanded="false" type="button"
-                                                class="btn dropdown-toggle btn-link text-decoration-none dropdown-toggle-no-caret">
-                                                <img src="/images/avatar/no_avatar.png" id="userDropdown" alt=""
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            </button>
-                                            <ul role="menu" tabindex="-1" aria-labelledby="dropdown-1__BV_toggle_"
-                                                class="dropdown-menu dropdown-menu-right">
-                                                <div aria-labelledby="userDropdown" class="dropdown-menu-left">
-                                                    <div class="dropdown-header">
-                                                        <i class="i-Lock-User mr-1"></i>
-                                                        <span>William Castillo</span>
-                                                    </div>
-                                                    <a href="/app/profile" class="dropdown-item">perfil</a>
-                                                    <a href="/app/settings/System_settings"
-                                                        class="dropdown-item">Configuraciones</a>
-                                                    <a href="#" class="dropdown-item">cerrar sesión</a>
-                                                </div>
-                                            </ul>
-                                        </div>
+                                        <button class="btn dropdown-toggle btn-link text-decoration-none" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src="/imagenes/no_avatar.png" id="userDropdown" alt=""
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                class="custom-img">
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <div class="dropdown-header">
+                                                <i class="i-Lock-User mr-1"></i>
+                                                <span>William Castillo</span>
+                                            </div>
+                                            <li><a class="dropdown-item" href="#">perfil</a></li>
+                                            <li><a class="dropdown-item" href="#">Configuraciones</a></li>
+                                            <li><a class="dropdown-item" href="#">cerrar sesión</a></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
