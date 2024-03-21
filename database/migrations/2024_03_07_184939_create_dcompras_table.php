@@ -13,12 +13,20 @@ return new class extends Migration
     {
         Schema::create('dcompras', function (Blueprint $table) {
             $table->id();
+            $table->string('metodo_descuento');
+            $table->string('metodo_impuesto');
+            $table->double('impuesto_orden');
+            $table->double('costo');
+            $table->string('compra_unidad');
+            $table->double('descuento_unitario');
             $table->string('nombre_producto');
-            $table->double('costo_unitario');
-            $table->integer('cantidad');
+            $table->double('cantidad')->default(0);
+            $table->double('costo_unitario')->default(0);
             $table->double('descuento')->default(0);
-            $table->double('impuesto')->default(0);
+            $table->double('impuesto');
+            $table->double('stock_actual');
             $table->double('total_parcial');
+            $table->string('codigo');
             $table->unsignedBigInteger('producto_id');
             $table->unsignedBigInteger('compra_id');
             $table->foreign('compra_id')->references('id')->on('compras');

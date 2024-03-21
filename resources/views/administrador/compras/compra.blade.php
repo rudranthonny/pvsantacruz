@@ -60,12 +60,24 @@
             select: function(event,ui)
                 {
                     setTimeout(() => {
+                    $('#buscar_producto_oculto').val('');
+                    $('#buscar_producto_oculto').val(ui.item.codigo);
+                    $('#buscar_producto_oculto')[0].dispatchEvent(new Event('input'));
                     $('#buscar_producto').val('');
-                    $('#buscar_producto').val(ui.item.codigo);
-                    $('#buscar_producto')[0].dispatchEvent(new Event('input'));
                     }, 750);
                 }
                 });
+        });
+
+        window.Livewire.on('advertencia_almacen', () =>
+        {
+            Swal.fire({
+            position: "center-center",
+            icon: "warning",
+            title: "Elegir un Almacen para realizar la compra",
+            showConfirmButton: false,
+            timer: 1500
+            });
         });
     </script>
 @stop

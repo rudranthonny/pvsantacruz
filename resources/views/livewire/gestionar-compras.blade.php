@@ -1,7 +1,6 @@
 <div>
     {{-- If your happiness depends on money, you will never be happy with yourself. --}}
     <!--titulo-->
-    <div>
         <div class="row">
             <div class="col-12 fs-6">
                 <span class="fs-3 fw-bold">Lista de Compras</span> Compras | Lista de Compras
@@ -10,9 +9,7 @@
                 <hr>
             </div>
         </div>
-    </div>
     <!--cuerpo-->
-    <div>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <div class="card">
@@ -55,17 +52,34 @@
                                         @forelse ($compras as $compra)
                                             <tr class="text-center">
                                                 <td>{{ $compra->fecha }}</td>
-                                                <td>{{ $compra->refe }}</td>
-                                                <td>{{ $compra->prove }}</td>
-                                                <td>{{ $compra->almacen }}</td>
-                                                <td>{{ $compra->estado }}</td>
+                                                <td>{{ "COM_".$compra->id }}</td>
+                                                <td>{{ $compra->proveedor->name }}</td>
+                                                <td>{{ $compra->almacen->nombre }}</td>
+                                                <td>
+                                                    @if ($compra->estado == 1)
+                                                    <span class="badge text-bg-success">Recibido</span>
+                                                    @elseif ($compra->estado == 2)
+                                                    <span class="badge text-bg-primary">Pendiente</span>
+                                                    @elseif ($compra->estado == 3)
+                                                    <span class="badge text-bg-warning">Ordenado</span>
+                                                    @endif
+                                                </td>
                                                 <td>{{ $compra->total }}</td>
                                                 <td>{{ $compra->pagado }}</td>
                                                 <td>{{ $compra->debido }}</td>
-                                                <td>{{ $compra->estado_pago }}</td>
+                                                <td>
+                                                    @if ($compra->estado_pago == 1)
+                                                        <span class="badge text-bg-warning">No Pagado</span>
+                                                    @elseif($compra->estado_pago == 2)
+                                                        <span class="badge text-bg-success">Pagado</span>
+                                                    @elseif($compra->estado_pago == 3)
+                                                        <span class="badge text-bg-primary">Parcial</span>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <button type="button" class="btn btn-primary"
                                                         data-bs-toggle="modal" data-bs-target="#modalCompra"
+                                                        id="editar-compra-{{ $compra->id }}"
                                                         wire:click="modal('{{ $compra->id }}')"><i
                                                             class="fas fa-edit"></i></button>
                                                     <button type="button" class="btn btn-danger"
@@ -100,12 +114,12 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@script
+    @script
     <script>
         $wire.on('cerrar_modal_compra', reservacion => {
             ventana = document.getElementById('cerrar_modal_compra_x').click();
         });
     </script>
-@endscript
+    @endscript
+</div>
+

@@ -3,6 +3,9 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Compra;
+use App\Models\Dcompra;
+use App\Models\Producto;
+use App\Models\ProductoAlmacen;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -10,40 +13,222 @@ use Livewire\Form;
 class ComprasForm extends Form
 {
     public ?Compra $compra;
-
-    #[Rule('required')]
     public $fecha;
-    public $refe;
     public $prove;
     public $almacen;
     public $estado;
+    public $total_sin_impuesto = 0.00;
+    public $impuesto_orden = 0.00;
+    public $impuesto_orden_monto = 0.00;
+    public $descuento;
+    public $envio;
     public $total;
     public $pagado;
     public $debido;
-    public $estado_pago;
+    public $nota;
     public $detalle_compra = [];
+    public $item_compra_id;
 
     public function set(Compra $compra){
         $this->compra = $compra;
         $this->fecha = $compra->fecha;
-        $this->refe = $compra->refe;
-        $this->prove = $compra->prove;
-        $this->almacen = $compra->almacen;
-        $this->estado = $compra->estado;
+        $this->prove = $compra->proveedor_id;
+        $this->almacen = $compra->almacen_id;
+        $this->impuesto_orden = $compra->porcentaje_impuesto_orden;
+        $this->total_sin_impuesto = $compra->total_sin_impuesto;
+        $this->impuesto_orden_monto = $compra->monto_impuesto_orden;
+        $this->descuento = $compra->monto_descuento;
+        $this->envio = $compra->monto_envio;
         $this->total = $compra->total;
-        $this->pagado = $compra->pagado;
-        $this->debido = $compra->debido;
-        $this->estado_pago = $compra->estado_pago;
+        $this->estado = $compra->estado;
+        $this->nota = $compra->nota;
+        $this->total = $compra->debido;
+
+        foreach ($compra->dcompras as $key => $dcompra) {
+            $this->detalle_compra[$dcompra->codigo]['metodo_descuento'] = $dcompra->metodo_descuento;
+            $this->detalle_compra[$dcompra->codigo]['metodo_impuesto']  = $dcompra->metodo_impuesto;
+            $this->detalle_compra[$dcompra->codigo]['impuesto_orden']   = $dcompra->impuesto_orden;
+            $this->detalle_compra[$dcompra->codigo]['costo'] = $dcompra->costo;
+            $this->detalle_compra[$dcompra->codigo]['stock_actual'] = $dcompra->stock_actual;
+            $this->detalle_compra[$dcompra->codigo]['compra_unidad'] = $dcompra->compra_unidad;
+            $this->detalle_compra[$dcompra->codigo]['descuento_unitario'] = $dcompra->descuento_unitario;
+            $this->detalle_compra[$dcompra->codigo]['nombre_producto'] = $dcompra->nombre_producto;
+            $this->detalle_compra[$dcompra->codigo]['cantidad'] = $dcompra->cantidad;
+            $this->detalle_compra[$dcompra->codigo]['costo_unitario'] = $dcompra->costo_unitario;
+            $this->detalle_compra[$dcompra->codigo]['descuento'] = $dcompra->descuento;
+            $this->detalle_compra[$dcompra->codigo]['impuesto'] = $dcompra->impuesto;
+            $this->detalle_compra[$dcompra->codigo]['total_parcial'] = $dcompra->total_parcial;
+            $this->detalle_compra[$dcompra->codigo]['producto_id'] = $dcompra->producto_id;
+        }
     }
 
     public function update(){
-        $this->validate();
-        $this->compra->update($this->all());
+        $this->validate(
+            [
+                'fecha' => 'required',
+                'prove' => 'required',
+                'almacen' => 'required',
+                'estado' => 'required',
+                'detalle_compra' => 'required',
+                ]
+        );
+       // $this->compra->update($this->all());
     }
 
     public function store()
     {
-        $this->validate();
-        compra::create($this->all());
+        $this->validate(
+            [
+                'fecha' => 'required',
+                'prove' => 'required',
+                'almacen' => 'required',
+                'estado' => 'required',
+                'detalle_compra' => 'required',
+                ]
+        );
+        #crear compra
+        $n_compra = new Compra();
+        $n_compra->fecha = $this->fecha;
+        $n_compra->proveedor_id= $this->prove;
+        $n_compra->almacen_id = $this->almacen;
+        $n_compra->porcentaje_impuesto_orden = $this->impuesto_orden;
+        $n_compra->total_sin_impuesto = $this->total_sin_impuesto;
+        $n_compra->monto_impuesto_orden = $this->impuesto_orden_monto;
+        $n_compra->monto_descuento = $this->descuento;
+        $n_compra->monto_envio = $this->envio;
+        $n_compra->total = $this->total;
+        $n_compra->estado = $this->estado;
+        $n_compra->nota =  $this->nota;
+        $n_compra->debido = $this->total;
+        $n_compra->save();
+
+        foreach ($this->detalle_compra as $key => $dcompra) {
+            $n_dcompra = new Dcompra();
+            $n_dcompra->metodo_descuento = $this->detalle_compra[$key]['metodo_descuento'];
+            $n_dcompra->metodo_impuesto = $this->detalle_compra[$key]['metodo_impuesto'];
+            $n_dcompra->impuesto_orden = $this->detalle_compra[$key]['impuesto_orden'];
+            $n_dcompra->costo = $this->detalle_compra[$key]['costo'];
+            $n_dcompra->compra_unidad = $this->detalle_compra[$key]['compra_unidad'];
+            $n_dcompra->descuento_unitario = $this->detalle_compra[$key]['descuento_unitario'];
+            $n_dcompra->nombre_producto = $this->detalle_compra[$key]['nombre_producto'];
+            $n_dcompra->cantidad = $this->detalle_compra[$key]['cantidad'];
+            $n_dcompra->costo_unitario = $this->detalle_compra[$key]['costo_unitario'];
+            $n_dcompra->stock_actual = $this->detalle_compra[$key]['stock_actual'];
+            $n_dcompra->descuento = $this->detalle_compra[$key]['descuento'];
+            $n_dcompra->impuesto = $this->detalle_compra[$key]['impuesto'];
+            $n_dcompra->total_parcial = $this->detalle_compra[$key]['total_parcial'];
+            $n_dcompra->codigo = $key;
+            $n_dcompra->producto_id = $this->detalle_compra[$key]['producto_id'];
+            $n_dcompra->compra_id = $n_compra->id;
+            $n_dcompra->save();
+            $this->agregar_stock_almacen($this->detalle_compra[$key]['producto_id'],$n_dcompra->cantidad,$n_compra->almacen_id);
+        }
+    }
+
+    public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id){
+        $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock+$cantidad;}
+        else{
+            $b_almacen_producto = new ProductoAlmacen();
+            $b_almacen_producto->almacen_id = $almacen_id;
+            $b_almacen_producto->producto_id = $producto_id;
+            $b_almacen_producto->stock = $cantidad;
+        }
+        $b_almacen_producto->save();
+    }
+
+    public function quitar_stock_almacen($producto_id,$cantidad,$almacen_id){
+        $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-$cantidad;}
+        $b_almacen_producto->save();
+    }
+
+    public function obtener_datos_compra(){
+        $this->total_sin_impuesto = 0;
+        foreach ($this->detalle_compra as $key => $dcompra){$this->total_sin_impuesto = $this->total_sin_impuesto + $this->detalle_compra[$key]['total_parcial'];}
+        $this->obtener_impuesto_orden_monto();
+        $this->obtener_total_compra();
+    }
+
+    public function obtener_impuesto_orden_monto(){
+        if ($this->impuesto_orden) {$this->impuesto_orden_monto = $this->total_sin_impuesto*$this->impuesto_orden/100;}
+        else
+        {
+            $this->impuesto_orden_monto = 0.00;
+            $this->impuesto_orden = 0.00;
+        }
+    }
+
+    public function obtener_total_compra(){
+        if ($this->descuento == false) {$this->descuento = 0;}
+        if ($this->envio == false) {$this->envio = 0;}
+        $this->total = $this->total_sin_impuesto+$this->impuesto_orden_monto-$this->descuento+$this->envio;
+    }
+
+    public function eliminar_item_compra($item_id){
+        unset($this->detalle_compra[$item_id]);
+    }
+
+    public function agregar_item(Producto $producto)
+    {
+        $this->detalle_compra[$producto->codigo]['producto_id'] = $producto->id;
+        $this->detalle_compra[$producto->codigo]['metodo_descuento'] = 'fijado';
+        $this->detalle_compra[$producto->codigo]['metodo_impuesto'] = 'exclusivo';
+        $this->detalle_compra[$producto->codigo]['impuesto_orden'] = $producto->impuesto_orden;
+        $this->detalle_compra[$producto->codigo]['costo'] = $producto->costo;
+        $this->detalle_compra[$producto->codigo]['compra_unidad'] = 'unidad';
+        $this->detalle_compra[$producto->codigo]['descuento_unitario'] = 1;
+        $this->detalle_compra[$producto->codigo]['nombre_producto'] = $producto->designacion;
+        if ($this->detalle_compra[$producto->codigo]['metodo_impuesto'] == 'exclusivo') {
+            $this->detalle_compra[$producto->codigo]['costo_unitario'] = number_format(($this->detalle_compra[$producto->codigo]['costo']-$this->detalle_compra[$producto->codigo]['descuento_unitario']),3);
+        }
+        elseif($this->detalle_compra[$producto->codigo]['metodo_impuesto'] == 'inclusivo') {
+            $this->detalle_compra[$producto->codigo]['costo_unitario'] = number_format(($this->detalle_compra[$producto->codigo]['costo']-$this->detalle_compra[$producto->codigo]['descuento_unitario'])/(($this->detalle_compra[$producto->codigo]['impuesto_orden']+100)/100),3);
+        }
+        $consultar_stock = ProductoAlmacen::where('producto_id',$producto->id)->where('almacen_id',$this->almacen)->first();
+        $this->detalle_compra[$producto->codigo]['stock_actual'] =  $consultar_stock == true ? $consultar_stock->stock : 0;
+        $this->detalle_compra[$producto->codigo]['cantidad'] = 10;
+        $this->detalle_compra[$producto->codigo]['descuento'] = $this->detalle_compra[$producto->codigo]['cantidad']*$this->detalle_compra[$producto->codigo]['descuento_unitario'];
+        $this->detalle_compra[$producto->codigo]['impuesto'] =  number_format(((($this->detalle_compra[$producto->codigo]['costo_unitario']-$this->detalle_compra[$producto->codigo]['descuento_unitario'])*$this->detalle_compra[$producto->codigo]['cantidad'])*$producto->impuesto_orden/100),2);
+        $this->detalle_compra[$producto->codigo]['total_parcial'] = $this->detalle_compra[$producto->codigo]['costo_unitario']*$this->detalle_compra[$producto->codigo]['cantidad']+$this->detalle_compra[$producto->codigo]['impuesto'];
+    }
+
+    public function actualizar_item(
+        $item_id,
+        $item_costo_producto,
+        $item_metodo_impuesto,
+        $item_impuesto_orden,
+        $item_metodo_descuento,
+        $item_descuento,
+        $item_compra_unidad,
+        $item_cantidad,
+        $item_nombre_producto,
+        $item_producto_id,
+        )
+    {
+        $this->detalle_compra[$item_id]['producto_id']        = $item_producto_id;
+        $this->detalle_compra[$item_id]['metodo_descuento']   = $item_metodo_descuento;
+        $this->detalle_compra[$item_id]['metodo_impuesto']    = $item_metodo_impuesto;
+        $this->detalle_compra[$item_id]['impuesto_orden']     = $item_impuesto_orden;
+        $this->detalle_compra[$item_id]['costo']              = $item_costo_producto;
+        $this->detalle_compra[$item_id]['compra_unidad']      = $item_compra_unidad;
+        $this->detalle_compra[$item_id]['descuento_unitario'] = $item_descuento;
+        $this->detalle_compra[$item_id]['nombre_producto'] = $item_nombre_producto;
+        $consultar_stock = ProductoAlmacen::where('producto_id',$item_producto_id)->where('almacen_id',$this->almacen)->first();
+        $this->detalle_compra[$item_id]['stock_actual'] = $consultar_stock == true ? $consultar_stock->stock : 0;
+        $this->detalle_compra[$item_id]['cantidad'] = $item_cantidad;
+
+        if ($this->detalle_compra[$item_id]['metodo_impuesto'] == 'exclusivo') {
+            $this->detalle_compra[$item_id]['costo_unitario'] = number_format(($this->detalle_compra[$item_id]['costo']-$this->detalle_compra[$item_id]['descuento_unitario']),3);
+        }
+
+        elseif($this->detalle_compra[$item_id]['metodo_impuesto'] == 'inclusivo') {
+            $this->detalle_compra[$item_id]['costo_unitario'] = number_format(($this->detalle_compra[$item_id]['costo']-$this->detalle_compra[$item_id]['descuento_unitario'])/(($this->detalle_compra[$item_id]['impuesto_orden']+100)/100),3);
+        }
+
+        $this->detalle_compra[$item_id]['descuento'] = $this->detalle_compra[$item_id]['cantidad']*$this->detalle_compra[$item_id]['descuento_unitario'];
+        $this->detalle_compra[$item_id]['impuesto'] =  number_format(((( $this->detalle_compra[$item_id]['costo_unitario']-$this->detalle_compra[$item_id]['descuento_unitario'])*$this->detalle_compra[$item_id]['cantidad'])*$this->detalle_compra[$item_id]['impuesto_orden']/100),2);
+        $this->detalle_compra[$item_id]['total_parcial'] = $this->detalle_compra[$item_id]['costo_unitario']*$this->detalle_compra[$item_id]['cantidad']+$this->detalle_compra[$item_id]['impuesto'];
+        $this->obtener_datos_compra();
     }
 }
