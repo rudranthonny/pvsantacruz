@@ -1,25 +1,29 @@
-<div >
+<div>
     <div class="row">
         <div class="col-5">
             <div class="card text-center">
                 <div class="card-header">
                     <div class="col-12" style="text-align: right;">
-                  <img src="{{asset('imagenes/logo.png')}}" alt="" width="64px;">
+                        <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 my-1">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="usuariosform_username" placeholder="Escribir Usuario" wire:model.live="usuariosform.username">
-                                <div class="input-group-text"><i class="bi bi-person-add"></i> <span class="text-danger">*</span></div>
+                                <input type="text" class="form-control" id="usuariosform_username"
+                                    placeholder="Escribir Usuario" wire:model.live="usuariosform.username">
+                                <div class="input-group-text"><i class="bi bi-person-add"></i> <span
+                                        class="text-danger">*</span></div>
                             </div>
                         </div>
                         <div class="col-12 my-1">
-                            <select class="form-select" id="compra_almacen" wire:model.live="">
+                            <select class="form-select" id="compra_almacen" wire:model.live="almacen_id">
                                 <option value="">Elegir</option>
-                                <option value="">Almacen 1</option>
-                                <option value="">Almacen 2</option>
+                                @forelse ($almacenes as $almacen)
+                                    <option value="{{ $almacen->id }}">{{ $almacen->nombre }}</option>
+                                @empty
+                                @endforelse
                             </select>
                         </div>
                     </div>
@@ -44,60 +48,84 @@
                                     <tr>
                                         <td>
                                             7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
+                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
+                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
                                         </td>
                                         <td>S/ 5000.00</td>
-                                        <td ><center><input type="number" class="form-control" style="width: 80px;" name="" id=""></center></td>
+                                        <td>
+                                            <center><input type="number" class="form-control" style="width: 80px;"
+                                                    name="" id=""></center>
+                                        </td>
                                         <td>S/ 5000.00</td>
                                         <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
                                     </tr>
                                     <tr>
                                         <td>
                                             7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
+                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
+                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
                                         </td>
                                         <td>S/ 5000.00</td>
-                                        <td ><center><input type="number" class="form-control" style="width: 80px;" name="" id=""></center></td>
+                                        <td>
+                                            <center><input type="number" class="form-control" style="width: 80px;"
+                                                    name="" id=""></center>
+                                        </td>
                                         <td>S/ 5000.00</td>
                                         <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
                                     </tr>
                                     <tr>
                                         <td>
                                             7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
+                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
+                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
                                         </td>
                                         <td>S/ 5000.00</td>
-                                        <td ><center><input type="number" class="form-control" style="width: 80px;" name="" id=""></center></td>
+                                        <td>
+                                            <center><input type="number" class="form-control" style="width: 80px;"
+                                                    name="" id=""></center>
+                                        </td>
                                         <td>S/ 5000.00</td>
                                         <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
                                     </tr>
                                     <tr>
                                         <td>
                                             7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
+                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
+                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
                                         </td>
                                         <td>S/ 5000.00</td>
-                                        <td ><center><input type="number" class="form-control" style="width: 80px;" name="" id=""></center></td>
+                                        <td>
+                                            <center><input type="number" class="form-control" style="width: 80px;"
+                                                    name="" id=""></center>
+                                        </td>
                                         <td>S/ 5000.00</td>
                                         <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
                                     </tr>
                                     <tr>
                                         <td>
                                             7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
+                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
+                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
                                         </td>
                                         <td>S/ 5000.00</td>
-                                        <td ><center><input type="number" class="form-control" style="width: 80px;" name="" id=""></center></td>
+                                        <td>
+                                            <center><input type="number" class="form-control" style="width: 80px;"
+                                                    name="" id=""></center>
+                                        </td>
                                         <td>S/ 5000.00</td>
                                         <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
                                     </tr>
                                     <tr>
                                         <td>
                                             7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
+                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
+                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
                                         </td>
                                         <td>S/ 5000.00</td>
-                                        <td ><center><input type="number" class="form-control" style="width: 80px;" name="" id=""></center></td>
+                                        <td>
+                                            <center><input type="number" class="form-control" style="width: 80px;"
+                                                    name="" id=""></center>
+                                        </td>
                                         <td>S/ 5000.00</td>
                                         <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
                                     </tr>
@@ -121,21 +149,24 @@
                                     <label for="impuesto" class="form-label"><b>Impuesto</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text"><i class="bi bi-percent"></i></div>
-                                        <input type="text" class="form-control" id="impuesto" placeholder="0" wire:model.live="">
+                                        <input type="text" class="form-control" id="impuesto" placeholder="0"
+                                            wire:model.live="">
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-12">
                                     <label for="descuento" class="form-label"><b>Descuento</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text">S/</div>
-                                        <input type="text" class="form-control" id="descuento" placeholder="0" wire:model.live="">
+                                        <input type="text" class="form-control" id="descuento" placeholder="0"
+                                            wire:model.live="">
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-12">
                                     <label for="envio" class="form-label"><b>Envió</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text">S/ </div>
-                                        <input type="text" class="form-control" id="envio" placeholder="0" wire:model.live="">
+                                        <input type="text" class="form-control" id="envio" placeholder="0"
+                                            wire:model.live="">
                                     </div>
                                 </div>
                             </div>
@@ -143,14 +174,14 @@
                     </div>
                     <div class="row my-2">
                         <div class="col-12 col-sm-6">
-                            <button class="btn btn-success btn-lg">Reiniciar</button>
+                            <button class="btn btn-success btn-lg" wire:click="$refresh">Reiniciar</button>
                         </div>
                         <div class="col-12 col-sm-6">
                             <button class="btn btn-danger btn-lg">Pagar Ahora</button>
                         </div>
                     </div>
                 </div>
-              </div>
+            </div>
         </div>
         <div class="col-7">
             <div class="card">
@@ -158,120 +189,64 @@
                     <div class="row my-2">
                         <div class="col-12 col-sm-6 my-1">
                             <label for=""><b>Categoria</b></label>
-                            <select class="form-select" id="compra_almacen" wire:model.live="">
+                            <select class="form-select" id="compra_almacen" wire:model.live="categoria_id">
                                 <option value="">Todos</option>
-                                <option value="">Almacen 1</option>
-                                <option value="">Almacen 2</option>
+                                @forelse ($categorias as $categoria)
+                                    <option value="{{ $categoria->cat_cod }}">{{ $categoria->name }}</option>
+                                @empty
+                                    <option value="">Sin Categorias</option>
+                                @endforelse
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 my-1">
                             <label for=""><b>Marcas</b></label>
-                            <select class="form-select" id="compra_almacen" wire:model.live="">
+                            <select class="form-select" id="compra_almacen" wire:model.live="marca_id">
                                 <option value="">Todos</option>
-                                <option value="">Almacen 1</option>
-                                <option value="">Almacen 2</option>
+                                @forelse ($marcas as $marca)
+                                    <option value="{{ $marca->id }}">{{ $marca->name }}</option>
+                                @empty
+                                    <option value="">Sin Marcas</option>
+                                @endforelse
                             </select>
                         </div>
                         <div class="col-12 my-2">
                             <label class="visually-hidden" for="buscar_proveedor">Buscar Producto</label>
                             <div class="input-group">
                                 <div class="input-group-text"><i class="bi bi-search"></i></div>
-                                <input type="text" class="form-control" id="buscar_proveedor" placeholder="Buscar Proveedor" wire:model.live="search">
+                                <input type="text" class="form-control" id="buscar_proveedor"
+                                    placeholder="Buscar Proveedor" wire:model.live="search">
                             </div>
                         </div>
                     </div>
                     <!--lista de producto-->
                     <div class="row my-2">
-                        <div class="col-2">
-                            <div class="card">
-                                <img src="{{ asset('imagenes/no-image.png') }}" style="object-fit: cover;" height="80px;" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 m-0 p-0" style="padding: 0px;">
-                                            3D EN POLVO BICA<br>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-warning">s/ 5000.00</span>
+                        @forelse ($productos as $product)
+                            <div class="col-2">
+                                <div class="card">
+                                    <img src="{{ asset($product->producto->imagen) }}" style="object-fit: cover;"
+                                        height="80px;" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 m-0 p-0" style="padding: 0px;">
+                                                {{ $product->producto->designacion }}<br>
+                                                {{ $product->producto->codigo }}<br>
+                                                <span
+                                                    class="badge text-bg-warning">{{ number_format($product->producto->precio, 2) }}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                              </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="card">
-                                <img src="{{ asset('imagenes/no-image.png') }}" style="object-fit: cover;" height="80px;" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 m-0 p-0" style="padding: 0px;">
-                                            3D EN POLVO BICA<br>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-warning">s/ 5000.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="card">
-                                <img src="{{ asset('imagenes/no-image.png') }}" style="object-fit: cover;" height="80px;" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 m-0 p-0" style="padding: 0px;">
-                                            3D EN POLVO BICA<br>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-warning">s/ 5000.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="card">
-                                <img src="{{ asset('imagenes/no-image.png') }}" style="object-fit: cover;" height="80px;" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 m-0 p-0" style="padding: 0px;">
-                                            3D EN POLVO BICA<br>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-warning">s/ 5000.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="card">
-                                <img src="{{ asset('imagenes/no-image.png') }}" style="object-fit: cover;" height="80px;" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 m-0 p-0" style="padding: 0px;">
-                                            3D EN POLVO BICA<br>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-warning">s/ 5000.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="card">
-                                <img src="{{ asset('imagenes/no-image.png') }}" style="object-fit: cover;" height="80px;" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12 m-0 p-0" style="padding: 0px;">
-                                            3D EN POLVO BICA<br>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-warning">s/ 5000.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                              </div>
-                        </div>
+                            </div>
+
+                        @empty
+                            <span>SIN PRODUCTOS</span>
+                        @endforelse
                     </div>
                     <!--paginacion-->
                     <div class="row my-2">
                     </div>
                 </div>
-              </div>
+            </div>
         </div>
     </div>
 </div>
