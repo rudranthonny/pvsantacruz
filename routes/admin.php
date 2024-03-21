@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Livewire\Pos;
 use Illuminate\Support\Facades\Route;
 
 Route::view('', 'administrador.index')->name('admin.index');
@@ -22,4 +23,4 @@ Route::view("cliente", "administrador.personas.cliente")->name("admin.cliente");
 Route::view("proveedor", "administrador.personas.proveedor")->name("admin.proveedor");
 Route::view("usuario", "administrador.personas.usuario")->name("admin.usuario");
 #ventas
-Route::view("pos", "administrador.ventas.pos")->name("admin.ventas.pos");
+Route::get("pos", Pos::class)->name("admin.ventas.pos");

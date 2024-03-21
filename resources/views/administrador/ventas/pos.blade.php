@@ -92,45 +92,7 @@
         <div class="loading"></div>
     </div>
     <div id="app">
-        <div class="pos_page">
-            <div class="container-fluid p-0 app-admin-wrap layout-sidebar-large clearfix">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="card card-order">
-                            <div class="row justify-content-between">
-                                <div class="logo col-1">
-                                    <a href="/admin" class="">
-                                        <img src="/imagenes/11896760Imagen1.jpg" alt="" width="60"
-                                            height="60">
-                                    </a>
-                                </div>
-                                <div class="col-2">
-
-                                    <div class="dropdown">
-                                        <button class="btn dropdown-toggle btn-link text-decoration-none" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img src="/imagenes/no_avatar.png" id="userDropdown" alt=""
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                class="custom-img">
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <div class="dropdown-header">
-                                                <i class="i-Lock-User mr-1"></i>
-                                                <span>William Castillo</span>
-                                            </div>
-                                            <li><a class="dropdown-item" href="#">perfil</a></li>
-                                            <li><a class="dropdown-item" href="#">Configuraciones</a></li>
-                                            <li><a class="dropdown-item" href="#">cerrar sesión</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-7"></div>
-                </div>
-            </div>
-        </div>
+        {{ $slot }}
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
