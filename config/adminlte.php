@@ -353,16 +353,12 @@ return [
             'icon' => 'fas fa-fw fa-store',
             'submenu' => [
                 [
-                    'text' => 'Cambiar Logo',
-                    'url'  => '#',
+                    'text' => 'POS',
+                    'route'  => 'admin.ventas.pos',
                 ],
                 [
                     'text'    => 'Categorias',
                     'url'     => '#',
-                ],
-                [
-                    'text' => 'Marcas',
-                    'url'  => '#',
                 ],
             ],
         ],
