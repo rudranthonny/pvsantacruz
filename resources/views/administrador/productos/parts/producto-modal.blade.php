@@ -101,6 +101,18 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label for="simbologia" class="form-label">Simbología de códigos de barras</label>
+                        <br>
+                        <select id="simbologia">
+                            <option value="1">Code 128</option>
+                            <option value="2">Code 39</option>
+                            <option value="3">EAN8</option>
+                            <option value="4">EAN13</option>
+                            <option value="5">UPC</option>
+                        </select>
+                    </div>
+
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-12 col-lg-12">
                             <label for="imagen" class="form-label">Imagen</label>
