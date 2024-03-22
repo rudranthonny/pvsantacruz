@@ -55,8 +55,9 @@
                                             </td>
                                             <td>{{ $item['precio'] }}</td>
                                             <td>
+                                                @php $valor_cantidad = 'items.'.$key.'.cantidad';@endphp
                                                 <center><input type="number" class="form-control" style="width: 80px;"
-                                                        name="" id="" value="{{ $item['cantidad'] }}">
+                                                        name="" id="" wire:model.live='{{$valor_cantidad}}'>
                                                 </center>
                                             </td>
                                             <td>{{ $item['importe'] }}</td>
