@@ -57,7 +57,7 @@
                                             <td>
                                                 @php $valor_cantidad = 'items.'.$key.'.cantidad';@endphp
                                                 <center><input type="number" class="form-control" style="width: 80px;"
-                                                        name="" id="" wire:model.live='{{$valor_cantidad}}'>
+                                                        min=1 wire:model.live='{{ $valor_cantidad }}'>
                                                 </center>
                                             </td>
                                             <td>{{ $item['importe'] }}</td>
@@ -81,24 +81,24 @@
                                     <label for="impuesto" class="form-label"><b>Impuesto</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text"><i class="bi bi-percent"></i></div>
-                                        <input type="text" class="form-control" id="impuesto" placeholder="0"
-                                            wire:model.live="">
+                                        <input type="text" class="form-control" min=0 id="impuesto" placeholder="0"
+                                            wire:model.live="impuesto">
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-12">
                                     <label for="descuento" class="form-label"><b>Descuento</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text">S/</div>
-                                        <input type="text" class="form-control" id="descuento" placeholder="0"
-                                            wire:model.live="">
+                                        <input type="text" class="form-control" min=0 id="descuento" placeholder="0"
+                                            wire:model.live="descuento">
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-12">
                                     <label for="envio" class="form-label"><b>Envió</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text">S/ </div>
-                                        <input type="text" class="form-control" id="envio" placeholder="0"
-                                            wire:model.live="">
+                                        <input type="text" class="form-control" min=0 id="envio" placeholder="0"
+                                            wire:model.live="envio">
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +109,8 @@
                             <button class="btn btn-success btn-lg" wire:click="$refresh">Reiniciar</button>
                         </div>
                         <div class="col-12 col-sm-6">
-                            <button class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agregarPagoPosModal">Pagar Ahora</button>
+                            <button class="btn btn-danger btn-lg" data-bs-toggle="modal"
+                                data-bs-target="#agregarPagoPosModal">Pagar Ahora</button>
                         </div>
                     </div>
                 </div>
@@ -184,7 +185,8 @@
     </div>
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#agregarPagoPosModal">
+    <button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+        data-bs-target="#agregarPagoPosModal">
         Launch demo modal
     </button>
 
@@ -198,7 +200,48 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <div class="container">
+                        <div class="col-md-6">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Cantidad Recibida</label>
+                                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Monto de pago</label>
+                                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Cambiar</label>
+                                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Cantidad Recibida</label>
+                                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Monto de pago</label>
+                                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Cambiar</label>
+                                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
