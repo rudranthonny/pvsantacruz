@@ -55,6 +55,14 @@ class GestionarProductos extends Component
         $this->updatedSearch();
     }
 
+    public function generar_codigo(){
+        $bcodigo = true;
+        while ($bcodigo == true) {
+            $codigo = rand(10000000,99999999);
+            $bcodigo = Producto::where('codigo',$codigo)->first();
+        }
+        $this->productoForm->codigo = $codigo;
+    }
     public function render()
     {
         $categorias = Categoria::all();

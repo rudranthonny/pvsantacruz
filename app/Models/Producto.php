@@ -5,12 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Node\Expr\FuncCall;
 
 class Producto extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['imagen', 'tipo', 'designacion', 'codigo', 'precio', 'cantidad', 'marca_id', 'categoria_id', 'unidad_id',];
+    protected $fillable = [
+    'designacion' ,
+    'simbologia' ,
+    'codigo',
+    'categoria_id' ,
+    'tipo' ,
+    'costo' ,
+    'unitario' ,
+    'venta_unidad' ,
+    'compra_unidad' ,
+    'precio' ,
+    'metodo_impuesto',
+    'alerta_stock',
+    ];
+
 
     protected function imagen(): Attribute
     {
@@ -29,8 +44,22 @@ class Producto extends Model
         return $this->belongsTo(Marca::class);
     }
 
-    public function unidad()
+    public function cunitario()
     {
-        return $this->belongsTo(Unidad::class);
+        return $this->belongsTo(Unidad::class,'unitario');
+    }
+    public function vunidad()
+    {
+        return $this->belongsTo(Unidad::class,'venta_unidad');
+    }
+    public function cunidad()
+    {
+        return $this->belongsTo(Unidad::class,'compra_unidad');
+    }
+
+    public function getObtenerCantidadAttribute(){
+        $almacenes = ProductoAlmacen::where('producto_id',$this->id)->get();
+        return $almacenes->sum('stock');
+
     }
 }
