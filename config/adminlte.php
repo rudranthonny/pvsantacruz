@@ -370,10 +370,6 @@ return [
                     'text' => 'Lista de Compras',
                     'route'  => 'admin.compras',
                 ],
-                [
-                    'text'    => 'Añadir Compras',
-                    'url'     => '#',
-                ],
             ],
         ],
         [

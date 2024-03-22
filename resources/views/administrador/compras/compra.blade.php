@@ -34,7 +34,6 @@
 @stop
 
 @section('js')
-    @livewireScripts
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
     <script src="{{asset('js/select2.min.js')}}"></script>
