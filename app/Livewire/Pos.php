@@ -19,6 +19,9 @@ class Pos extends Component
     public $marcas;
     public $marca_id;
     public $items;
+    public $impuesto;
+    public $descuento;
+    public $envio;
 
     public function mount()
     {
@@ -70,6 +73,12 @@ class Pos extends Component
         $item->cantidad = $cantidad;
         $item->importe = $importe;
         $this->items[$item->codigo] = $item->toArray();
+    }
+
+    public function updatedItems(){
+        foreach ($this->items as $key => $item) {
+            $this->items[$key]['importe'] = $item['precio'] * $item['cantidad'];
+        }
     }
 
     public function eliminaritem(string $codigo){
