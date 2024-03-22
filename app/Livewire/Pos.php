@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Almacen;
 use App\Models\Cliente;
+use App\Models\PosventaDetalle;
+use App\Models\Producto;
 use App\Models\ProductoAlmacen;
 use Livewire\Component;
 
@@ -16,11 +18,13 @@ class Pos extends Component
     public $categoria_id;
     public $marcas;
     public $marca_id;
+    public $items;
 
     public function mount()
     {
         $this->almacen_id = Almacen::first()->id;
         $this->cliente_id = Cliente::first()->id;
+        $this->items = collect();
         $this->updatedAlmacenId();
     }
 
@@ -50,6 +54,19 @@ class Pos extends Component
 
     public function updatedMarcaId(){
         $this->updatedCategoriaId();
+    }
+
+    public function agregaritem(Producto $producto){
+        $cantidad = 1;
+        $importe = $producto->precio * $cantidad;
+
+        $item = new PosventaDetalle();
+        $item->codigo = $producto->codigo;
+        $item->designacion = $producto->designacion;
+        $item->precio = $producto->precio;
+        $item->cantidad = $cantidad;
+        $item->importe = $importe;
+        $this->items->push(collect($item->toArray()));
     }
 
     public function render()

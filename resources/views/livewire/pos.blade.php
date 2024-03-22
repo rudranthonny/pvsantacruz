@@ -45,101 +45,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
-                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td>
-                                            <center><input type="number" class="form-control" style="width: 80px;"
-                                                    name="" id=""></center>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
-                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td>
-                                            <center><input type="number" class="form-control" style="width: 80px;"
-                                                    name="" id=""></center>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
-                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td>
-                                            <center><input type="number" class="form-control" style="width: 80px;"
-                                                    name="" id=""></center>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
-                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td>
-                                            <center><input type="number" class="form-control" style="width: 80px;"
-                                                    name="" id=""></center>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
-                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td>
-                                            <center><input type="number" class="form-control" style="width: 80px;"
-                                                    name="" id=""></center>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            7702191163535<br>
-                                            <span class="badge text-bg-success">3D EN POLVO BICARBONATO EUCALIPTO
-                                                X1KG</span> <i style="color:green;" class="bi bi-pencil-square"></i>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td>
-                                            <center><input type="number" class="form-control" style="width: 80px;"
-                                                    name="" id=""></center>
-                                        </td>
-                                        <td>S/ 5000.00</td>
-                                        <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td colspan="5">
-                                            Datos no disponibles
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color: #7ec8ca">
-                                        <td colspan="5">
-                                            <b>Total por Pagar : S/ 5000.00</b>
-                                        </td>
-                                    </tr>
+                                    @forelse ($items as $item)
+                                        <tr>
+                                            <td>
+                                                {{ $item->get('codigo') }}
+                                                <br>
+                                                <span class="badge text-bg-success">{{ $item->get('designacion') }}</span> <i style="color:green;" class="bi bi-pencil-square"></i>
+                                            </td>
+                                            <td>{{ $item->get('precio') }}</td>
+                                            <td>
+                                                <center><input type="number" class="form-control" style="width: 80px;"
+                                                        name="" id="" value="{{ $item->get('cantidad') }}"></center>
+                                            </td>
+                                            <td>{{ $item->get('importe') }}</td>
+                                            <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="100%">
+                                                Datos no Disponibles
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -221,7 +148,8 @@
                     <!--lista de producto-->
                     <div class="row my-2">
                         @forelse ($productos as $product)
-                            <div class="col-2">
+                            <div class="col-2" role="button" wire:key="{{ $product->id }}"
+                                wire:click="agregaritem('{{ $product->id }}')">
                                 <div class="card">
                                     <img src="{{ asset($product->producto->imagen) }}" style="object-fit: cover;"
                                         height="80px;" class="card-img-top" alt="...">
