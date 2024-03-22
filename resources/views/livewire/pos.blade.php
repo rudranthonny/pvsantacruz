@@ -45,20 +45,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($items as $item)
+                                    @forelse ($items as $key => $item)
                                         <tr>
                                             <td>
-                                                {{ $item->get('codigo') }}
+                                                {{ $item['codigo'] }}
                                                 <br>
-                                                <span class="badge text-bg-success">{{ $item->get('designacion') }}</span> <i style="color:green;" class="bi bi-pencil-square"></i>
+                                                <span class="badge text-bg-success">{{ $item['designacion'] }}</span> <i
+                                                    style="color:green;" class="bi bi-pencil-square"></i>
                                             </td>
-                                            <td>{{ $item->get('precio') }}</td>
+                                            <td>{{ $item['precio'] }}</td>
                                             <td>
                                                 <center><input type="number" class="form-control" style="width: 80px;"
-                                                        name="" id="" value="{{ $item->get('cantidad') }}"></center>
+                                                        name="" id="" value="{{ $item['cantidad'] }}">
+                                                </center>
                                             </td>
-                                            <td>{{ $item->get('importe') }}</td>
-                                            <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"></i></td>
+                                            <td>{{ $item['importe'] }}</td>
+                                            <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"
+                                                    role="button" wire:click="eliminaritem('{{ $key }}')"></i>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
@@ -104,7 +108,7 @@
                             <button class="btn btn-success btn-lg" wire:click="$refresh">Reiniciar</button>
                         </div>
                         <div class="col-12 col-sm-6">
-                            <button class="btn btn-danger btn-lg">Pagar Ahora</button>
+                            <button class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#agregarPagoPosModal">Pagar Ahora</button>
                         </div>
                     </div>
                 </div>
@@ -173,6 +177,31 @@
                     <!--paginacion-->
                     <div class="row my-2">
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#agregarPagoPosModal">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="agregarPagoPosModal" tabindex="-1" aria-labelledby="agregarPagoPosModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="agregarPagoPosModalLabel">Agregar Pago</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
         </div>

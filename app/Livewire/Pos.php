@@ -24,7 +24,7 @@ class Pos extends Component
     {
         $this->almacen_id = Almacen::first()->id;
         $this->cliente_id = Cliente::first()->id;
-        $this->items = collect();
+        $this->items = [];
         $this->updatedAlmacenId();
     }
 
@@ -58,6 +58,9 @@ class Pos extends Component
 
     public function agregaritem(Producto $producto){
         $cantidad = 1;
+        if (array_key_exists($producto->codigo, $this->items)) {
+            $cantidad += $this->items[$producto->codigo]['cantidad'];
+        }
         $importe = $producto->precio * $cantidad;
 
         $item = new PosventaDetalle();
@@ -66,7 +69,11 @@ class Pos extends Component
         $item->precio = $producto->precio;
         $item->cantidad = $cantidad;
         $item->importe = $importe;
-        $this->items->push(collect($item->toArray()));
+        $this->items[$item->codigo] = $item->toArray();
+    }
+
+    public function eliminaritem(string $codigo){
+        unset($this->items[$codigo]);
     }
 
     public function render()
