@@ -14,31 +14,41 @@ class ProductoSeeder extends Seeder
     public function run(): void
     {
         $producto = new Producto();
-        $producto -> imagen = "imagen_1";
-        $producto -> tipo = "tipo1";
+        $producto -> imagen = null;
         $producto -> designacion = "designacion producto1";
         $producto -> codigo = "123456789";
-        $producto -> costo = "3";
-        $producto -> precio = "5";
-        $producto -> cantidad = "15";
+        $producto -> simbologia = 1;
+        $producto -> categoria_id = 1;
+        $producto -> marca_id = 1;
         $producto -> impuesto_orden = '18';
-        $producto -> marca_id = "1";
-        $producto -> categoria_id = "1";
-        $producto -> unidad_id = "1";
+        $producto -> metodo_impuesto = 'exclusivo';
+        $producto -> descripcion = 'esto es la descripción del producto1';
+        $producto -> tipo = "estandar";
+        $producto -> costo = 3;
+        $producto -> precio = 5;
+        $producto -> unitario = 1;
+        $producto -> venta_unidad = 1;
+        $producto -> compra_unidad = 1;
+        $producto -> alerta_stock = 15;
         $producto -> save();
 
         $producto = new Producto();
-        $producto -> imagen = "imagen_2";
-        $producto -> tipo = "tipo2";
+        $producto -> imagen = null;
         $producto -> designacion = "designacion producto2";
-        $producto -> codigo = "12347888";
-        $producto -> costo = "3";
-        $producto -> precio = "5";
-        $producto -> cantidad = "20";
+        $producto -> codigo = "123456789";
+        $producto -> simbologia = 1;
+        $producto -> categoria_id = 1;
+        $producto -> marca_id = 1;
         $producto -> impuesto_orden = '18';
-        $producto -> marca_id = "2";
-        $producto -> categoria_id = "2";
-        $producto -> unidad_id = "2";
+        $producto -> metodo_impuesto = 'exclusivo';
+        $producto -> descripcion = 'esto es la descripción del producto 2';
+        $producto -> tipo = "estandar";
+        $producto -> costo = 3;
+        $producto -> precio = 5;
+        $producto -> unitario = 1;
+        $producto -> venta_unidad = 1;
+        $producto -> compra_unidad = 1;
+        $producto -> alerta_stock = 15;
         $producto -> save();
     }
 }
