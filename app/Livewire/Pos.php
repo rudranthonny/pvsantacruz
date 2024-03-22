@@ -30,7 +30,7 @@ class Pos extends Component
 
     public function updatedAlmacenId()
     {
-        $this->productos = ProductoAlmacen::with('producto', 'producto.categoria', 'producto.marca', 'producto.unidad')->where('almacen_id', $this->almacen_id)->get();
+        $this->productos = ProductoAlmacen::with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')->where('almacen_id', $this->almacen_id)->get();
         $this->categorias = $this->productos->pluck('producto.categoria')->unique();
         $this->marcas = $this->productos->pluck('producto.marca')->unique();
         $this->reset(['categoria_id', 'marca_id']);
@@ -38,7 +38,7 @@ class Pos extends Component
 
     public function updatedCategoriaId()
     {
-        $this->productos = ProductoAlmacen::with('producto', 'producto.categoria', 'producto.marca', 'producto.unidad')->where('almacen_id', $this->almacen_id)
+        $this->productos = ProductoAlmacen::with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')->where('almacen_id', $this->almacen_id)
         ->whereHas('producto.categoria', function ($query) {
             if ($this->categoria_id) {
                 $query->where('id', $this->categoria_id);
