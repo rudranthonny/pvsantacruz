@@ -51,11 +51,11 @@
                                     <tbody>
                                         @forelse ($compras as $compra)
                                             <tr class="text-center">
-                                                <td>{{ $compra->fecha }}</td>
-                                                <td>{{ "COM_".$compra->id }}</td>
-                                                <td>{{ $compra->proveedor->name }}</td>
-                                                <td>{{ $compra->almacen->nombre }}</td>
-                                                <td>
+                                                <td style="vertical-align: middle;">{{ $compra->fecha }}</td>
+                                                <td style="vertical-align: middle;">{{ "COM_".$compra->id }}</td>
+                                                <td style="vertical-align: middle;">{{ $compra->proveedor->name }}</td>
+                                                <td style="vertical-align: middle;">{{ $compra->almacen->nombre }}</td>
+                                                <td style="vertical-align: middle;">
                                                     @if ($compra->estado == 1)
                                                     <span class="badge text-bg-success">Recibido</span>
                                                     @elseif ($compra->estado == 2)
@@ -64,10 +64,10 @@
                                                     <span class="badge text-bg-warning">Ordenado</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ $compra->total }}</td>
-                                                <td>{{ $compra->pagado }}</td>
-                                                <td>{{ $compra->debido }}</td>
-                                                <td>
+                                                <td style="vertical-align: middle;">{{ $compra->total }}</td>
+                                                <td style="vertical-align: middle;">{{ $compra->pagado }}</td>
+                                                <td style="vertical-align: middle;">{{ $compra->debido }}</td>
+                                                <td style="vertical-align: middle;">
                                                     @if ($compra->estado_pago == 1)
                                                         <span class="badge text-bg-warning">No Pagado</span>
                                                     @elseif($compra->estado_pago == 2)
@@ -76,18 +76,22 @@
                                                         <span class="badge text-bg-primary">Parcial</span>
                                                     @endif
                                                 </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#modalCompra"
-                                                        id="editar-compra-{{ $compra->id }}"
-                                                        wire:click="modal('{{ $compra->id }}')"><i
-                                                            class="fas fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-danger"
-                                                        wire:click="eliminar({{ $compra->id }})"
-                                                        id="eliminar-compra-{{ $compra->id }}"
-                                                        wire:confirm="Estas seguro de Eliminar esta Compra?">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
+                                                <td style="vertical-align: middle;">
+                                                    <div class="dropdown">
+                                                        <button class="btn" type="button" id="dropdownMenuAcciones-1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuAcciones-1">
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalCompra" id="editar-compra-{{ $compra->id }}" wire:click="modal('{{ $compra->id }}')" href="#"><i class="fas fa-edit"></i> Editar Compra</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" wire:click="eliminar({{ $compra->id }})"
+                                                                id="eliminar-compra-{{ $compra->id }}"
+                                                                wire:confirm="Estas seguro de Eliminar esta Compra?" href="#"><i class="fas fa-trash"></i>Eliminar Compra</a>
+                                                        </li>
+                                                        </ul>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @empty

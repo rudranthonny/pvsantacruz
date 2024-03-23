@@ -45,11 +45,13 @@ class ComprasForm extends Form
         $this->total = $compra->debido;
 
         foreach ($compra->dcompras as $key => $dcompra) {
+            $this->detalle_compra[$dcompra->codigo]['id'] = $dcompra->id;
             $this->detalle_compra[$dcompra->codigo]['metodo_descuento'] = $dcompra->metodo_descuento;
             $this->detalle_compra[$dcompra->codigo]['metodo_impuesto']  = $dcompra->metodo_impuesto;
             $this->detalle_compra[$dcompra->codigo]['impuesto_orden']   = $dcompra->impuesto_orden;
             $this->detalle_compra[$dcompra->codigo]['costo'] = $dcompra->costo;
-            $this->detalle_compra[$dcompra->codigo]['stock_actual'] = $dcompra->stock_actual;
+            $consultar_stock = ProductoAlmacen::where('producto_id',$dcompra->producto_id)->where('almacen_id',$compra->almacen_id)->first();
+            $this->detalle_compra[$dcompra->codigo]['stock_actual'] = $consultar_stock == true ? $consultar_stock->stock : 0;
             $this->detalle_compra[$dcompra->codigo]['compra_unidad'] = $dcompra->compra_unidad;
             $this->detalle_compra[$dcompra->codigo]['descuento_unitario'] = $dcompra->descuento_unitario;
             $this->detalle_compra[$dcompra->codigo]['nombre_producto'] = $dcompra->nombre_producto;
@@ -72,9 +74,97 @@ class ComprasForm extends Form
                 'detalle_compra' => 'required',
                 ]
         );
-       // $this->compra->update($this->all());
+        #si cambiaron el almacen eliminar todos el detalle
+        $guardar_almacen_anterior = $this->compra->almacen_id;
+        if($this->compra->almacen_id != $this->almacen) {
+            $this->eliminar_dcompra_compra($this->compra);
+        }
+        $this->compra->fecha = $this->fecha;
+        $this->compra->proveedor_id= $this->prove;
+        $this->compra->almacen_id = $this->almacen;
+        $this->compra->porcentaje_impuesto_orden = $this->impuesto_orden;
+        $this->compra->total_sin_impuesto = $this->total_sin_impuesto;
+        $this->compra->monto_impuesto_orden = $this->impuesto_orden_monto;
+        $this->compra->monto_descuento = $this->descuento;
+        $this->compra->monto_envio = $this->envio;
+        $this->compra->total = $this->total;
+        $this->compra->estado = $this->estado;
+        $this->compra->nota =  $this->nota;
+        $this->compra->debido = $this->total;
+        $this->compra->save();
+        if($guardar_almacen_anterior != $this->almacen) {
+            $this->generar_dcompra_compra($this->compra->id);
+        }
+        else {
+            $this->actualizar_dcompra_compra();
+        }
     }
 
+    public function actualizar_dcompra_compra(){
+        foreach ($this->compra->dcompras as $key => $dcompra)
+        {
+            #verificar si el detalle existe en el array
+            if ($this->detalle_compra[$dcompra->codigo] == true) {
+                $cantidad_anterior = $dcompra->cantidad;
+                $dcompra->metodo_descuento = $this->detalle_compra[$dcompra->codigo]['metodo_descuento'];
+                $dcompra->metodo_impuesto = $this->detalle_compra[$dcompra->codigo]['metodo_impuesto'];
+                $dcompra->impuesto_orden = $this->detalle_compra[$dcompra->codigo]['impuesto_orden'];
+                $dcompra->costo = $this->detalle_compra[$dcompra->codigo]['costo'];
+                $dcompra->compra_unidad = $this->detalle_compra[$dcompra->codigo]['compra_unidad'];
+                $dcompra->descuento_unitario = $this->detalle_compra[$dcompra->codigo]['descuento_unitario'];
+                $dcompra->nombre_producto = $this->detalle_compra[$dcompra->codigo]['nombre_producto'];
+                $dcompra->cantidad = $this->detalle_compra[$dcompra->codigo]['cantidad'];
+                $dcompra->costo_unitario = $this->detalle_compra[$dcompra->codigo]['costo_unitario'];
+                $dcompra->stock_actual = $this->detalle_compra[$dcompra->codigo]['stock_actual'];
+                $dcompra->descuento = $this->detalle_compra[$dcompra->codigo]['descuento'];
+                $dcompra->impuesto = $this->detalle_compra[$dcompra->codigo]['impuesto'];
+                $dcompra->total_parcial = $this->detalle_compra[$dcompra->codigo]['total_parcial'];
+                $dcompra->producto_id = $this->detalle_compra[$dcompra->codigo]['producto_id'];
+                $dcompra->save();
+                $this->actualizar_stock_almacen($dcompra->producto_id,$cantidad_anterior,$dcompra->cantidad,$this->compra->almacen_id);
+            }
+            else {
+                $dcompra->delete();
+            }
+        }
+    }
+
+    public function generar_dcompra_compra($compra_id)
+    {
+        foreach ($this->detalle_compra as $key => $dcompra) {
+            $n_dcompra = new Dcompra();
+            $n_dcompra->metodo_descuento = $this->detalle_compra[$key]['metodo_descuento'];
+            $n_dcompra->metodo_impuesto = $this->detalle_compra[$key]['metodo_impuesto'];
+            $n_dcompra->impuesto_orden = $this->detalle_compra[$key]['impuesto_orden'];
+            $n_dcompra->costo = $this->detalle_compra[$key]['costo'];
+            $n_dcompra->compra_unidad = $this->detalle_compra[$key]['compra_unidad'];
+            $n_dcompra->descuento_unitario = $this->detalle_compra[$key]['descuento_unitario'];
+            $n_dcompra->nombre_producto = $this->detalle_compra[$key]['nombre_producto'];
+            $n_dcompra->cantidad = $this->detalle_compra[$key]['cantidad'];
+            $n_dcompra->costo_unitario = $this->detalle_compra[$key]['costo_unitario'];
+            $n_dcompra->stock_actual = $this->detalle_compra[$key]['stock_actual'];
+            $n_dcompra->descuento = $this->detalle_compra[$key]['descuento'];
+            $n_dcompra->impuesto = $this->detalle_compra[$key]['impuesto'];
+            $n_dcompra->total_parcial = $this->detalle_compra[$key]['total_parcial'];
+            $n_dcompra->codigo = $key;
+            $n_dcompra->producto_id = $this->detalle_compra[$key]['producto_id'];
+            $n_dcompra->compra_id = $compra_id;
+            $n_dcompra->save();
+            $this->agregar_stock_almacen($this->detalle_compra[$key]['producto_id'],$n_dcompra->cantidad,$this->almacen);
+        }
+    }
+
+    public function eliminar_dcompra_compra(Compra $compra){
+        foreach ($compra->dcompras as $key => $dcompra) {
+            $this->quitar_stock_almacen($dcompra->producto_id,$dcompra->cantidad,$compra->almacen_id);
+            $dcompra->delete();
+        }
+    }
+    public function eliminar_compra()
+    {
+        $this->eliminar_dcompra_compra($this->compra);
+        $this->compra->delete();
+    }
     public function store()
     {
         $this->validate(
@@ -125,6 +215,8 @@ class ComprasForm extends Form
         }
     }
 
+
+
     public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id){
         $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
         if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock+$cantidad;}
@@ -134,6 +226,12 @@ class ComprasForm extends Form
             $b_almacen_producto->producto_id = $producto_id;
             $b_almacen_producto->stock = $cantidad;
         }
+        $b_almacen_producto->save();
+    }
+
+    public function actualizar_stock_almacen($producto_id,$cantidad_anterior,$cantidad_actual,$almacen_id){
+        $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-$cantidad_anterior+$cantidad_actual;}
         $b_almacen_producto->save();
     }
 
@@ -216,6 +314,7 @@ class ComprasForm extends Form
         $this->detalle_compra[$item_id]['nombre_producto'] = $item_nombre_producto;
         $consultar_stock = ProductoAlmacen::where('producto_id',$item_producto_id)->where('almacen_id',$this->almacen)->first();
         $this->detalle_compra[$item_id]['stock_actual'] = $consultar_stock == true ? $consultar_stock->stock : 0;
+
         $this->detalle_compra[$item_id]['cantidad'] = $item_cantidad;
 
         if ($this->detalle_compra[$item_id]['metodo_impuesto'] == 'exclusivo') {

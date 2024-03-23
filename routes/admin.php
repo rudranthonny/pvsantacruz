@@ -18,6 +18,7 @@ Route::get('search/{id}/buscar_productos', [AdminController::class, 'buscar_prod
 Route::get('search/buscar_productos_compras',[AdminController::class,'buscar_productos_compra'])->name('search.buscar_productos_compra');
 #compras
 Route::view("compras", "administrador.compras.compra")->name("admin.compras");
+Route::get('compras/consulta_producto/{id}', IngresarProyecto::class)->middleware('can:admin.proyectos.index')->name('admin.proyecto.ingresar');
 #personas
 Route::view("cliente", "administrador.personas.cliente")->name("admin.cliente");
 Route::view("proveedor", "administrador.personas.proveedor")->name("admin.proveedor");

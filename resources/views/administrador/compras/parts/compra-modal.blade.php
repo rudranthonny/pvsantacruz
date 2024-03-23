@@ -81,7 +81,7 @@
                                 @if (count($comprasform->detalle_compra) == 0)
                                 <tbody>
                                     <tr class="text-center">
-                                        <td colspan="9">Datos no disponibles</td>
+                                        <td colspan="10">Datos no disponibles</td>
                                     </tr>
                                 </tbody>
                                 @else

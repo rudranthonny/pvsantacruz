@@ -34,6 +34,7 @@ class GestionarCompras extends Component
         if (isset($this->comprasform->compra)) {$this->comprasform->update();}
 
         else {$this->comprasform->store();}
+        $this->dispatch('cerrar_modal_compra');
     }
 
     public function updatedSearch(){
@@ -136,22 +137,16 @@ class GestionarCompras extends Component
         }
     }
 
-    public function guardar()
-    {
-        $this->comprasform->set($this->comprasform->compra);
-        if (isset($this->comprasform->compra->id)) {$this->comprasform->update();}
-        else {$this->comprasform->store();}
-        $this->dispatch('cerrar_modal_compra');
-    }
-
     public function eliminar(Compra $compra){
-        $compra->delete();
+        $this->comprasform->set($compra);
+        $this->comprasform->eliminar_compra();
+        $this->comprasform->reset();
         $this->updatedSearch();
     }
 
     public function render()
     {
-        $compras = Compra::paginate($this->pagina); //metodo
+        $compras = Compra::orderByDesc('id')->paginate($this->pagina); //metodo
         $proveedors = Proveedor::all();
         $almacens = Almacen::all();
         return view('livewire.gestionar-compras', compact('compras','proveedors','almacens'));

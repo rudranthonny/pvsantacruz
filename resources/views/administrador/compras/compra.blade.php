@@ -78,5 +78,9 @@
             timer: 1500
             });
         });
+
+        window.Livewire.on('cerrar_modal_compra', reservacion => {
+            ventana = document.getElementById('cerrar_modal_compra_x').click();
+        });
     </script>
 @stop

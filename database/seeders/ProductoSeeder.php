@@ -35,7 +35,7 @@ class ProductoSeeder extends Seeder
         $producto = new Producto();
         $producto -> imagen = null;
         $producto -> designacion = "designacion producto2";
-        $producto -> codigo = "123456789";
+        $producto -> codigo = "987654321";
         $producto -> simbologia = 1;
         $producto -> categoria_id = 1;
         $producto -> marca_id = 1;
