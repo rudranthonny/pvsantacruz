@@ -201,43 +201,77 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <div class="col-md-6">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Cantidad Recibida</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Cantidad
+                                            Recibida</label>
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="exampleFormControlInput1">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Monto de pago</label>
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="exampleFormControlInput1">
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="m-0">Cambiar:</p>
+                                    <p class="text-danger">0.00</p>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Opción de pago
+                                            *</label>
+                                        <select name="" id="" class="form-control form-control-sm">
+                                            <option value="cash">Cash</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Nota de pago
+                                            *</label>
+                                        <textarea name="" id="" cols="30" rows="4" class="form-control form-control-sm"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Monto de pago</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                            <div class="col-md-6">
+                                <div class="col">
+                                    <div class="mb-3 card body p-4">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Productos totales</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Impuesto de orden S/ 0.00 (0 %)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Descuento
+                                                        S/ 0.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Envío
+                                                        S/ 0.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Total por Pagar
+                                                        S/ 5000.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Cambiar</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Cantidad Recibida</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Monto de pago</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Cambiar</label>
-                                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Nota de pago
+                                            *</label>
+                                        <textarea name="" id="" cols="30" rows="4" class="form-control form-control-sm"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
