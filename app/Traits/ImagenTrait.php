@@ -18,6 +18,7 @@ trait ImagenTrait
     {
         $extension = $imagen->extension();
         $file_name = $file_id . "-" . strtotime(date('Y-m-d h:i:s')) . "." . $extension;
+        dd($imagen->storeAs("archivo/$file_path", $file_name));
         return $imagen->storeAs("archivo/$file_path", $file_name);
     }
 }

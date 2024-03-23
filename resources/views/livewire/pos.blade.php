@@ -3,8 +3,15 @@
         <div class="col-5">
             <div class="card text-center">
                 <div class="card-header">
-                    <div class="col-12" style="text-align: right;">
-                        <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
+                    <div class="row justify-content-between" style="text-align: right;">
+                        <div class="col-auto">
+                            <a href="{{ route('admin.index') }}">
+                                <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
+                            </a>
+                        </div>
+                        <div class="col-auto">
+                            <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -62,7 +69,8 @@
                                             </td>
                                             <td>{{ $item['importe'] }}</td>
                                             <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"
-                                                    role="button" wire:click="eliminaritem('{{ $key }}')"></i>
+                                                    role="button"
+                                                    wire:click="eliminaritem('{{ $key }}')"></i>
                                             </td>
                                         </tr>
                                     @empty
@@ -241,26 +249,53 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="col">
-                                    <div class="mb-3 card body p-4">
+                                    <div class="card body p-3">
                                         <table class="table table-bordered">
                                             <tbody>
                                                 <tr>
-                                                    <td>Productos totales</td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="col-auto">Productos totales
+                                                            </div>
+                                                            <div class="col-auto">{{ collect($items)->count() }}</div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Impuesto de orden S/ 0.00 (0 %)</td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="col-auto">Impuesto de orden
+                                                            </div>
+                                                            <div class="col-auto">{{ "S/ 0.00 (0 %)" }}</div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Descuento
-                                                        S/ 0.00</td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="col-auto">Descuento
+                                                            </div>
+                                                            <div class="col-auto">{{ "S/ 0.00" }}</div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Envío
-                                                        S/ 0.00</td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="col-auto">Envío
+                                                            </div>
+                                                            <div class="col-auto">{{ "S/ 0.00" }}</div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Total por Pagar
-                                                        S/ 5000.00</td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="col-auto">Total por Pagar
+                                                            </div>
+                                                            <div class="col-auto">{{ "S/ 5000.00" }}</div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
