@@ -71,7 +71,7 @@
                                                 <td class="align-middle">{{ optional($producto->cunitario)->name }}</td>
                                                 <td class="align-middle text-center">{{ $producto->obtener_cantidad }}</td>
                                                 <td class="align-middle text-center">
-                                                    <button type="button" class="btn btn-outline-primary"><i class="fas fa-eye"></i></button>
+                                                    <a href="{{route('admin.productos.consultar',$producto->id)}}" class="btn btn-outline-primary"><i class="fas fa-eye"></i></a>
                                                     <button type="button" class="btn btn-outline-success"
                                                         data-bs-toggle="modal" data-bs-target="#modalProducto"
                                                         wire:click="modal('{{ $producto->id }}')"><i

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Livewire\ConsultarProducto;
 use App\Livewire\Pos;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +17,9 @@ Route::view("categorias", "administrador.productos.categorias")->name("admin.cat
 Route::view("unidades", "administrador.productos.unidades")->name("admin.unidades");
 Route::get('search/{id}/buscar_productos', [AdminController::class, 'buscar_productos'])->name('search.buscar_productos');
 Route::get('search/buscar_productos_compras',[AdminController::class,'buscar_productos_compra'])->name('search.buscar_productos_compra');
+Route::get('producto/consulta_producto/{id}', ConsultarProducto::class)->name('admin.productos.consultar');
 #compras
 Route::view("compras", "administrador.compras.compra")->name("admin.compras");
-Route::get('compras/consulta_producto/{id}', IngresarProyecto::class)->middleware('can:admin.proyectos.index')->name('admin.proyecto.ingresar');
 #personas
 Route::view("cliente", "administrador.personas.cliente")->name("admin.cliente");
 Route::view("proveedor", "administrador.personas.proveedor")->name("admin.proveedor");

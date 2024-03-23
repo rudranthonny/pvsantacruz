@@ -57,6 +57,10 @@ class Producto extends Model
         return $this->belongsTo(Unidad::class,'compra_unidad');
     }
 
+    public function almacenes(){
+        return $this->hasMany(ProductoAlmacen::class,'producto_id');
+    }
+
     public function getObtenerCantidadAttribute(){
         $almacenes = ProductoAlmacen::where('producto_id',$this->id)->get();
         return $almacenes->sum('stock');

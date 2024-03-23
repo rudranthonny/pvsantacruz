@@ -12,4 +12,9 @@ class ProductoAlmacen extends Model
     public function producto(){
         return $this->belongsTo(Producto::class);
     }
+
+    public function almacen(){
+        return $this->belongsTo(Almacen::class);
+    }
 }
+
