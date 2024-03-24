@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\CompuestoProducto;
 use App\Models\Producto;
+use App\Models\ProductoAlmacen;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -55,7 +56,7 @@ class ProductoSeeder extends Seeder
         $producto = new Producto();
         $producto -> imagen = null;
         $producto -> designacion = "designacion producto3";
-        $producto -> codigo = "654321";
+        $producto -> codigo = "4444444";
         $producto -> simbologia = 1;
         $producto -> categoria_id = 1;
         $producto -> marca_id = 1;

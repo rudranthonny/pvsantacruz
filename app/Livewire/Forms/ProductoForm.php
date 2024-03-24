@@ -86,7 +86,7 @@ class ProductoForm extends Form
     {
 
         $this->validate($this->regla_producto+
-        ['codigo' => 'unique:productos,codigo,'.$this->producto->id,]);
+        ['codigo' => 'required|unique:productos,codigo,'.$this->producto->id]);
         if ($this->tipo == 'compuesto') {
             $this->validate(['productos_compuesto' => 'required']);
         }
@@ -98,10 +98,11 @@ class ProductoForm extends Form
     }
 
     public function actualizar_dproducto_compuesta(){
+
         foreach ($this->producto->pcompuestos as $key => $pcom)
         {
             #verificar si el detalle existe en el array
-            if ($this->productos_compuesto[$pcom->codigo] == true) {
+            if (isset($this->productos_compuesto[$pcom->codigo]) == true) {
                 $pcom->producto_asignado_id = $this->productos_compuesto[$pcom->codigo]['producto_id'];
                 $pcom->cantidad = $this->productos_compuesto[$pcom->codigo]['cantidad'];
                 $pcom->save();

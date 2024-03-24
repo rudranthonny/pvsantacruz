@@ -373,6 +373,20 @@ return [
             ],
         ],
         [
+            'text' => 'Gastos',
+            'icon' => 'fas fa-book',
+            'submenu' => [
+                [
+                    'text' => 'Listas de Gastos',
+                    'route'  => 'admin.cliente',
+                ],
+                [
+                    'text'    => 'Categorias de Gastos',
+                    'route'     => 'admin.gastos.tgastos',
+                ],
+            ],
+        ],
+        [
             'text' => 'Personas',
             'icon' => 'fas fa-fw fa-user',
             'submenu' => [
