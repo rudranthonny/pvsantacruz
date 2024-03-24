@@ -1,6 +1,14 @@
 <div>
     <div class="card">
         <div class="row">
+            <div class="col-12 px-4 pt-4">
+                @php
+                    echo DNS1D::getBarcodeHTML($producto->codigo, $producto->simbologia);
+                @endphp
+                {{$producto->codigo}}
+            </div>
+        </div>
+        <div class="row">
             <div class="col-12 col-sm-8 p-4">
                 <table class="table table-bordered" >
                     <tr>
@@ -62,7 +70,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-12 col-sm-4">
+            <div class="col-12 col-sm-4 p-4">
                 <img id='imagen_prodcuto' src="{{ asset($producto->imagen) }}" class="img-thumbnail" alt="">
             </div>
         </div>

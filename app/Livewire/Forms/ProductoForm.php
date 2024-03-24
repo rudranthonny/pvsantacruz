@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\CompuestoProducto;
 use App\Models\Producto;
 use App\Traits\ImagenTrait;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
@@ -29,10 +31,12 @@ class ProductoForm extends Form
     public $compra_unidad;
     public $alerta_stock;
     public $imagen;
+    public $productos_compuesto = [];
+    public $productos_compuesto_total = 0;
+
     public $regla_producto = [
         'designacion' => 'required',
         'simbologia' => 'required',
-        'codigo' => 'required|unique:productos,codigo',
         'categoria_id' => 'required',
         'tipo' => 'required',
         'costo' => 'required',
@@ -61,27 +65,132 @@ class ProductoForm extends Form
         $this->venta_unidad = $producto->venta_unidad;
         $this->compra_unidad = $producto->compra_unidad;
         $this->alerta_stock = $producto->alerta_stock;
+        if ($producto->tipo == 'compuesto') {
+            foreach ($producto->pcompuestos as $key => $pcom)
+            {
+                $bproducto = Producto::find($pcom->producto_asignado_id);
+                $this->productos_compuesto[$bproducto->codigo]['producto_id'] = $bproducto->id;
+                $this->productos_compuesto[$bproducto->codigo]['codigo'] = $bproducto->codigo;
+                $this->productos_compuesto[$bproducto->codigo]['nombre'] = $bproducto->designacion;
+                $this->productos_compuesto[$bproducto->codigo]['precio'] = $bproducto->precio;
+                $this->productos_compuesto[$bproducto->codigo]['cantidad'] = $pcom->cantidad;
+                $this->productos_compuesto[$bproducto->codigo]['total'] = $this->productos_compuesto[$bproducto->codigo]['precio']*$this->productos_compuesto[$bproducto->codigo]['cantidad'];
+            }
+            $this->verificar_productos();
+        }
+
+
     }
 
-    public function update()
+    public function update($imagen = null)
     {
-        $this->validate(['codigo' => Rule::unique('productos')->ignore($this->producto)]);
+
+        $this->validate($this->regla_producto+
+        ['codigo' => 'unique:productos,codigo,'.$this->producto->id,]);
+        if ($this->tipo == 'compuesto') {
+            $this->validate(['productos_compuesto' => 'required']);
+        }
+
         $this->producto->update($this->all());
+        if ($imagen) {
+            $this->eliminar_imagen();
+            $this->subir_imagen($imagen);
+        }
+        if ($this->tipo == 'compuesto') {
+            $this->actualizar_dproducto_compuesta();
+        }
+    }
+
+    public function actualizar_dproducto_compuesta(){
+        foreach ($this->producto->pcompuestos as $key => $pcom)
+        {
+            #verificar si el detalle existe en el array
+            if ($this->productos_compuesto[$pcom->codigo] == true) {
+                $pcom->producto_asignado_id = $this->productos_compuesto[$pcom->codigo]['producto_id'];
+                $pcom->cantidad = $this->productos_compuesto[$pcom->codigo]['cantidad'];
+                $pcom->save();
+            }
+            else {
+                $pcom->delete();
+            }
+        }
     }
 
     public function store($imagen = null)
     {
         $this->validate($this->regla_producto);
+        if ($this->tipo == 'compuesto') {
+            $this->validate(['productos_compuesto' => 'required']);
+        }
 
         (isset($this->producto)) ? $this->update() : $this->producto = Producto::create($this->all());
+        if ($imagen) {$this->subir_imagen($imagen);}
 
-        if ($imagen) {
-            $this->eliminar_imagen($this->producto->imagen);
-            $this->producto->update(["imagen" => $this->subir_imagen($imagen, $this->producto->id, "producto_img")]);
+
+        if ($this->tipo == 'compuesto') {
+            foreach ($this->productos_compuesto as $key => $value)
+            {
+                $new_com_pro = new CompuestoProducto();
+                $new_com_pro->producto_id = $this->producto->id;
+                $new_com_pro->producto_asignado_id = $this->productos_compuesto[$key]['producto_id'];
+                $new_com_pro->cantidad = $this->productos_compuesto[$key]['cantidad'];
+                $new_com_pro->save();
+            }
         }
     }
 
-    public function rules()
+    public function eliminar_imagen(){
+        if ($this->producto->image == true)
+        {
+            $eliminar = str_replace('storage', 'public', $this->producto->image);
+            Storage::delete([$eliminar]);
+        }
+    }
+
+    public function subir_imagen($imagen)
+    {
+        $extension = $imagen->extension();
+        $img_producto = $imagen->storeAs('public/producto', $this->producto->id."-".strtotime(date('Y-m-d h:i:s')).".".$extension);
+        $this->producto->imagen = Storage::url($img_producto);
+        $this->producto->save();
+    }
+
+    public function agregar_producto_compuesto($codigo){
+        $bproducto = Producto::where('codigo',$codigo)->first();
+
+        if ($bproducto)
+        {
+            $this->productos_compuesto[$bproducto->codigo]['producto_id'] = $bproducto->id;
+            $this->productos_compuesto[$bproducto->codigo]['codigo'] = $bproducto->codigo;
+            $this->productos_compuesto[$bproducto->codigo]['nombre'] = $bproducto->designacion;
+            $this->productos_compuesto[$bproducto->codigo]['precio'] = $bproducto->precio;
+            $this->productos_compuesto[$bproducto->codigo]['cantidad'] = 1;
+            $this->productos_compuesto[$bproducto->codigo]['total'] = $this->productos_compuesto[$bproducto->codigo]['precio']*$this->productos_compuesto[$bproducto->codigo]['cantidad'];
+        }
+
+        $this->verificar_productos();
+    }
+
+    public function reiniciar_productos_compuesto() {
+        $this->reset('productos_compuesto');
+        $this->productos_compuesto_total = 0;
+    }
+
+    public function eliminar_item_producto_compuesto($item_id){
+        unset($this->productos_compuesto[$item_id]);
+    }
+
+    public function verificar_productos()
+    {
+            $this->productos_compuesto_total = 0;
+                foreach ($this->productos_compuesto as $key => $pcompuesto)
+                {
+                    $this->productos_compuesto[$key]['total'] = $this->productos_compuesto[$key]['precio']*$this->productos_compuesto[$key]['cantidad'];
+                    $this->productos_compuesto_total = $this->productos_compuesto_total + $this->productos_compuesto[$key]['total'];
+                }
+    }
+
+        public function rules()
     {
         return [
             'designacion' => 'required',

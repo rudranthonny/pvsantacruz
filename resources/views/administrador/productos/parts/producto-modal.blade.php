@@ -14,8 +14,6 @@
                     id="cerrar_modal_producto_x"></button>
             </div>
             <div class="modal-body">
-                <form wire:submit="guardar" id="formularioProducto">
-
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-4 col-lg-4">
                             <label for="designacion" class="form-label">Designacion <span
@@ -30,11 +28,11 @@
                             <label for="simbologia">Simbología de códigos de barras<span  class="text-danger">*</span></label>
                             <select id="simbologia"  class="form-select" wire:model="productoForm.simbologia">
                                 <option value="">Elegir</option>
-                                <option value="1">Code 128</option>
-                                <option value="2">Code 39</option>
-                                <option value="3">EAN8</option>
-                                <option value="4">EAN13</option>
-                                <option value="5">UPC</option>
+                                <option value="C128">Code 128</option>
+                                <option value="C39">Code 39</option>
+                                <option value="EAN 8">EAN8</option>
+                                <option value="EAN 13">EAN13</option>
+                                <option value="UPC-A">UPC</option>
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
@@ -84,6 +82,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4">
                             <label for="categoria_id" class="form-label">Categoria<span style="color:red;">*</span></label>
                             <select class="form-select" id="categoria_id" wire:model="productoForm.categoria_id">
+                                <option value="">Elegir</option>
                                 @forelse ($categorias as $categoria)
                                     <option value="{{ $categoria->id }}">{{ $categoria->name }}</option>
                                 @empty
@@ -109,9 +108,10 @@
                     <div class="row mb-3">
                         <div class="col-12 col-sm-4">
                             <label for="metodo_impuesto">Tipo<span style="color:red;">*</span></label>
-                            <select class="form-select" id="metodo_impuesto" wire:model="productoForm.tipo">
+                            <select class="form-select" id="metodo_impuesto" wire:model.live="productoForm.tipo">
                                 <option value="">Elegir</option>
                                 <option value="estandar">Producto Estandar</option>
+                                <option value="compuesto">Producto Compuesto</option>
                                 <option value="servicio">Producto Servicio</option>
                             </select>
                             @error('productoForm.tipo')
@@ -179,6 +179,71 @@
                             @enderror
                         </div>
                     </div>
+                    @if ($productoForm->tipo == 'compuesto')
+                    <div class="row my-2">
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12 col-sm-4">
+                            <input type="text" class="form-control" wire:model.live='bproducto' placeholder="Escriba el nombre del producto agregar o el codigo">
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <button class="btn btn-success" wire:loading.attr="disabled" wire:target="agregar_producto_compuesto" wire:click='agregar_producto_compuesto'>
+                                Agregar Producto
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            @error('productoForm.productos_compuesto')
+                                <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <table class="table">
+                                <thead class="table-dark">
+                                    <tr class="text-center">
+                                        <th style="width:180px;">Codigo Producto</th>
+                                        <th>Producto</th>
+                                        <th style="width:120px;">Precio</th>
+                                        <th style="width:120px;">Cantidad</th>
+                                        <th class="text-center">Total</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-secondary">
+                                    @foreach ($productoForm->productos_compuesto as $key => $item)
+                                    <tr>
+                                        @php
+                                            $nombre_codigo = "productoForm.productos_compuesto."."$key".".codigo";
+                                            $nombre_nombre = "productoForm.productos_compuesto."."$key".".nombre";
+                                            $nombre_precio = "productoForm.productos_compuesto."."$key".".precio";
+                                            $nombre_cantidad = "productoForm.productos_compuesto."."$key".".cantidad";
+                                        @endphp
+                                        <td><input class="form-control text-center" id="producto_compuesto_codigo_{{$key}}" disabled type="text" wire:model.live='{{$nombre_codigo}}'></td>
+                                        <td><input class="form-control" id="producto_compuesto_nombre_{{$key}}" disabled type="text" wire:model.live='{{$nombre_nombre}}'></td>
+                                        <td class="text-center">s/.{{$productoForm->productos_compuesto[$key]['precio']}}</td>
+                                        <td><input class="form-control text-center" id="producto_compuesto_cantidad_{{$key}}" type="number" wire:model.live='{{$nombre_cantidad}}'></td>
+                                        <td class="text-center">s/.{{$productoForm->productos_compuesto[$key]['total']}}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-danger" wire:loading.attr="disabled" id="eliminar_producto_compuesto_{{$key}}" wire:target="eliminar_producto_compuesto('{{$key}}')" wire:click="eliminar_producto_compuesto('{{$key}}')"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td colspan="4" class="text-center table-dark">Total</td>
+                                        <td  class="text-center">
+                                            {{$productoForm->productos_compuesto_total}}
+                                        </td>
+                                        <td class="table-dark"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-12 col-lg-12">
                             <label for="imagen" class="form-label">Imagen</label>
@@ -186,11 +251,10 @@
                                 placeholder="Ingrese Imagen" wire:model.live="imagen_producto">
                         </div>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="formularioProducto"
+                <button type="button" wire:loading.attr="disabled" wire:target="guardar" wire:click='guardar'
                     class="btn btn-primary">{{ $titlemodal }}</button>
             </div>
         </div>

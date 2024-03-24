@@ -25,6 +25,25 @@ class GestionarProductos extends Component
     public $pagina = 5;
     public $imagen_producto;
     public $iteration = 1;
+    public $bproducto;
+
+    public function updatedProductoform(){
+        if($this->productoForm->tipo != 'compuesto'){
+            $this->productoForm->reiniciar_productos_compuesto();
+        }
+        $this->productoForm->verificar_productos();
+    }
+
+    public function agregar_producto_compuesto()
+    {
+        $this->productoForm->agregar_producto_compuesto($this->bproducto);
+        $this->reset('bproducto');
+    }
+
+    public function eliminar_producto_compuesto($item_id){
+        $this->productoForm->eliminar_item_producto_compuesto($item_id);
+        $this->productoForm->verificar_productos();
+    }
 
     public function updatedSearch(){
         $this->resetPage();
@@ -32,7 +51,7 @@ class GestionarProductos extends Component
 
     public function modal(Producto $producto = null)
     {
-        $this->reset('titlemodal', 'imagen_producto');
+        $this->reset('titlemodal', 'imagen_producto','bproducto');
         $this->iteration++;
         $this->productoForm->reset();
         $this->productoForm->resetValidation();
@@ -63,12 +82,13 @@ class GestionarProductos extends Component
         }
         $this->productoForm->codigo = $codigo;
     }
+
     public function render()
     {
         $categorias = Categoria::all();
         $marcas = Marca::all();
         $unidades = Unidad::all();
-        $productos = Producto::where('designacion','like','%'.$this->search.'%')->paginate($this->pagina);
-        return view('livewire.gestionar-productos', compact('productos', 'categorias', 'marcas', 'unidades'));
+        $lista_productos = Producto::where('designacion','like','%'.$this->search.'%')->paginate($this->pagina);
+        return view('livewire.gestionar-productos', compact('lista_productos', 'categorias', 'marcas', 'unidades'));
     }
 }

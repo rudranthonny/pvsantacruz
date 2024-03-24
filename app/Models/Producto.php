@@ -26,12 +26,8 @@ class Producto extends Model
     'alerta_stock',
     ];
 
-
-    protected function imagen(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => (file_exists(storage_path('app/' . $value)) && $value) ? $value : 'imagenes/no-image.png',
-        );
+    public function pcompuestos(){
+        return $this->hasMany(CompuestoProducto::class,'producto_id');
     }
 
     public function categoria()

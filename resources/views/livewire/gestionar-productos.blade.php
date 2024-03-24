@@ -54,31 +54,34 @@
                                             <th class="text-center">Accion</th>
                                         </tr>
                                     </thead>
-                                    @if ($productos->count())
+                                    @if ($lista_productos->count())
                                     <tbody>
-                                        @forelse ($productos as $producto)
+                                        @forelse ($lista_productos as $produc)
                                             <tr>
                                                 <td class="align-middle">
-                                                    <img src="{{ asset($producto->imagen) }}" class="img-thumbnail"
-                                                        alt="" width="64px;">
+                                                    @if ($produc->imagen)
+                                                    <img src="{{asset($produc->imagen) }}" class="img-thumbnail"alt="" width="64px;">
+                                                    @else
+                                                    <img src="{{asset('imagenes/no-image.png') }}" class="img-thumbnail"alt="" width="64px;">
+                                                    @endif
                                                 </td>
-                                                <td class="align-middle">{{ $producto->tipo }}</td>
-                                                <td class="align-middle">{{ $producto->designacion }}</td>
-                                                <td class="align-middle">{{ $producto->codigo }}</td>
-                                                <td class="align-middle">{{ optional($producto->marca)->name }}</td>
-                                                <td class="align-middle">{{ optional($producto->categoria)->name }}</td>
-                                                <td class="align-middle text-center">s/.{{ $producto->precio }}</td>
-                                                <td class="align-middle">{{ optional($producto->cunitario)->name }}</td>
-                                                <td class="align-middle text-center">{{ $producto->obtener_cantidad }}</td>
+                                                <td class="align-middle">{{ $produc->tipo }}</td>
+                                                <td class="align-middle">{{ $produc->designacion }}</td>
+                                                <td class="align-middle">{{ $produc->codigo }}</td>
+                                                <td class="align-middle">{{ optional($produc->marca)->name }}</td>
+                                                <td class="align-middle">{{ optional($produc->categoria)->name }}</td>
+                                                <td class="align-middle text-center">s/.{{ $produc->precio }}</td>
+                                                <td class="align-middle">{{ optional($produc->cunitario)->name }}</td>
+                                                <td class="align-middle text-center">{{ $produc->obtener_cantidad }}</td>
                                                 <td class="align-middle text-center">
-                                                    <a href="{{route('admin.productos.consultar',$producto->id)}}" class="btn btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{route('admin.productos.consultar',$produc->id)}}" class="btn btn-outline-primary"><i class="fas fa-eye"></i></a>
                                                     <button type="button" class="btn btn-outline-success"
                                                         data-bs-toggle="modal" data-bs-target="#modalProducto"
-                                                        wire:click="modal('{{ $producto->id }}')"><i
+                                                        wire:click="modal('{{ $produc->id }}')"><i
                                                             class="fas fa-edit"></i></button>
                                                     <button type="button" class="btn btn-outline-danger"
-                                                        wire:click="eliminar({{ $producto->id }})"
-                                                        id="eliminar-producto-{{ $producto->id }}"
+                                                        wire:click="eliminar({{ $produc->id }})"
+                                                        id="eliminar-producto-{{ $produc->id }}"
                                                         wire:confirm="Estas seguro de Eliminar esta Producto">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
@@ -99,7 +102,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-sm-9">
-                                {{ $productos->links() }}
+                                {{ $lista_productos->links() }}
                             </div>
                             <div class="col-12 col-sm-3" style="text-align: right;" wire:model.live='pagina'>
                                 <select class="form-select">
