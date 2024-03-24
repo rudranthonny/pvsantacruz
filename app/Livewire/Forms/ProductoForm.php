@@ -82,7 +82,7 @@ class ProductoForm extends Form
 
     }
 
-    public function update($imagen = null)
+    public function updat()
     {
 
         $this->validate($this->regla_producto+
@@ -92,10 +92,6 @@ class ProductoForm extends Form
         }
 
         $this->producto->update($this->all());
-        if ($imagen) {
-            $this->eliminar_imagen();
-            $this->subir_imagen($imagen);
-        }
         if ($this->tipo == 'compuesto') {
             $this->actualizar_dproducto_compuesta();
         }
@@ -123,8 +119,12 @@ class ProductoForm extends Form
             $this->validate(['productos_compuesto' => 'required']);
         }
 
-        (isset($this->producto)) ? $this->update() : $this->producto = Producto::create($this->all());
-        if ($imagen) {$this->subir_imagen($imagen);}
+        (isset($this->producto)) ? $this->updat() : $this->producto = Producto::create($this->all());
+        if ($imagen) {
+            $this->eliminar_imagen($this->producto->imagen);
+            $this->producto->imagen = $this->subir_imagen($imagen, $this->producto->id, "producto_img");
+            $this->producto->save();
+        }
 
 
         if ($this->tipo == 'compuesto') {
@@ -137,22 +137,6 @@ class ProductoForm extends Form
                 $new_com_pro->save();
             }
         }
-    }
-
-    public function eliminar_imagen(){
-        if ($this->producto->image == true)
-        {
-            $eliminar = str_replace('storage', 'public', $this->producto->image);
-            Storage::delete([$eliminar]);
-        }
-    }
-
-    public function subir_imagen($imagen)
-    {
-        $extension = $imagen->extension();
-        $img_producto = $imagen->storeAs('public/producto', $this->producto->id."-".strtotime(date('Y-m-d h:i:s')).".".$extension);
-        $this->producto->imagen = Storage::url($img_producto);
-        $this->producto->save();
     }
 
     public function agregar_producto_compuesto($codigo){
