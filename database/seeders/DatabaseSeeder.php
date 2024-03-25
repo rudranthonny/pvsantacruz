@@ -36,5 +36,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProveedorSeeder::class);
         $this->call(ClienteSeeder::class);
         $this->call(TgastoSeeder::class);
+        $this->call(TmovimientoCajaSeeder::class);
     }
 }

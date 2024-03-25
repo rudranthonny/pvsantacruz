@@ -68,4 +68,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function almacensuser(){
         return $this->hasMany(AlmacenUser::class,'user_id');
     }
+
+    public function cajas() {
+        return $this->hasMany(Caja::class);
+    }
 }

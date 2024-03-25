@@ -356,10 +356,6 @@ return [
                     'text' => 'POS',
                     'route'  => 'admin.ventas.pos',
                 ],
-                [
-                    'text'    => 'Categorias',
-                    'url'     => '#',
-                ],
             ],
         ],
         [

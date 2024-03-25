@@ -2,16 +2,21 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\CajaForm;
 use App\Models\Almacen;
 use App\Models\Cliente;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
 use App\Models\Producto;
 use App\Models\ProductoAlmacen;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Pos extends Component
 {
+    public CajaForm $cajaform;
+    public $cajero;
     public $almacen_id;
     public $cliente_id;
     public $productos;
@@ -33,6 +38,16 @@ class Pos extends Component
     public $nota_venta;
     public $nota_pago;
 
+    public function modal_apertura_caja(){
+        $this->cajaform->reset();
+        $this->cajaform->monto_apertura = 0;
+    }
+    public function crear_caja()
+    {
+        $this->cajaform->store();
+        $this->dispatch('cerrar_modal_caja');
+    }
+
     public function mount()
     {
         $this->almacen_id = Almacen::first()->id;
@@ -40,6 +55,7 @@ class Pos extends Component
         $this->items = [];
         $this->updatedAlmacenId();
         $this->impuesto_porcentaje = 0;
+        $this->cajero = User::find(Auth::user()->id);
     }
 
     public function updatedAlmacenId()

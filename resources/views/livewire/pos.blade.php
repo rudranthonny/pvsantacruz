@@ -16,6 +16,23 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        @if ($cajero->cajas->where('fecha_cierre',false)->count() == 0)
+                        <div class="col-12 my-1">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCaja">
+                                Aperturar Caja <i class="fas fa-box"></i>
+                            </button>
+                        </div>
+                        @else
+                        <div class="col-12 my-1">
+                            Nombre Cajero : <b>{{$cajero->name." ".$cajero->lastname}}</b><br>
+                            Caja Aperturada : <b> {{$cajero->cajas->where('fecha_cierre',false)->first()->fecha_apertura}} </b><br>
+                            @if ($cajero->cajas->where('fecha_cierre',false)->first()->mcajas->first())
+                            Monto Inicial : <b>s/.{{$cajero->cajas->where('fecha_cierre',false)->first()->mcajas->first()->monto}}</b>
+                            @else
+                            Monto Inicial : <b>s/.0</b>
+                            @endif
+                        </div>
+                        @endif
                         <div class="col-12 my-1">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="usuariosform_username"
@@ -215,6 +232,13 @@
             </div>
         </div>
     </div>
-
+    @include('administrador.ventas.parts.modal_caja')
     @include('livewire.modal.pos-modal')
 </div>
+@script
+<script>
+    $wire.on('cerrar_modal_caja', reservacion => {
+        ventana = document.getElementById('cerrar_modal_caja_x').click();
+    });
+</script>
+@endscript
