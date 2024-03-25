@@ -181,16 +181,17 @@ class Pos extends Component
         $posventa->cliente_name = $cliente->name;
         $posventa->impuesto_porcentaje = $this->impuesto_porcentaje;
         $posventa->impuesto_monto = $this->impuesto_monto;
-        $posventa->descuento = $this->descuento;
-        $posventa->envio = $this->envio;
+        $posventa->descuento = $this->descuento ?? 0;
+        $posventa->envio = $this->envio ?? 0;
         $posventa->total_pagar = $this->total_pagar;
         $posventa->cantidad_recibida = $this->cantidad_recibida;
         $posventa->monto_pago = $this->monto_pago;
         $posventa->cambio = $this->cambio;
-        $posventa->nota_venta = $this->nota_venta;
-        $posventa->nota_pago = $this->nota_pago;
+        $posventa->nota_venta = $this->nota_venta ?? '';
+        $posventa->nota_pago = $this->nota_pago ?? '';
         $posventa->productos_totales = collect($this->items)->count();
         $posventa->save();
+        $posventa->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => '1', 'signo' => '-', 'monto' => $this->total_pagar]);
 
         foreach ($this->items as $item) {
             // $producto->stock -= $item['cantidad'];

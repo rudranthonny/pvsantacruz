@@ -10,4 +10,8 @@ class Posventa extends Model
     use HasFactory;
 
     protected $fillable = [];
+
+    public function m_caja(){
+        return $this->morphOne('App\Models\Mcaja', 'm_cajable');
+    }
 }
