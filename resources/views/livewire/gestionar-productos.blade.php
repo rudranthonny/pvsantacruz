@@ -59,11 +59,7 @@
                                         @forelse ($lista_productos as $produc)
                                             <tr>
                                                 <td class="align-middle">
-                                                    @if ($produc->imagen)
                                                     <img src="{{asset($produc->imagen) }}" class="img-thumbnail"alt="" width="64px;">
-                                                    @else
-                                                    <img src="{{asset('imagenes/no-image.png') }}" class="img-thumbnail"alt="" width="64px;">
-                                                    @endif
                                                 </td>
                                                 <td class="align-middle">{{ $produc->tipo }}</td>
                                                 <td class="align-middle">{{ $produc->designacion }}</td>

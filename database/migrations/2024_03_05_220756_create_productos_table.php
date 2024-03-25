@@ -34,7 +34,8 @@ return new class extends Migration
             $table->foreign('unitario')->references('id')->on('unidads');
             $table->foreign('venta_unidad')->references('id')->on('unidads');
             $table->foreign('compra_unidad')->references('id')->on('unidads');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

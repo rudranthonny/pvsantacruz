@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Almacen;
 use App\Models\Cliente;
+use App\Models\Posventa;
 use App\Models\PosventaDetalle;
 use App\Models\Producto;
 use App\Models\ProductoAlmacen;
@@ -26,8 +27,11 @@ class Pos extends Component
     public $envio;
     public $total_pagar;
     public $cantidad_recibida;
+    public $min_cantidad_recibida;
     public $monto_pago;
     public $cambio;
+    public $nota_venta;
+    public $nota_pago;
 
     public function mount()
     {
@@ -95,7 +99,7 @@ class Pos extends Component
 
     public function actualizar_Cambio()
     {
-        $this->cambio= $this->cantidad_recibida - $this->monto_pago;
+        $this->cambio = $this->cantidad_recibida - $this->monto_pago;
     }
 
     public function actualizar_montos()
@@ -111,8 +115,9 @@ class Pos extends Component
         $total_pagar = $total_pagar + $this->envio;
 
         $this->total_pagar = $total_pagar;
-        $this->cantidad_recibida= $total_pagar;
-        $this->monto_pago= $total_pagar;
+        $this->cantidad_recibida = $total_pagar;
+        $this->min_cantidad_recibida = $total_pagar;
+        $this->monto_pago = $total_pagar;
         $this->actualizar_Cambio();
     }
 
@@ -130,6 +135,7 @@ class Pos extends Component
         $item->precio = $producto->precio;
         $item->cantidad = $cantidad;
         $item->importe = $importe;
+        $item->tipo = $producto->tipo;
         $this->items[$item->codigo] = $item->toArray();
         $this->actualizar_montos();
     }
@@ -146,6 +152,41 @@ class Pos extends Component
     {
         unset($this->items[$codigo]);
         $this->actualizar_montos();
+    }
+
+    public function guardar()
+    {
+        $almacen = Almacen::find($this->almacen_id);
+        $cliente = Cliente::find($this->cliente_id);
+        $posventa = new Posventa();
+        $posventa->almacen_id = $almacen->id;
+        $posventa->almacen_name = $almacen->nombre;
+        $posventa->cliente_id = $cliente->id;
+        $posventa->cliente_name = $cliente->name;
+        $posventa->impuesto_porcentaje = $this->impuesto_porcentaje;
+        $posventa->impuesto_monto = $this->impuesto_monto;
+        $posventa->descuento = $this->descuento;
+        $posventa->envio = $this->envio;
+        $posventa->total_pagar = $this->total_pagar;
+        $posventa->cantidad_recibida = $this->cantidad_recibida;
+        $posventa->monto_pago = $this->monto_pago;
+        $posventa->cambio = $this->cambio;
+        $posventa->nota_venta = $this->nota_venta;
+        $posventa->nota_pago = $this->nota_pago;
+        $posventa->productos_totales = collect($this->items)->count();
+        $posventa->save();
+
+        foreach ($this->items as $item) {
+            // $producto->stock -= $item['cantidad'];
+            $posventa_detalle = new PosventaDetalle();
+            $posventa_detalle->producto_id = $item['codigo'];
+            $posventa_detalle->producto_nombre = $item['designacion'];
+            $posventa_detalle->producto_precio = $item['precio'];
+            $posventa_detalle->producto_cantidad = $item['cantidad'];
+            $posventa_detalle->producto_importe = $item['importe'];
+            $posventa_detalle->producto_tipo = $item['tipo'];
+            $posventa_detalle->save();
+        }
     }
 
     public function render()

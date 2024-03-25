@@ -62,4 +62,11 @@ class Producto extends Model
         return $almacenes->sum('stock');
 
     }
+
+    protected function imagen(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (file_exists(storage_path('app/' . $value)) && $value) ? $value : 'imagenes/no-image.png',
+        );
+    }
 }

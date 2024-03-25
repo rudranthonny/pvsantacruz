@@ -129,8 +129,8 @@
                 <div class="card-body">
                     <div class="row my-2">
                         <div class="col-12 col-sm-6 my-1">
-                            <label for=""><b>Categoria</b></label>
-                            <select class="form-select" id="compra_almacen" wire:model.live="categoria_id">
+                            <label for="categoria"><b>Categoria</b></label>
+                            <select class="form-select" id="categoria" wire:model.live="categoria_id">
                                 <option value="">Todos</option>
                                 @forelse ($categorias as $categoria)
                                     <option value="{{ $categoria->cat_cod }}">{{ $categoria->name }}</option>
@@ -140,8 +140,8 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 my-1">
-                            <label for=""><b>Marcas</b></label>
-                            <select class="form-select" id="compra_almacen" wire:model.live="marca_id">
+                            <label for="marca"><b>Marcas</b></label>
+                            <select class="form-select" id="marca" wire:model.live="marca_id">
                                 <option value="">Todos</option>
                                 @forelse ($marcas as $marca)
                                     <option value="{{ $marca->id }}">{{ $marca->name }}</option>
@@ -181,7 +181,9 @@
                             </div>
 
                         @empty
-                            <span>SIN PRODUCTOS</span>
+                            @if ($productoscompuestos->count() == 0)
+                                <span>SIN PRODUCTOS</span>
+                            @endif
                         @endforelse
                         @forelse ($productoscompuestos as $productoscompuesto)
                             <div class="col-2" role="button" wire:key="{{ $productoscompuesto->id }}"
@@ -203,7 +205,7 @@
                             </div>
 
                         @empty
-                            <span>SIN PRODUCTOS</span>
+                            <span></span>
                         @endforelse
                     </div>
                     <!--paginacion-->

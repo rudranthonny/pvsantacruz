@@ -18,17 +18,17 @@
                         <div class="col-md-6">
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Cantidad
+                                    <label for="cantidad_recibida" class="form-label">Cantidad
                                         Recibida</label>
                                     <input type="number" class="form-control form-control-sm"
-                                        id="exampleFormControlInput1" wire:model.live="cantidad_recibida">
+                                        id="cantidad_recibida" wire:model.live="cantidad_recibida" min="{{ $min_cantidad_recibida }}">
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Monto de pago</label>
+                                    <label for="monto_pago" class="form-label">Monto de pago</label>
                                     <input type="number" class="form-control form-control-sm"
-                                        id="exampleFormControlInput1" wire:model.live="monto_pago">
+                                        id="monto_pago" value="{{ $monto_pago }}" disabled>
                                 </div>
                             </div>
                             <div>
@@ -37,18 +37,18 @@
                             </div>
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Opción de pago
+                                    <label for="cash" class="form-label">Opción de pago
                                         *</label>
-                                    <select name="" id="" class="form-control form-control-sm">
+                                    <select id="cash" class="form-control form-control-sm">
                                         <option value="cash">Cash</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Nota de pago
+                                    <label for="nota_pago" class="form-label">Nota de pago
                                         *</label>
-                                    <textarea name="" id="" cols="30" rows="4" class="form-control form-control-sm"></textarea>
+                                    <textarea id="nota_pago" cols="30" rows="4" class="form-control form-control-sm" wire:model='nota_pago'></textarea>
                                 </div>
                             </div>
                         </div>
@@ -108,9 +108,9 @@
                             </div>
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Nota de venta
+                                    <label for="nota_venta" class="form-label">Nota de venta
                                         *</label>
-                                    <textarea name="" id="" cols="30" rows="4" class="form-control form-control-sm"></textarea>
+                                    <textarea id="nota_venta" cols="30" rows="4" class="form-control form-control-sm" wire:model='nota_venta'></textarea>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-primary" wire:click='guardar'>Guardar</button>
             </div>
         </div>
     </div>
