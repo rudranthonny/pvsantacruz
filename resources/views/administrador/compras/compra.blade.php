@@ -27,9 +27,9 @@
         .select2-container--default .select2-selection--single {
             padding: 0.75rem .75rem;
         }
-        ul.ui-autocomplete {
-            z-index: 1100;
-        }
+        ul.ui-autocomplete { z-index: 1100;}
+
+
     </style>
 @stop
 

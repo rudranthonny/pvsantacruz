@@ -1,22 +1,15 @@
-@extends('adminlte::page')
-
-@section('title', 'Gestionar Productos')
-
-@section('content_header')
-    <h1></h1>
-    @livewireStyles
-@stop
-
-@section('content')
-    @livewire('imprimir-codigo')
-@stop
-
-@section('css')
-    <link href="{{ asset('css/css_bootstrap.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-    <link rel="stylesheet" href="{{asset('js/jquery-ui-1.13.1/jquery-ui.min.css')}}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
     <style>
-
+        *{
+            margin-left: 2px;
+            margin-top: 2px;
+        }
         .barcodea4 {
             border: 1px solid #ccc;
             display: block;
@@ -130,53 +123,32 @@
             width: 4in;
         }
 
+        .my-2 {
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+
     </style>
-@stop
-
-@section('js')
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-    <script src="{{asset('js/select2.min.js')}}"></script>
-    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('js/jquery-ui-1.13.1/jquery-ui.min.js')}}"></script>
-    <script type="text/javascript">
-        window.Livewire.on('advertencia_almacen', () =>
-        {
-            Swal.fire({
-            position: "center-center",
-            icon: "warning",
-            title: "Elegir un Almacen para realizar la compra",
-            showConfirmButton: false,
-            timer: 1500
-            });
-        });
-
-        window.Livewire.on('activar_buscador_producto', almacen_id =>
-        {
-            $('#buscar_producto').autocomplete({
-            source: function(request,response){
-                $.ajax({
-                url: '{{route("search.buscar_productos_compra")}}',
-                dataType: 'json',
-                data: {
-                    term: request.term
-                },
-                success: function(data){
-                    response(data)
-                }
-            });
-            },
-            minLength: 3,
-            select: function(event,ui)
-                {
-                    setTimeout(() => {
-                    $('#buscar_producto_oculto').val('');
-                    $('#buscar_producto_oculto').val(ui.item.codigo);
-                    $('#buscar_producto_oculto')[0].dispatchEvent(new Event('input'));
-                    $('#buscar_producto').val('');
-                    }, 750);
-                }
-                });
-        });
-    </script>
-@stop
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="{{$barcode}}">
+                @foreach ($lista_productos as $tey => $lproduc)
+                    @for ($i = 0; $i < $lista_productos[$tey]['cantidad']; $i++)
+                        <div class="{{$barcode_style}}">
+                            <div class="head_barcode text-left" style="padding-left: 10px; font-weight: bold;">
+                                <span class="barcode-name">{{$lista_productos[$tey]['nombre']}}</span>
+                                <span class="barcode-price">S/ {{$lista_productos[$tey]['precio']}}</span>
+                            </div>
+                            <div textmargin="0" fontoptions="bold" class="barcode">
+                                <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],1,37) !!}</center>
+                            </div>
+                        </div>
+                    @endfor
+                @endforeach
+            </div>
+        </div>
+    </div>
+</body>
+</html>
