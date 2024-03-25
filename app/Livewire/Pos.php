@@ -38,7 +38,8 @@ class Pos extends Component
     public $nota_venta;
     public $nota_pago;
 
-    public function modal_apertura_caja(){
+    public function modal_apertura_caja()
+    {
         $this->cajaform->reset();
         $this->cajaform->monto_apertura = 0;
     }
@@ -204,6 +205,31 @@ class Pos extends Component
             $posventa_detalle->producto_tipo = $item['tipo'];
             $posventa_detalle->save();
         }
+        $this->dispatch('cerrar_modal_postventa');
+        $this->reset([
+            'almacen_id',
+            'cliente_id',
+            'productos',
+            'productoscompuestos',
+            'categorias',
+            'categoria_id',
+            'marcas',
+            'marca_id',
+            'items',
+            'impuesto_porcentaje',
+            'impuesto_monto',
+            'descuento',
+            'envio',
+            'total_pagar',
+            'cantidad_recibida',
+            'min_cantidad_recibida',
+            'monto_pago',
+            'cambio',
+            'nota_venta',
+            'nota_pago',
+        ]);
+        $this->items = [];
+        $this->mount();
     }
 
     public function render()
