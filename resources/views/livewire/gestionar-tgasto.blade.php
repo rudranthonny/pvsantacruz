@@ -30,7 +30,7 @@
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
                                     <input type="text" class="form-control" id="buscar_tgastos"
-                                        placeholder="Buscar Unidades" wire:model.live='search'>
+                                        placeholder="Buscar Tipos de Gastos" wire:model.live='search'>
                                 </div>
                             </div>
                         </div>

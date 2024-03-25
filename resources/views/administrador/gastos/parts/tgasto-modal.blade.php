@@ -18,10 +18,12 @@
                         <div class="col-sm-12 col-md-12 col-lg-12">
                             <label for="tgasto_nombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="tgasto_nombre" placeholder="Ingrese Nombre Corto" wire:model="tgastoform.name">
+                            @error('tgastoform.name')<div class="p-1" style="color:red;"> {{ $message }}</div>@enderror
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-12">
                             <label for="tgasto_descripcion" class="form-label">Descripcion</label>
                             <textarea class="form-control" id="tgasto_descripcion" cols="30" rows="10" wire:model="tgastoform.descripcion"></textarea>
+                            @error('tgastoform.descripcion')<div class="p-1" style="color:red;"> {{ $message }}</div>@enderror
                         </div>
                     </div>
                 </form>

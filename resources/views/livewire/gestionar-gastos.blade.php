@@ -30,7 +30,7 @@
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
                                     <input type="text" class="form-control" id="buscar_tgastos"
-                                        placeholder="Buscar Unidades" wire:model.live='search'>
+                                        placeholder="Buscar Gastos" wire:model.live='search'>
                                 </div>
                             </div>
                         </div>
@@ -43,22 +43,28 @@
                                             <th>Referencia</th>
                                             <th>Detalles</th>
                                             <th>Monto</th>
+                                            <th>Categoría</th>
+                                            <th>Almacen</th>
                                             <th>Accion</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse ($gastos as $gasto)
                                             <tr class="text-center">
-                                                <td>{{ $tgasto->name }}</td>
-                                                <td>{{ $tgasto->descripcion }}</td>
+                                                <td>{{ $gasto->fecha }}</td>
+                                                <td>{{ 'EXP_'.$gasto->id }}</td>
+                                                <td>{{ $gasto->detalles }}</td>
+                                                <td>{{ number_format($gasto->monto,2) }}</td>
+                                                <td>{{ $gasto->tgasto->name }}</td>
+                                                <td>{{ $gasto->almacen->name }}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-primary"
                                                         data-bs-toggle="modal" data-bs-target="#modalGasto"
-                                                        wire:click="modal('{{ $tgasto->id }}')"><i
+                                                        wire:click="modal('{{ $gasto->id }}')"><i
                                                             class="fas fa-edit"></i></button>
                                                     <button type="button" class="btn btn-danger"
-                                                        wire:click="eliminar({{ $tgasto->id }})"
-                                                        id="eliminar-gasto-{{ $tgasto->id }}"
+                                                        wire:click="eliminar({{ $gasto->id }})"
+                                                        id="eliminar-gasto-{{ $gasto->id }}"
                                                         wire:confirm="Estas seguro de Eliminar esta Gasto?">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
@@ -72,7 +78,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-sm-9">
-                                {{ $tgastos->links() }}
+                                {{ $gastos->links() }}
                             </div>
                             <div class="col-12 col-sm-3" style="text-align: right;" wire:model.live='pagina'>
                                 <select class="form-select">
@@ -81,7 +87,6 @@
                                     <option value="100">100</option>
                                 </select>
                             </div>
-
                         </div>
                     </div>
                     @include('administrador.gastos.parts.gasto-modal')

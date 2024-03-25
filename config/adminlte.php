@@ -378,7 +378,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Listas de Gastos',
-                    'route'  => 'admin.cliente',
+                    'route'  => 'admin.gastos.index',
                 ],
                 [
                     'text'    => 'Categorias de Gastos',

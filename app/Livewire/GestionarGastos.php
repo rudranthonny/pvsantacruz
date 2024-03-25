@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\GastosForm;
+use App\Models\Almacen;
 use App\Models\Gasto;
+use App\Models\Tgasto;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -47,7 +49,9 @@ class GestionarGastos extends Component
 
     public function render()
     {
-        $gastos = Gasto::where('name','like','%'.$this->search.'%')->paginate($this->pagina); //metodo
-        return view('livewire.gestionar-gastos', compact('gastos'));
+        $almacens = Almacen::all();
+        $tgastos = Tgasto::all();
+        $gastos = Gasto::where('detalles','like','%'.$this->search.'%')->paginate($this->pagina); //metodo
+        return view('livewire.gestionar-gastos', compact('gastos','tgastos','almacens'));
     }
 }

@@ -14,4 +14,9 @@ class Gasto extends Model
     {
         return $this->belongsTo(Tgasto::class);
     }
+
+    public function almacen()
+    {
+        return $this->belongsTo(Almacen::class);
+    }
 }
