@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Proveedor;
+use App\Models\Tgasto;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -34,7 +35,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CompraSeeder::class);
         $this->call(ProveedorSeeder::class);
         $this->call(ClienteSeeder::class);
-
-
+        $this->call(TgastoSeeder::class);
     }
 }

@@ -24,5 +24,8 @@ Route::view("compras", "administrador.compras.compra")->name("admin.compras");
 Route::view("cliente", "administrador.personas.cliente")->name("admin.cliente");
 Route::view("proveedor", "administrador.personas.proveedor")->name("admin.proveedor");
 Route::view("usuario", "administrador.personas.usuario")->name("admin.usuario");
+#gastos
+Route::view("gastos/tgastos", "administrador.gastos.tgastos")->name("admin.gastos.tgastos");
+Route::view("gastos/index", "administrador.gastos.index")->name("admin.gastos.index");
 #ventas
 Route::get("pos", Pos::class)->name("admin.ventas.pos");
