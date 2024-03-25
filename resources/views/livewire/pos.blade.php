@@ -53,7 +53,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($items as $key => $item)
-                                        <tr>
+                                        <tr class="align-middle">
                                             <td>
                                                 {{ $item['codigo'] }}
                                                 <br>
@@ -89,15 +89,15 @@
                                     <label for="impuesto" class="form-label"><b>Impuesto</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text"><i class="bi bi-percent"></i></div>
-                                        <input type="text" class="form-control" min=0 id="impuesto" placeholder="0"
-                                            wire:model.live="impuesto">
+                                        <input type="number" class="form-control" min=0 id="impuesto" placeholder="0"
+                                            wire:model.live="impuesto_porcentaje">
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-12">
                                     <label for="descuento" class="form-label"><b>Descuento</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text">S/</div>
-                                        <input type="text" class="form-control" min=0 id="descuento" placeholder="0"
+                                        <input type="number" class="form-control" min=0 id="descuento" placeholder="0"
                                             wire:model.live="descuento">
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@
                                     <label for="envio" class="form-label"><b>Envió</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text">S/ </div>
-                                        <input type="text" class="form-control" min=0 id="envio" placeholder="0"
+                                        <input type="number" class="form-control" min=0 id="envio" placeholder="0"
                                             wire:model.live="envio">
                                     </div>
                                 </div>
@@ -183,6 +183,28 @@
                         @empty
                             <span>SIN PRODUCTOS</span>
                         @endforelse
+                        @forelse ($productoscompuestos as $productoscompuesto)
+                            <div class="col-2" role="button" wire:key="{{ $productoscompuesto->id }}"
+                                wire:click="agregaritem('{{ $productoscompuesto->id }}')">
+                                <div class="card">
+                                    <img src="{{ asset($productoscompuesto->imagen) }}" style="object-fit: cover;"
+                                        height="80px;" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 m-0 p-0" style="padding: 0px;">
+                                                {{ $productoscompuesto->designacion }}<br>
+                                                {{ $productoscompuesto->codigo }}<br>
+                                                <span
+                                                    class="badge text-bg-warning">{{ number_format($productoscompuesto->precio, 2) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        @empty
+                            <span>SIN PRODUCTOS</span>
+                        @endforelse
                     </div>
                     <!--paginacion-->
                     <div class="row my-2">
@@ -192,131 +214,5 @@
         </div>
     </div>
 
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
-        data-bs-target="#agregarPagoPosModal">
-        Launch demo modal
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="agregarPagoPosModal" tabindex="-1" aria-labelledby="agregarPagoPosModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="agregarPagoPosModalLabel">Agregar Pago</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Cantidad
-                                            Recibida</label>
-                                        <input type="text" class="form-control form-control-sm"
-                                            id="exampleFormControlInput1">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Monto de pago</label>
-                                        <input type="text" class="form-control form-control-sm"
-                                            id="exampleFormControlInput1">
-                                    </div>
-                                </div>
-                                <div>
-                                    <p class="m-0">Cambiar:</p>
-                                    <p class="text-danger">0.00</p>
-                                </div>
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Opción de pago
-                                            *</label>
-                                        <select name="" id="" class="form-control form-control-sm">
-                                            <option value="cash">Cash</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Nota de pago
-                                            *</label>
-                                        <textarea name="" id="" cols="30" rows="4" class="form-control form-control-sm"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="col">
-                                    <div class="card body p-3">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex justify-content-between">
-                                                            <div class="col-auto">Productos totales
-                                                            </div>
-                                                            <div class="col-auto">{{ collect($items)->count() }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex justify-content-between">
-                                                            <div class="col-auto">Impuesto de orden
-                                                            </div>
-                                                            <div class="col-auto">{{ "S/ 0.00 (0 %)" }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex justify-content-between">
-                                                            <div class="col-auto">Descuento
-                                                            </div>
-                                                            <div class="col-auto">{{ "S/ 0.00" }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex justify-content-between">
-                                                            <div class="col-auto">Envío
-                                                            </div>
-                                                            <div class="col-auto">{{ "S/ 0.00" }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex justify-content-between">
-                                                            <div class="col-auto">Total por Pagar
-                                                            </div>
-                                                            <div class="col-auto">{{ "S/ 5000.00" }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Nota de pago
-                                            *</label>
-                                        <textarea name="" id="" cols="30" rows="4" class="form-control form-control-sm"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('livewire.modal.pos-modal')
 </div>
