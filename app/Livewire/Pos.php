@@ -3,18 +3,23 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\CajaForm;
+use App\Livewire\Forms\GastosForm;
 use App\Models\Almacen;
+use App\Models\Caja;
 use App\Models\Cliente;
+use App\Models\Gasto;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
 use App\Models\Producto;
 use App\Models\ProductoAlmacen;
+use App\Models\Tgasto;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Pos extends Component
 {
+    public GastosForm $gastoform;
     public CajaForm $cajaform;
     public $cajero;
     public $almacen_id;
@@ -37,6 +42,7 @@ class Pos extends Component
     public $cambio;
     public $nota_venta;
     public $nota_pago;
+    public $titlemodal = 'Añadir';
 
     public function modal_apertura_caja()
     {
@@ -49,6 +55,16 @@ class Pos extends Component
         $this->dispatch('cerrar_modal_caja');
     }
 
+    public function modal(Gasto $gasto = null)
+    {
+        $this->reset('titlemodal');
+        $this->gastoform->reset();
+        if ($gasto->id == true) {
+            $this->titlemodal = 'Editar';
+            $this->gastoform->set($gasto);
+        }
+    }
+
     public function mount()
     {
         $this->almacen_id = Almacen::first()->id;
@@ -57,6 +73,7 @@ class Pos extends Component
         $this->updatedAlmacenId();
         $this->impuesto_porcentaje = 0;
         $this->cajero = User::find(Auth::user()->id);
+        $this->cajaform->caja = $this->cajero->cajas->where('fecha_cierre', false)->first();
     }
 
     public function updatedAlmacenId()
@@ -171,7 +188,7 @@ class Pos extends Component
         $this->actualizar_montos();
     }
 
-    public function guardar()
+    public function guardarPosVenta()
     {
         $almacen = Almacen::find($this->almacen_id);
         $cliente = Cliente::find($this->cliente_id);
@@ -192,7 +209,9 @@ class Pos extends Component
         $posventa->nota_pago = $this->nota_pago ?? '';
         $posventa->productos_totales = collect($this->items)->count();
         $posventa->save();
-        $posventa->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => '1', 'signo' => '-', 'monto' => $this->total_pagar]);
+        $posventa->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => $this->cajaform->caja->id, 'signo' => '+', 'monto' => $this->total_pagar]);
+        $this->cajaform->caja->monto += $this->total_pagar;
+        $this->cajaform->caja->save();
 
         foreach ($this->items as $item) {
             // $producto->stock -= $item['cantidad'];
@@ -206,6 +225,28 @@ class Pos extends Component
             $posventa_detalle->save();
         }
         $this->dispatch('cerrar_modal_postventa');
+        $this->reiniciar();
+    }
+
+    public function guardar()
+    {
+            $this->validate([
+                'gastoform.monto' => 'required|numeric|between:1,'.($this->cajaform->caja->monto),
+            ]);
+        if (isset($this->gastoform->gasto->id)) {
+            $this->gastoform->update();
+        } else {
+            $this->gastoform->store();
+            $this->gastoform->gasto->m_caja()->create(['tmovimiento_caja_id' => '2', 'caja_id' => $this->cajaform->caja->id, 'signo' => '-', 'monto' => $this->gastoform->gasto->monto]);
+            $this->cajaform->caja->monto -= $this->gastoform->gasto->monto;
+            $this->cajaform->caja->save();
+            $this->gastoform->reset();
+        }
+        $this->dispatch('cerrar_modal_gasto');
+    }
+
+    public function reiniciar()
+    {
         $this->reset([
             'almacen_id',
             'cliente_id',
@@ -232,10 +273,17 @@ class Pos extends Component
         $this->mount();
     }
 
+    public function cerrar_caja(Caja $caja_id)
+    {
+        $caja_id->fecha_cierre = now();
+        $caja_id->save();
+    }
+
     public function render()
     {
         $clientes = Cliente::all();
-        $almacenes = Almacen::all();
-        return view('livewire.pos', compact('clientes', 'almacenes'))->layout('administrador.ventas.pos');
+        $almacens = Almacen::all();
+        $tgastos = Tgasto::all();
+        return view('livewire.pos', compact('clientes', 'almacens', 'tgastos'))->layout('administrador.ventas.pos');
     }
 }

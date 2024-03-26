@@ -9,7 +9,7 @@ class MCaja extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tmovimiento_caja_id', 'caja_id', 'signo', 'monto'];
+    protected $fillable = ['tmovimiento_caja_id', 'caja_id', 'signo', 'monto', 'm_cajable_id', 'm_cajable_type'];
 
     public function caja()
     {

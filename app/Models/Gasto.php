@@ -19,4 +19,8 @@ class Gasto extends Model
     {
         return $this->belongsTo(Almacen::class);
     }
+
+    public function m_caja(){
+        return $this->morphOne('App\Models\Mcaja', 'm_cajable');
+    }
 }

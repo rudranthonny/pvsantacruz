@@ -61,6 +61,8 @@ class CajaForm extends Form
             $n_mcaja->tmovimiento_caja_id = 1;
             $n_mcaja->signo = "+";
             $n_mcaja->monto = $this->monto_apertura;
+            $n_mcaja->m_cajable_id = 1;
+            $n_mcaja->m_cajable_type = 'apertura_caja';
             $n_mcaja->save();
         }
     }

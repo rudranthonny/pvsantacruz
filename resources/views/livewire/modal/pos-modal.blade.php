@@ -119,7 +119,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" wire:click='guardar'>Guardar</button>
+                <button type="button" class="btn btn-primary" wire:click='guardarPosVenta'>Guardar</button>
             </div>
         </div>
     </div>

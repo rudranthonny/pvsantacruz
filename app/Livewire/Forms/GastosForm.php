@@ -41,6 +41,6 @@ class GastosForm extends Form
     public function store()
     {
         $this->validate();
-        Gasto::create($this->all());
+        $this->gasto = Gasto::create($this->all());
     }
 }

@@ -9,29 +9,45 @@
                                 <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
                             </a>
                         </div>
-                        <div class="col-auto">
-                            <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
+                        <div class="row col-auto">
+                            <div class="col-auto">
+                                <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;" role="button"
+                                    data-bs-toggle="modal" data-bs-target="#modalGasto">
+                            </div>
+                            <div class="col-auto">
+                                <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        @if ($cajero->cajas->where('fecha_cierre',false)->count() == 0)
-                        <div class="col-12 my-1">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCaja">
-                                Aperturar Caja <i class="fas fa-box"></i>
-                            </button>
-                        </div>
+                        @if ($cajero->cajas->where('fecha_cierre', false)->count() == 0)
+                            <div class="col-12 my-1">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#modalCaja">
+                                    Aperturar Caja <i class="fas fa-box"></i>
+                                </button>
+                            </div>
                         @else
-                        <div class="col-12 my-1">
-                            Nombre Cajero : <b>{{$cajero->name." ".$cajero->lastname}}</b><br>
-                            Caja Aperturada : <b> {{$cajero->cajas->where('fecha_cierre',false)->first()->fecha_apertura}} </b><br>
-                            @if ($cajero->cajas->where('fecha_cierre',false)->first()->mcajas->first())
-                            Monto Inicial : <b>s/.{{$cajero->cajas->where('fecha_cierre',false)->first()->mcajas->first()->monto}}</b>
-                            @else
-                            Monto Inicial : <b>s/.0</b>
-                            @endif
-                        </div>
+                            <div class="col-12 my-1">
+                                Nombre Cajero : <b>{{ $cajero->name . ' ' . $cajero->lastname }}</b><br>
+                                Caja Aperturada : <b>
+                                    {{ $cajero->cajas->where('fecha_cierre', false)->first()->fecha_apertura }} </b><br>
+                                @if ($cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first())
+                                    Monto Inicial :
+                                    <b>s/.{{ $cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first()->monto }}</b>
+                                    <br>
+                                    Monto Actual :
+                                    <b>s/.{{ $cajero->cajas->where('fecha_cierre', false)->first()->monto }}</b>
+                                    <br>
+                                    <button class="btn btn-success"
+                                        wire:click="cerrar_caja('{{ $cajero->cajas->where('fecha_cierre', false)->first()->id }}')"
+                                        wire:confirm="¿Esta Seguro que Desea Cerrar Caja?">Cerrar Caja</button>
+                                @else
+                                    Monto Inicial : <b>s/.0</b>
+                                @endif
+                            </div>
                         @endif
                         <div class="col-12 my-1">
                             <div class="input-group">
@@ -44,7 +60,7 @@
                         <div class="col-12 my-1">
                             <select class="form-select" id="compra_almacen" wire:model.live="almacen_id">
                                 <option value="">Elegir</option>
-                                @forelse ($almacenes as $almacen)
+                                @forelse ($almacens as $almacen)
                                     <option value="{{ $almacen->id }}">{{ $almacen->nombre }}</option>
                                 @empty
                                 @endforelse
@@ -74,8 +90,8 @@
                                             <td>
                                                 {{ $item['codigo'] }}
                                                 <br>
-                                                <span class="badge text-bg-success">{{ $item['designacion'] }}</span> <i
-                                                    style="color:green;" class="bi bi-pencil-square"></i>
+                                                <span class="badge text-bg-success">{{ $item['designacion'] }}</span>
+                                                <i style="color:green;" class="bi bi-pencil-square"></i>
                                             </td>
                                             <td>{{ $item['precio'] }}</td>
                                             <td>
@@ -122,8 +138,8 @@
                                     <label for="envio" class="form-label"><b>Envió</b></label>
                                     <div class="input-group">
                                         <div class="input-group-text">S/ </div>
-                                        <input type="number" class="form-control" min=0 id="envio" placeholder="0"
-                                            wire:model.live="envio">
+                                        <input type="number" class="form-control" min=0 id="envio"
+                                            placeholder="0" wire:model.live="envio">
                                     </div>
                                 </div>
                             </div>
@@ -131,11 +147,18 @@
                     </div>
                     <div class="row my-2">
                         <div class="col-12 col-sm-6">
-                            <button class="btn btn-success btn-lg" wire:click="$refresh">Reiniciar</button>
+                            <button class="btn btn-success btn-lg" wire:click="reiniciar">Reiniciar</button>
                         </div>
                         <div class="col-12 col-sm-6">
-                            <button class="btn btn-danger btn-lg" data-bs-toggle="modal"
-                                data-bs-target="#agregarPagoPosModal">Pagar Ahora</button>
+                            @if ($cajero->cajas->where('fecha_cierre', false)->count() == 0)
+                                <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal"
+                                    data-bs-target="#modalCaja">
+                                    Aperturar Caja <i class="fas fa-box"></i>
+                                </button>
+                            @else
+                                <button class="btn btn-danger btn-lg" data-bs-toggle="modal"
+                                    data-bs-target="#agregarPagoPosModal">Pagar Ahora</button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -234,15 +257,20 @@
     </div>
     @include('administrador.ventas.parts.modal_caja')
     @include('livewire.modal.pos-modal')
+    @include('administrador.gastos.parts.gasto-modal')
 </div>
 @script
-<script>
-    $wire.on('cerrar_modal_caja', reservacion => {
-        ventana = document.getElementById('cerrar_modal_caja_x').click();
-    });
+    <script>
+        $wire.on('cerrar_modal_caja', reservacion => {
+            ventana = document.getElementById('cerrar_modal_caja_x').click();
+        });
 
-    $wire.on('cerrar_modal_postventa', reservacion => {
-        ventana = document.getElementById('cerrar_modal_postventa_x').click();
-    });
-</script>
+        $wire.on('cerrar_modal_postventa', reservacion => {
+            ventana = document.getElementById('cerrar_modal_postventa_x').click();
+        });
+
+        $wire.on('cerrar_modal_gasto', reservacion => {
+            ventana = document.getElementById('cerrar_modal_gasto_x').click();
+        });
+    </script>
 @endscript

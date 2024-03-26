@@ -14,10 +14,10 @@ class GestionarGastos extends Component
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public GastosForm $gastoform;
     public $search = '';
-    public $titlemodal = 'Añadir';
     public $pagina = 5;
+    public GastosForm $gastoform;
+    public $titlemodal = 'Añadir';
 
     public function mount(){   }
 
