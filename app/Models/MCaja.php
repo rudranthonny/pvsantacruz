@@ -9,6 +9,8 @@ class MCaja extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['tmovimiento_caja_id', 'caja_id', 'signo', 'monto'];
+
     public function caja()
     {
         return  $this->belongsTo(Caja::class);
@@ -17,5 +19,9 @@ class MCaja extends Model
     public function tmovmientocaja()
     {
         return  $this->belongsTo(TmovimientoCaja::class);
+    }
+
+    public function m_cajable(){
+        return $this->morphTo();
     }
 }

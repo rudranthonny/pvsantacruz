@@ -240,5 +240,9 @@
     $wire.on('cerrar_modal_caja', reservacion => {
         ventana = document.getElementById('cerrar_modal_caja_x').click();
     });
+
+    $wire.on('cerrar_modal_postventa', reservacion => {
+        ventana = document.getElementById('cerrar_modal_postventa_x').click();
+    });
 </script>
 @endscript

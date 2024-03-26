@@ -38,7 +38,8 @@ class Pos extends Component
     public $nota_venta;
     public $nota_pago;
 
-    public function modal_apertura_caja(){
+    public function modal_apertura_caja()
+    {
         $this->cajaform->reset();
         $this->cajaform->monto_apertura = 0;
     }
@@ -181,16 +182,17 @@ class Pos extends Component
         $posventa->cliente_name = $cliente->name;
         $posventa->impuesto_porcentaje = $this->impuesto_porcentaje;
         $posventa->impuesto_monto = $this->impuesto_monto;
-        $posventa->descuento = $this->descuento;
-        $posventa->envio = $this->envio;
+        $posventa->descuento = $this->descuento ?? 0;
+        $posventa->envio = $this->envio ?? 0;
         $posventa->total_pagar = $this->total_pagar;
         $posventa->cantidad_recibida = $this->cantidad_recibida;
         $posventa->monto_pago = $this->monto_pago;
         $posventa->cambio = $this->cambio;
-        $posventa->nota_venta = $this->nota_venta;
-        $posventa->nota_pago = $this->nota_pago;
+        $posventa->nota_venta = $this->nota_venta ?? '';
+        $posventa->nota_pago = $this->nota_pago ?? '';
         $posventa->productos_totales = collect($this->items)->count();
         $posventa->save();
+        $posventa->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => '1', 'signo' => '-', 'monto' => $this->total_pagar]);
 
         foreach ($this->items as $item) {
             // $producto->stock -= $item['cantidad'];
@@ -203,6 +205,31 @@ class Pos extends Component
             $posventa_detalle->producto_tipo = $item['tipo'];
             $posventa_detalle->save();
         }
+        $this->dispatch('cerrar_modal_postventa');
+        $this->reset([
+            'almacen_id',
+            'cliente_id',
+            'productos',
+            'productoscompuestos',
+            'categorias',
+            'categoria_id',
+            'marcas',
+            'marca_id',
+            'items',
+            'impuesto_porcentaje',
+            'impuesto_monto',
+            'descuento',
+            'envio',
+            'total_pagar',
+            'cantidad_recibida',
+            'min_cantidad_recibida',
+            'monto_pago',
+            'cambio',
+            'nota_venta',
+            'nota_pago',
+        ]);
+        $this->items = [];
+        $this->mount();
     }
 
     public function render()
