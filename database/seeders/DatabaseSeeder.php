@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Proveedor;
 use App\Models\Tgasto;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,15 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
-            'name' => 'Administrador',
-            'lastname' => 'Rodriguez',
-            'telefono' => '+51 934 665 704',
-            'email' => 'test@example.com',
-            'username' => 'usuario',
-        ]);
 
         // llamar al sembrador de datos en Moneda
+        $this->call(RoleSeeder::class);
         $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
         $this->call(MarcaSeeder::class);
@@ -37,5 +32,18 @@ class DatabaseSeeder extends Seeder
         $this->call(ClienteSeeder::class);
         $this->call(TgastoSeeder::class);
         $this->call(TmovimientoCajaSeeder::class);
+
+        $user = User::create([
+            'name' => 'Administrador',
+            'lastname' => 'Rodriguez',
+            'telefono' => '+51 934 665 704',
+            'email' => 'test@example.com',
+            'username' => 'usuario',
+            'email_verified_at' => '2024-03-25 21:16:12',
+            'password' => bcrypt('123456'),
+        ]);
+
+        $user->assignRole('Administrador');
+
     }
 }

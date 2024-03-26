@@ -73,6 +73,17 @@
                             <input type="file" class="form-control" id="imagen-{{$iteration}}" placeholder="Ingrese Imagen de la Usuario" wire:model.live="imagen_perfil">
                         </div>
                     </div>
+                    @if(isset($usuariosform) == true)
+                        <div class="row">
+                            <div class="mb-3 col-12">
+                                <label for="roles2" class="form-label">Roles</strong></label><br>
+                                <!--role-->
+                                @foreach ($roles as $role)
+                                    {{$role->name}} : <input type="checkbox"   class="mr-1" wire:model='roles2' value="{{$role->name}}"><br>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                     @if (isset($usuariosform->user->id))
                     @if ($usuariosform->user->id)
                     <div class="row mb-3">
