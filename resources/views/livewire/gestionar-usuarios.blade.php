@@ -109,7 +109,7 @@
 </div>
 @script
     <script>
-        $wire.on('cerrar_modal_usuario', reservacion => {
+        $wire.on('cerrar_modal_user', reservacion => {
             ventana = document.getElementById('cerrar_modal_usuario_x').click();
         });
     </script>

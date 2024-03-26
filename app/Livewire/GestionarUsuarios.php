@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
+use Spatie\Permission\Models\Role;
 
 class GestionarUsuarios extends Component
 {
 
     use WithPagination;
     use WithFileUploads;
+
     protected $paginationTheme = 'bootstrap';
     public UsuariosForm $usuariosform;
     public $search = '';
@@ -24,6 +26,7 @@ class GestionarUsuarios extends Component
     public $pagina = 5;
     public $imagen_perfil;
     public $iteration = 1;
+    public $roles2 = [];
 
     public function updatedSalmacen(){
         if ($this->salmacen) {
@@ -47,16 +50,21 @@ class GestionarUsuarios extends Component
 
     public function modal(User $user = null)
     {
-        $this->reset('titlemodal','imagen_perfil');
+        $this->reset('titlemodal','imagen_perfil','roles2');
         $this->iteration++;
         $this->usuariosform->reset();
-        if ($user->id == true) {$this->titlemodal = 'Editar';$this->usuariosform->set($user);}
+        if ($user->id == true) {
+            $this->titlemodal = 'Editar';$this->usuariosform->set($user);
+            foreach ($user->roles as $role) {
+                array_push($this->roles2,$role->name);
+            }
+        }
     }
 
     public function guardar()
     {
-        if (isset($this->usuariosform->user->id)) {$this->usuariosform->update($this->imagen_perfil);}
-        else {$this->usuariosform->store($this->imagen_perfil);}
+        if (isset($this->usuariosform->user->id)) {$this->usuariosform->roles = $this->roles2; ;$this->usuariosform->update($this->imagen_perfil);}
+        else {$this->usuariosform->roles = $this->roles2;$this->usuariosform->store($this->imagen_perfil);}
         $this->dispatch('cerrar_modal_user');
     }
 
@@ -75,6 +83,7 @@ class GestionarUsuarios extends Component
         })->paginate($this->pagina);
 
         $almacenes = Almacen::all();
-        return view('livewire.gestionar-usuarios', compact('usuarios','almacenes'));
+        $roles = Role   ::all();
+        return view('livewire.gestionar-usuarios', compact('usuarios','almacenes','roles'));
     }
 }

@@ -23,6 +23,7 @@ class UsuariosForm extends Form
     #[Rule('required|email')]
     public $email;
     public $suspended;
+    public $roles = [];
 
     public function set(User $user){
         $this->user = $user;
@@ -43,8 +44,10 @@ class UsuariosForm extends Form
             'email' => 'unique:users,email,'.$this->user->id,
             ]
         );
-        $this->user->update($this->all());
+        $this->user->update(['name','lastname','username','telefono','email','suspended']);
         if ($imagen) {$this->eliminar_imagen_perfil();$this->subir_imagen_perfil($imagen);}
+        $this->eliminar_roles();
+        $this->agregar_roles();
     }
 
     public function store($imagen = null)
@@ -57,11 +60,11 @@ class UsuariosForm extends Form
             ]
         );
 
-        $this->user = User::create($this->all()+['password' => $this->username,]);
+        $this->user = User::create($this->only('name','lastname','username','telefono','email','suspended')+['password' => bcrypt($this->username),]);
         if ($imagen) {$this->subir_imagen_perfil($imagen);}
+        $this->eliminar_roles();
+        $this->agregar_roles();
     }
-
-
 
     public function eliminar_imagen_perfil(){
         if ($this->user->profile_photo_path == true)
@@ -120,6 +123,25 @@ class UsuariosForm extends Form
         {
             if ($almacenuser->user_id == $this->user->id) {
                 $almacenuser->delete();
+            }
+        }
+    }
+
+    public function agregar_roles()
+    {
+        foreach ($this->roles as  $role2)
+        {
+            $this->user->assignRole($role2);
+        };
+    }
+
+    public function eliminar_roles()
+    {
+        foreach($this->user->roles as $rola){
+            $this->user->removeRole($rola->id);
+            if($this->user->id == 1)
+            {
+                $this->user->assignRole('Administrador');
             }
         }
     }
