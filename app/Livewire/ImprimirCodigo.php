@@ -3,12 +3,14 @@
 namespace App\Livewire;
 
 use App\Models\Almacen;
+use App\Models\Configuracion;
 use App\Models\Producto;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class ImprimirCodigo extends Component
 {
+    public $configuracion;
     public $search = '';
     public $salmacen;
     public $iteration;
@@ -16,6 +18,10 @@ class ImprimirCodigo extends Component
     public $stipo_papel;
     public $barcode,$barcode_style;
     public $lista_productos = [];
+
+    public function mount(){
+        $this->configuracion = Configuracion::find(1);
+    }
 
     public function updatedStipoPapel(){
         if ($this->stipo_papel == 1) {

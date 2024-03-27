@@ -9,7 +9,7 @@ class Configuracion extends Model
 {
     protected $fillable =
     [
-        'moneda_predeterminada',
+        'moneda_id',
         'email_predeterminado',
         'logo',
         'name',
@@ -23,4 +23,9 @@ class Configuracion extends Model
         'almacen_id',
     ];
     use HasFactory;
+
+    public function moneda()
+    {
+        return $this->belongsTo(Moneda::class);
+    }
 }

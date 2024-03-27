@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\TgastoForm;
+use App\Models\Configuracion;
 use App\Models\Gasto;
 use App\Models\Tgasto;
 use Livewire\Component;
@@ -17,8 +18,9 @@ class GestionarTgasto extends Component
     public $search = '';
     public $titlemodal = 'Añadir';
     public $pagina = 5;
+    public $configuracion;
 
-    public function mount(){   }
+    public function mount(){$this->configuracion = Configuracion::find(1);   }
 
     public function updatedSearch(){
         $this->resetPage();

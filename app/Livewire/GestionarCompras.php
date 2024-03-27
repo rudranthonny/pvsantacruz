@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Forms\ComprasForm;
 use App\Models\Almacen;
 use App\Models\Compra;
+use App\Models\Configuracion;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use Livewire\Component;
@@ -25,10 +26,11 @@ class GestionarCompras extends Component
     public $iteration=0;
     public $editar_item_id;
     public $editar_item = false;
+    public $configuracion;
     #editar item
     public $item_costo_producto,$item_metodo_impuesto,$item_impuesto_orden,$item_metodo_descuento,$item_descuento,$item_compra_unidad,$item_producto_id;
     public $item_cantidad,$item_nombre_producto;
-    public function mount(){   }
+    public function mount(){  $this->configuracion = Configuracion::find(1); }
 
     public function save_compra(){
         if (isset($this->comprasform->compra)) {$this->comprasform->update();}

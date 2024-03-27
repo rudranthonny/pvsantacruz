@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\GastosForm;
 use App\Models\Almacen;
+use App\Models\Configuracion;
 use App\Models\Gasto;
 use App\Models\Tgasto;
 use Livewire\Component;
@@ -14,12 +15,13 @@ class GestionarGastos extends Component
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
+    public $configuracion;
     public $search = '';
     public $pagina = 5;
     public GastosForm $gastoform;
     public $titlemodal = 'Añadir';
 
-    public function mount(){   }
+    public function mount(){  $this->configuracion = Configuracion::find(1); }
 
     public function updatedSearch(){
         $this->resetPage();

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\UnidadesForm;
+use App\Models\Configuracion;
 use App\Models\Unidad;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,8 +17,9 @@ class GestionarUnidades extends Component
     public $search = '';
     public $titlemodal = 'Añadir';
     public $pagina = 5;
+    public $configuracion;
 
-    public function mount(){   }
+    public function mount(){ $this->configuracion = Configuracion::find(1);  }
 
     public function updatedSearch(){
         $this->resetPage();

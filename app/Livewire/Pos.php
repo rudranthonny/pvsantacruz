@@ -8,6 +8,7 @@ use App\Livewire\Forms\ProductoForm;
 use App\Models\Almacen;
 use App\Models\Caja;
 use App\Models\Cliente;
+use App\Models\Configuracion;
 use App\Models\Gasto;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
@@ -45,6 +46,7 @@ class Pos extends Component
     public $nota_venta;
     public $nota_pago;
     public $titlemodal = 'Añadir';
+    public $configuracion;
 
     public function modal_apertura_caja()
     {
@@ -71,6 +73,7 @@ class Pos extends Component
     {
         $this->almacen_id = Almacen::first()->id;
         $this->cliente_id = Cliente::first()->id;
+        $this->configuracion = Configuracion::find(1);
         $this->items = [];
         $this->updatedAlmacenId();
         $this->impuesto_porcentaje = 0;

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\ProductoForm;
 use App\Models\Categoria;
+use App\Models\Configuracion;
 use App\Models\Marca;
 use App\Models\Producto;
 use App\Models\Unidad;
@@ -26,6 +27,10 @@ class GestionarProductos extends Component
     public $imagen_producto;
     public $iteration = 1;
     public $bproducto;
+    public $configuracion;
+    public function mount(){
+        $this->configuracion = Configuracion::find(1);
+    }
 
     public function updatedProductoform(){
         if($this->productoForm->tipo != 'compuesto'){

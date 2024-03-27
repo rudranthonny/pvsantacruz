@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Forms\UsuariosForm;
 use App\Models\Almacen;
 use App\Models\AlmacenUser;
+use App\Models\Configuracion;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -17,7 +18,7 @@ class GestionarUsuarios extends Component
 
     use WithPagination;
     use WithFileUploads;
-
+    public $configuracion;
     protected $paginationTheme = 'bootstrap';
     public UsuariosForm $usuariosform;
     public $search = '';
@@ -42,7 +43,7 @@ class GestionarUsuarios extends Component
         $this->usuariosform->username = strtolower(trim($this->usuariosform->username));
     }
 
-    public function mount(){   }
+    public function mount(){  $this->configuracion = Configuracion::find(1); }
 
     public function updatedSearch(){
         $this->resetPage();

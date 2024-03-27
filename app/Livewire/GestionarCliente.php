@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\ClientesForm;
 use App\Models\Cliente;
+use App\Models\Configuracion;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,12 +13,13 @@ class GestionarCliente extends Component
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
+    public $configuracion;
     public ClientesForm $clientesForm;
     public $search = '';
     public $titlemodal = 'Añadir';
     public $pagina = 5;
 
-    public function mount(){   }
+    public function mount(){ $this->configuracion = Configuracion::find(1);  }
 
     public function updatedSearch(){
         $this->resetPage();

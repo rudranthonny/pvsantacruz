@@ -4,21 +4,23 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\AlmacenForm;
 use App\Models\Almacen;
+use App\Models\Configuracion;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class GestionarAlmacen extends Component
 {
     use WithPagination;
-
     protected $paginationTheme = 'bootstrap';
-
     public AlmacenForm $almacenForm;
-
+    public $configuracion;
     public $titlemodal = 'Añadir Almacen';
     public $search = '';
     public $pagina = 5;
 
+    public function mount(){
+        $this->configuracion = Configuracion::find(1);
+    }
     public function updatedSearch(){
         $this->resetPage();
     }

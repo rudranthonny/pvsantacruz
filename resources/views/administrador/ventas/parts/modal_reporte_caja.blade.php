@@ -21,13 +21,13 @@
                                     {{ $cajero->cajas->where('fecha_cierre', false)->first()->fecha_apertura }} <br>
                                 @if ($cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first())
                                  <b>Monto Inicial :</b>
-                                    s/.{{ $cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first()->monto }}
+                                    {{$configuracion->moneda->simbolo}}.{{ $cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first()->monto }}
                                     <br>
                                     <b>Monto Actual :</b>
-                                    s/.{{ $cajero->cajas->where('fecha_cierre', false)->first()->monto }}
+                                    {{$configuracion->moneda->simbolo}}.{{ $cajero->cajas->where('fecha_cierre', false)->first()->monto }}
                                     <br>
                                 @else
-                                    <b>Monto Inicial :</b> s/.0
+                                    <b>Monto Inicial :</b> {{$configuracion->moneda->simbolo}}.0
                                 @endif
                             </div>
                             <div class="col-12">

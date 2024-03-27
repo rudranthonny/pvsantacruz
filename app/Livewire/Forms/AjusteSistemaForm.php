@@ -33,7 +33,7 @@ class AjusteSistemaForm extends Form
     public function set(Configuracion $configuracion)
     {
         $this->configuracion = $configuracion;
-        $this->moneda_id = $configuracion->moneda_predeterminada;
+        $this->moneda_id = $configuracion->moneda_id;
         $this->email_predeterminado = $configuracion->email_predeterminado;
         $this->name = $configuracion->name;
         $this->telefono_empresa = $configuracion->telefono_empresa;

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\MarcasForm;
+use App\Models\Configuracion;
 use App\Models\Marca;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
@@ -20,8 +21,9 @@ class GestionarMarcas extends Component
     public $pagina = 5;
     public $imagen_marca;
     public $iteration = 1;
+    public $configuracion;
 
-    public function mount(){   }
+    public function mount(){ $this->configuracion = Configuracion::find(1);  }
 
     public function updatedSearch(){
         $this->resetPage();
