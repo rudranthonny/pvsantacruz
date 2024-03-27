@@ -111,7 +111,8 @@ class GestionarCompras extends Component
         }
     }
 
-    public function updatedBuscarProducto(){
+    public function updatedBuscarProducto()
+    {
         $this->iteration++;
         $valmacen = Almacen::find($this->comprasform->almacen);
         if ($valmacen) {$this->dispatch('activar_buscador_producto');}

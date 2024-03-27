@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Models\CompuestoProducto;
 use App\Models\Producto;
+use App\Models\ProductoAlmacen;
 use App\Traits\ImagenTrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -206,5 +207,34 @@ class ProductoForm extends Form
                 'gt:0'
             ],
         ];
+    }
+
+    public function obtener_stock_producto($producto_id,$almacen_id)
+    {
+        $bproducto = Producto::find($producto_id);
+        $consulta_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+        if ($bproducto->tipo == 'estandar') {
+            if ($consulta_almacen_producto) {
+                return $consulta_almacen_producto->stock;
+            }
+            else {
+                return 0;
+            }
+        }
+        if ($bproducto->tipo == 'compuesto') {
+            $cantidades = [];
+            foreach ($bproducto->pcompuestos as $key => $pcom)
+            {
+                $con_alm_pro = ProductoAlmacen::where('producto_id',$pcom->producto_asignado_id)->where('almacen_id',$almacen_id)->first();
+                if ($con_alm_pro) {$cantidades[] = $con_alm_pro->stock;}
+            }
+
+            if (count($cantidades) == 0) {
+                return 0;
+            }
+            elseif(count($cantidades) > 0) {
+                return min($cantidades);
+            }
+        }
     }
 }

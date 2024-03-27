@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\CajaForm;
 use App\Livewire\Forms\GastosForm;
+use App\Livewire\Forms\ProductoForm;
 use App\Models\Almacen;
 use App\Models\Caja;
 use App\Models\Cliente;
@@ -21,6 +22,7 @@ class Pos extends Component
 {
     public GastosForm $gastoform;
     public CajaForm $cajaform;
+    public ProductoForm $productoform;
     public $cajero;
     public $almacen_id;
     public $cliente_id;
@@ -157,21 +159,49 @@ class Pos extends Component
 
     public function agregaritem(Producto $producto)
     {
-        $cantidad = 1;
-        if (array_key_exists($producto->codigo, $this->items)) {
-            $cantidad += $this->items[$producto->codigo]['cantidad'];
-        }
-        $importe = $producto->precio * $cantidad;
+        $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($producto->id,$this->almacen_id);
 
-        $item = new PosventaDetalle();
-        $item->codigo = $producto->codigo;
-        $item->designacion = $producto->designacion;
-        $item->precio = $producto->precio;
-        $item->cantidad = $cantidad;
-        $item->importe = $importe;
-        $item->tipo = $producto->tipo;
-        $this->items[$item->codigo] = $item->toArray();
-        $this->actualizar_montos();
+        $stock_disponible = false;
+        #verificar stock
+        if ($producto->tipo = 'estandar') {
+            $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
+        }
+        elseif($producto->tipo = 'compuesto') {
+            $cantidades_compuesta = [];
+            foreach ($producto->pcompuestos as $key => $pcom)
+            {
+                $con_alm_pro = ProductoAlmacen::where('producto_id',$pcom->producto_asignado_id)->where('almacen_id',$this->almacen_id)->first();
+                if ($con_alm_pro) {$cantidades_compuesta[] = $con_alm_pro->stock;}
+            }
+        }
+
+
+        if ($cantidad_stock_disponible > $cantidad_existente) {
+            $stock_disponible = true;
+        }
+        if ($stock_disponible) {
+            #si hay guardar
+            $cantidad = 1;
+            if (array_key_exists($producto->codigo, $this->items)) {
+                $cantidad += $this->items[$producto->codigo]['cantidad'];
+            }
+            $importe = $producto->precio * $cantidad;
+
+            $item = new PosventaDetalle();
+            $item->codigo = $producto->codigo;
+            $item->designacion = $producto->designacion;
+            $item->precio = $producto->precio;
+            $item->cantidad = $cantidad;
+            $item->importe = $importe;
+            $item->tipo = $producto->tipo;
+            $this->items[$item->codigo] = $item->toArray();
+            $this->actualizar_montos();
+            #si no hay no guardar indicar que no hay stock
+        }
+        else {
+            dd('falta stock');
+            $this->dispatch('avertencia_stock');
+        }
     }
 
     public function updatedItems()
@@ -191,6 +221,7 @@ class Pos extends Component
     public function guardarPosVenta()
     {
         $almacen = Almacen::find($this->almacen_id);
+        if ($almacen) {
         $cliente = Cliente::find($this->cliente_id);
         $posventa = new Posventa();
         $posventa->almacen_id = $almacen->id;
@@ -226,6 +257,11 @@ class Pos extends Component
         }
         $this->dispatch('cerrar_modal_postventa');
         $this->reiniciar();
+    }
+    else
+    {
+        $this->dispatch('advertencia_almacen');
+    }
     }
 
     public function guardar()

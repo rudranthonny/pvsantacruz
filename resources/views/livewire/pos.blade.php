@@ -9,10 +9,9 @@
                                 <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
                             </a>
                         </div>
-                        <div class="row col-auto">
-                            <div class="col-auto">
-                                <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;" role="button"
-                                    data-bs-toggle="modal" data-bs-target="#modalGasto">
+                        <div class="row col-auto align-items-center">
+                            <div class="col-auto" style="vertical-align: middle;">
+                                <button role="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalGasto"><i class="bi bi-bookmark-dash-fill"></i></button>
                             </div>
                             <div class="col-auto">
                                 <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
@@ -156,7 +155,9 @@
                                     Aperturar Caja <i class="fas fa-box"></i>
                                 </button>
                             @else
-                                <button class="btn btn-danger btn-lg" data-bs-toggle="modal"
+                                <button @if (count($items) == 0)
+                                    disabled
+                                @endif class="btn btn-danger btn-lg" data-bs-toggle="modal"
                                     data-bs-target="#agregarPagoPosModal">Pagar Ahora</button>
                             @endif
                         </div>
@@ -271,6 +272,18 @@
 
         $wire.on('cerrar_modal_gasto', reservacion => {
             ventana = document.getElementById('cerrar_modal_gasto_x').click();
+        });
+
+        $wire.on('advertencia_almacen', () =>
+        {
+            Swal.fire({
+            position: "center-center",
+            icon: "warning",
+            title: "Elegir un Almacen para realizar la compra",
+            showConfirmButton: false,
+            timer: 1500
+            });
+            ventana = document.getElementById('cerrar_modal_postventa_x').click();
         });
     </script>
 @endscript
