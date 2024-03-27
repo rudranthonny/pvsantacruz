@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
     <style>
         *{
             margin-left: 2px;
@@ -131,7 +132,7 @@
     </style>
 </head>
 <body>
-    <div class="row">
+    <div class="row" style="display: flex;">
         <div class="col-md-12">
             <div class="{{$barcode}}">
                 @foreach ($lista_productos as $tey => $lproduc)

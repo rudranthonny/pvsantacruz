@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'username' => 'usuario',
             'email_verified_at' => '2024-03-25 21:16:12',
-            'password' => bcrypt('123456'),
+            'password' => bcrypt('123456789'),
         ]);
 
         $user->assignRole('Administrador');

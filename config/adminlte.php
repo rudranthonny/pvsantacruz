@@ -388,7 +388,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Clientes',
-                    'route'  => 'admin.cliente',
+                    'route'  => 'admin.clientes',
                 ],
                 [
                     'text'    => 'Proveedores',

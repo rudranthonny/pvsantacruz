@@ -5,7 +5,7 @@ use App\Livewire\ConsultarProducto;
 use App\Livewire\Pos;
 use Illuminate\Support\Facades\Route;
 
-Route::view('', 'administrador.index')->middleware('can:admin.index')->name('admin.index');
+Route::get('', [AdminController::class,'direccionarusuario'])->middleware('can:admin.index')->name('admin.index');
 Route::view('configuracion/ajustes_sistema', 'administrador.configuracion.ajustesistema')->middleware('can:admin.configuracion.ajustesistema')->name('admin.configuracion.ajustesistema');
 Route::view("moneda", "administrador.ajustes.moneda")->middleware('can:admin.moneda')->name("admin.moneda");
 Route::view("almacen", "administrador.ajustes.almacen")->middleware('can:admin.almacen')->name("admin.almacen");
@@ -21,7 +21,7 @@ Route::get('producto/consulta_producto/{id}', ConsultarProducto::class)->middlew
 #compras
 Route::view("compras", "administrador.compras.compra")->middleware('can:admin.compras')->name("admin.compras");
 #personas
-Route::view("cliente", "administrador.personas.cliente")->middleware('can:admin.compras')->name("admin.compras");
+Route::view("cliente", "administrador.personas.cliente")->middleware('can:admin.clientes')->name("admin.clientes");
 Route::view("proveedor", "administrador.personas.proveedor")->middleware('can:admin.proveedor')->name("admin.proveedor");
 Route::view("usuario", "administrador.personas.usuario")->middleware('can:admin.usuario')->name("admin.usuario");
 #gastos

@@ -87,7 +87,7 @@ class ImprimirCodigo extends Component
         if (count($this->lista_productos) > 0) {
         $nombre_archivo ='Lista_productos-'.date("F j, Y, g:i a").'.pdf';
         $lista_productos = $this->lista_productos;
-        $consultapdf = FacadePdf::loadView('administrador.productos.codigo_barras_pdf', compact('lista_productos','barcode','barcode_style'))->setPaper('a4');
+        $consultapdf = FacadePdf::loadView('administrador.productos.codigo_barras_pdf', compact('lista_productos','barcode','barcode_style'))->setPaper('a4','landscape');
         $pdfContent = $consultapdf->output();
             return response()->streamDownload(
                 fn () => print($pdfContent),

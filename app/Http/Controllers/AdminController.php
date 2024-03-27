@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -45,6 +47,20 @@ class AdminController extends Controller
         $listaempleados = $querys;
         if ($querys->count() == 0) { $listaempleados['label'] = 'Sin resultados';}
         return $listaempleados;
+    }
+
+    public function direccionarusuario(){
+        #buscar usuario
+        $busuario = User::find(Auth::user()->id);
+        $obtener_roles = $busuario->getRoleNames();
+
+       if($obtener_roles->first() == 'Administrador'){
+            return redirect()->route('admin.compras');
+        }
+
+        elseif($obtener_roles->first() == 'Cajero'){
+            return redirect()->route('admin.ventas.pos');
+        }
     }
 
 }
