@@ -11,6 +11,9 @@
                         </div>
                         <div class="row col-auto align-items-center">
                             <div class="col-auto" style="vertical-align: middle;">
+                                <button role="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalReporteCaja"><i class="bi bi-book-fill"></i></button>
+                            </div>
+                            <div class="col-auto" style="vertical-align: middle;">
                                 <button role="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalGasto"><i class="bi bi-bookmark-dash-fill"></i></button>
                             </div>
                             <div class="col-auto">
@@ -259,6 +262,7 @@
     @include('administrador.ventas.parts.modal_caja')
     @include('livewire.modal.pos-modal')
     @include('administrador.gastos.parts.gasto-modal')
+    @include('administrador.ventas.parts.modal_reporte_caja')
 </div>
 @script
     <script>

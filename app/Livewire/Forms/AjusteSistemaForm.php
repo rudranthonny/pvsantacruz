@@ -11,11 +11,8 @@ use Livewire\Form;
 class AjusteSistemaForm extends Form
 {
     public ?Configuracion $configuracion;
-    #[Rule('required')]
-    public $moneda_predeterminada;
-    #[Rule('required')]
+    public $moneda_id;
     public $email_predeterminado;
-    #[Rule('required')]
     public $name;
     public $telefono_empresa;
     public $desarrollador;
@@ -24,28 +21,35 @@ class AjusteSistemaForm extends Form
     public $pagina_factura;
     public $pie_pagina_factura;
     public $cotizacion_stock;
-    #[Rule('required')]
     public $almacen_id;
 
-    public function set(Configuracion $configuracion){
-        $this->configuracion = $configuracion;
-        $this->moneda_predeterminada = $configuracion->codigo_moneda;
-        $this->email_predeterminado = $configuracion->codigo_moneda;
-        $this->name = $configuracion->codigo_moneda;
-        $this->telefono_empresa = $configuracion->codigo_moneda;
-        $this->desarrollador = $configuracion->codigo_moneda;
-        $this->pie_pagina = $configuracion->codigo_moneda;
-        $this->direccion = $configuracion->codigo_moneda;
-        $this->pagina_factura = $configuracion->codigo_moneda;
-        $this->pie_pagina_factura = $configuracion->codigo_moneda;
-        $this->cotizacion_stock = $configuracion->codigo_moneda;
-        $this->almacen_id = $configuracion->codigo_moneda;
+    public $rule_ajuste = [
+        'moneda_id' => 'required',
+        'email_predeterminado' => 'required',
+        'almacen_id' => 'required',
+        'name' => 'required',
+    ];
 
+    public function set(Configuracion $configuracion)
+    {
+        $this->configuracion = $configuracion;
+        $this->moneda_id = $configuracion->moneda_predeterminada;
+        $this->email_predeterminado = $configuracion->email_predeterminado;
+        $this->name = $configuracion->name;
+        $this->telefono_empresa = $configuracion->telefono_empresa;
+        $this->desarrollador = $configuracion->desarrollador;
+        $this->pie_pagina = $configuracion->pie_pagina;
+        $this->direccion = $configuracion->direccion;
+        $this->pagina_factura = $configuracion->pagina_factura;
+        $this->pie_pagina_factura = $configuracion->pie_pagina_factura;
+        $this->cotizacion_stock = $configuracion->cotizacion_stock;
+        $this->almacen_id = $configuracion->almacen_id;
     }
 
     public function update($imagen_logo = null){
-        $this->validate();
+        $this->validate($this->rule_ajuste);
         $this->configuracion->update($this->all());
+
         if ($imagen_logo)
         {
             $this->eliminar_imagen();
@@ -55,7 +59,7 @@ class AjusteSistemaForm extends Form
 
     public function store($imagen_logo = null)
     {
-        $this->validate();
+        $this->validate($this->rule_ajuste);
         $this->configuracion = Configuracion::create($this->all());
         if ($imagen_logo) {
            $this->subir_imagen($imagen_logo);

@@ -18,7 +18,7 @@ class MCaja extends Model
 
     public function tmovmientocaja()
     {
-        return  $this->belongsTo(TmovimientoCaja::class);
+        return  $this->belongsTo(TmovimientoCaja::class,'tmovimiento_caja_id');
     }
 
     public function m_cajable(){

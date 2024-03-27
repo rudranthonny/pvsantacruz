@@ -19,11 +19,21 @@
                         Ajustes del sistema
                     </div>
                     <div class="card-body">
+                        @if (isset($ajustesistemaform->configuracion->logo))
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <center><img src="{{asset($ajustesistemaform->configuracion->logo)}}" width="128px" alt=""></center>
+                            </div>
+                        </div>
+                        @endif
                         <div class="row mb-3">
                             <div class="col-sm-12 col-md-4 col-lg-4">
-                                <label for="moneda_predeterminada" class="form-label">Moneda Predeterminada</label>
-                                <select class="form-select" id="moneda_predeterminada" wire:model='ajustesistemaform.moneda_predeterminada'>
-                                    <option value="1">Peso</option>
+                                <label for="moneda_id" class="form-label">Moneda Predeterminada</label>
+                                <select class="form-select" id="moneda_id" wire:model='ajustesistemaform.moneda_id'>
+                                    <option value="">Elegir</option>
+                                    @foreach ($monedas as $moneda)
+                                    <option value="{{$moneda->id}}">{{$moneda->nombre_moneda}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-sm-12 col-md-4 col-lg-4">
@@ -57,7 +67,10 @@
                             <div class="col-sm-12 col-md-4 col-lg-4">
                                 <label for="almacen_predeterminada" class="form-label">Almacen Predeterminada</label>
                                 <select class="form-select" id="almacen_predeterminada" wire:model='ajustesistemaform.almacen_id'>
-                                    <option value="1">San Isidreo</option>
+                                    <option value="">Elegir</option>
+                                    @foreach ($almacens as $alma)
+                                    <option value="{{$alma->id}}">{{$alma->nombre}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -83,7 +96,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12 col-md-4 col-lg-4">
-                                <button class="btn btn-primary"><i class="fas fa-check-circle"></i> Guardar</button>
+                                <button class="btn btn-primary" wire:loading.attr="disabled" wire:target="save,imagen_logo" wire:click='save'><i class="fas fa-check-circle"></i> Guardar</button>
                             </div>
                         </div>
                     </div>

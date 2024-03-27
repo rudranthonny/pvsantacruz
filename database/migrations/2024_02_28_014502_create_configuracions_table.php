@@ -13,19 +13,20 @@ return new class extends Migration
     {
         Schema::create('configuracions', function (Blueprint $table) {
             $table->id();
-            $table->string('moneda_predeterminada');
-            $table->string('email_predeterminado');
+            $table->unsignedBigInteger('moneda_id')->nullable();
+            $table->string('email_predeterminado')->nullable();
             $table->string('logo')->nullable();
-            $table->string('name');
-            $table->string('telefono_empresa');
-            $table->string('desarrollador');
-            $table->string('pie_pagina');
-            $table->string('direccion');
-            $table->char('pagina_factura')->default(0);
-            $table->string('pie_pagina_factura');
-            $table->char('cotizacion_stock')->default(0);
-            $table->unsignedBigInteger('almacen_id');
+            $table->string('name')->nullable();
+            $table->string('telefono_empresa')->nullable();
+            $table->string('desarrollador')->nullable();
+            $table->string('pie_pagina')->nullable();
+            $table->string('direccion')->nullable();
+            $table->char('pagina_factura')->nullable()->default(0);
+            $table->string('pie_pagina_factura')->nullable();
+            $table->char('cotizacion_stock')->nullable()->default(0);
+            $table->unsignedBigInteger('almacen_id')->nullable();
             $table->foreign('almacen_id')->references('id')->on('almacens');
+            $table->foreign('moneda_id')->references('id')->on('monedas');
             $table->timestamps();
         });
     }

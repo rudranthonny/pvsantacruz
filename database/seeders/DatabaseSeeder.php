@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ClienteSeeder::class);
         $this->call(TgastoSeeder::class);
         $this->call(TmovimientoCajaSeeder::class);
+        $this->call(AjustesSistemaSeed::class);
 
         $user = User::create([
             'name' => 'Administrador',
