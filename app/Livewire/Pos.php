@@ -61,6 +61,7 @@ class Pos extends Component
         if ($bcliente == false) {
             $this->reset('bclienteoculto');
         }
+
     }
 
     public function modal_cliente()
@@ -232,9 +233,10 @@ class Pos extends Component
             $this->actualizar_montos();
             #si no hay no guardar indicar que no hay stock
         } else {
-            dd('falta stock');
-            //$this->dispatch('avertencia_stock');
+           // dd('falta stock');
+            $this->dispatch('avertencia_stock');
         }
+        $this->dispatch('dirigir_cursor');
     }
 
     public function updatedItems()

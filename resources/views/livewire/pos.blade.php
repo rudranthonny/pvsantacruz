@@ -203,7 +203,7 @@
                             <div class="input-group">
                                 <div class="input-group-text"><i class="bi bi-search"></i></div>
                                 <input type="text" class="form-control" id="buscar_producto"
-                                    placeholder="Buscar Producto">
+                                    placeholder="Buscar Producto" autofocus>
                             </div>
                         </div>
                     </div>
@@ -271,6 +271,13 @@
 </div>
 @script
     <script>
+         $wire.on('dirigir_cursor', () => {
+            $("#buscar_producto").focus();
+        });
+
+        $wire.on('avertencia_stock', () => {
+            alert('Falta Stock');
+        });
 
         $wire.on('cerrar_modal_caja', reservacion => {
             ventana = document.getElementById('cerrar_modal_caja_x').click();
