@@ -50,13 +50,17 @@ class Pos extends Component
     public $nota_pago;
     public $titlemodal = 'Añadir';
     public $configuracion;
-    public $bclienteoculto, $bcliente;
+    public $bclienteoculto = '', $bcliente = '';
 
     /*Cliente*/
 
     public function updatedBcliente()
     {
         $this->dispatch('activar_buscador_cliente');
+        $bcliente = Cliente::where('name',$this->bcliente)->first();
+        if ($bcliente == false) {
+            $this->reset('bclienteoculto');
+        }
     }
 
     public function modal_cliente()
@@ -96,7 +100,6 @@ class Pos extends Component
     public function mount()
     {
         $this->almacen_id = Almacen::first()->id;
-        $this->cliente_id = Cliente::first()->id;
         $this->configuracion = Configuracion::find(1);
         $this->items = [];
         $this->updatedAlmacenId();
@@ -264,11 +267,11 @@ class Pos extends Component
     {
         $almacen = Almacen::find($this->almacen_id);
         if ($almacen) {
-            $cliente = Cliente::find($this->cliente_id);
+            $cliente = Cliente::find($this->bclienteoculto);
             $posventa = new Posventa();
             $posventa->almacen_id = $almacen->id;
             $posventa->almacen_name = $almacen->nombre;
-            $posventa->cliente_id = $cliente->id;
+            $posventa->cliente_id = $this->bclienteoculto;
             $posventa->cliente_name = $cliente->name;
             $posventa->impuesto_porcentaje = $this->impuesto_porcentaje;
             $posventa->impuesto_monto = $this->impuesto_monto;

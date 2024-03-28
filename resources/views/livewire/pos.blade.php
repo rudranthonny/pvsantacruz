@@ -52,11 +52,11 @@
                             </div>
                         @endif
                         <div class="col-12">
-                            <input type="hidden" id="buscar_cliente_oculto" wire:model.live="bclienteoculto">
+                            <input type="hidden" id="buscar_cliente_oculto2" wire:model.live="bclienteoculto">
                         </div>
                         <div class="col-12 my-1">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="buscar_cliente" autocomplete="off"
+                                <input type="text" class="form-control" id="buscar_cliente2" autocomplete="off"
                                     placeholder="Escribir Usuario" wire:model.live="bcliente" >
                                 <div class="input-group-text" data-bs-toggle="modal" data-bs-target="#modalCliente" wire:click='modal_cliente'>
                                     <i class="bi bi-person-add"></i> <span class="text-danger">*</span>
@@ -162,7 +162,7 @@
                                     Aperturar Caja <i class="fas fa-box"></i>
                                 </button>
                             @else
-                                <button @if (count($items) == 0)
+                                <button @if (count($items) == 0 or $bclienteoculto == false or $bcliente == false)
                                     disabled
                                 @endif class="btn btn-danger btn-lg" data-bs-toggle="modal"
                                     data-bs-target="#agregarPagoPosModal">Pagar Ahora</button>
@@ -199,11 +199,11 @@
                             </select>
                         </div>
                         <div class="col-12 my-2">
-                            <label class="visually-hidden" for="buscar_proveedor">Buscar Producto</label>
+                            <label class="visually-hidden" for="buscar_producto">Buscar Producto</label>
                             <div class="input-group">
                                 <div class="input-group-text"><i class="bi bi-search"></i></div>
-                                <input type="text" class="form-control" id="buscar_proveedor"
-                                    placeholder="Buscar Proveedor">
+                                <input type="text" class="form-control" id="buscar_producto"
+                                    placeholder="Buscar Producto">
                             </div>
                         </div>
                     </div>
@@ -298,7 +298,7 @@
 
         $wire.on('activar_buscador_cliente', ()  =>
             {
-                $('#buscar_cliente').autocomplete({
+                $('#buscar_cliente2').autocomplete({
                 source: function(request,response){
                     $.ajax({
                     url: '{{route("search.buscar_cliente")}}',
@@ -315,10 +315,10 @@
                 select: function(event,ui)
                     {
                         setTimeout(() => {
-                        $('#buscar_cliente_oculto').val('');
-                        $('#buscar_cliente_oculto').val(ui.item.id);
-                        $('#buscar_cliente_oculto')[0].dispatchEvent(new Event('input'));
-                        $('#buscar_cliente').val(ui.item.name);
+                        $('#buscar_cliente_oculto2').val('');
+                        $('#buscar_cliente_oculto2').val(ui.item.id);
+                        $('#buscar_cliente_oculto2')[0].dispatchEvent(new Event('input'));
+                        $('#buscar_cliente2').val(ui.item.name);
                         }, 750);
                     }
                     });

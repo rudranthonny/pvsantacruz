@@ -57,7 +57,7 @@ class ProductoSeeder extends Seeder
         $producto -> imagen = null;
         $producto -> designacion = "designacion producto3";
         $producto -> codigo = "4444444";
-        $producto -> simbologia = 1;
+        $producto -> simbologia = 'C128';
         $producto -> categoria_id = 1;
         $producto -> marca_id = 1;
         $producto -> impuesto_orden = '18';
