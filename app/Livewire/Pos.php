@@ -171,7 +171,9 @@ class Pos extends Component
             $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
         }
 
-        /*elseif($producto->tipo = 'compuesto') {
+        /*
+        elseif($producto->tipo = 'compuesto')
+        {
             $cantidades_compuesta = [];
             foreach ($producto->pcompuestos as $key => $pcom)
             {
@@ -180,7 +182,6 @@ class Pos extends Component
             }
         }
         */
-
 
         if ($cantidad_stock_disponible > $cantidad_existente) {
             $stock_disponible = true;
@@ -204,8 +205,8 @@ class Pos extends Component
             $this->actualizar_montos();
             #si no hay no guardar indicar que no hay stock
         } else {
-            // dd('falta stock');
-            $this->dispatch('avertencia_stock');
+             dd('falta stock');
+            //$this->dispatch('avertencia_stock');
         }
     }
 
@@ -225,10 +226,10 @@ class Pos extends Component
 
     public function descargar_pdf($posventa)
     {
+
         $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
         $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa'))->setPaper('a4', 'landscape');
         $pdfContent = $consultapdf->output();
-        dd("sdgf", $pdfContent);
         return response()->streamDownload(
             fn () => print($pdfContent),
             $nombre_archivo
@@ -270,11 +271,25 @@ class Pos extends Component
                 $posventa_detalle->producto_cantidad = $item['cantidad'];
                 $posventa_detalle->producto_importe = $item['importe'];
                 $posventa_detalle->producto_tipo = $item['tipo'];
+                $posventa_detalle->posventa_id = $posventa->id;
                 $posventa_detalle->save();
+                $bcodigo = Producto::where('codigo',$item['codigo'])->first();
+                $this->productoform->actualizar_stock_producto($bcodigo->id,$posventa->almacen_id,'-',$posventa_detalle->producto_cantidad);
             }
-            $this->descargar_pdf($posventa);
+            #pdf descargar
+            $paper_examen = 0;
+            $paper_heigth = 352;
+            $paper_heigth =$paper_examen + $paper_heigth;
+            $configuracion = Configuracion::find(1);
+            $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
+            $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa','configuracion'))->setPaper([0, 0, 215.25, $paper_heigth+12.2*2*count($this->items)]);
             $this->dispatch('cerrar_modal_postventa');
             $this->reiniciar();
+            $pdfContent = $consultapdf->output();
+            return response()->streamDownload(
+                fn () => print($pdfContent),
+                $nombre_archivo
+            );
         } else {
             $this->dispatch('advertencia_almacen');
         }

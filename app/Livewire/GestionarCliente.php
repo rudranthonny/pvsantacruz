@@ -28,7 +28,7 @@ class GestionarCliente extends Component
     public function modal(Cliente $cliente = null)
     {
         $this->reset('titlemodal');
-        $this->monedasForm->reset();
+        $this->clientesForm->reset();
         if ($cliente->id == true) {
             $this->titlemodal = 'Editar';
             $this->clientesForm->set($cliente);

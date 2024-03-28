@@ -32,6 +32,7 @@
     <div id="app">
         {{ $slot }}
     </div>
+
 </body>
 
 </html>

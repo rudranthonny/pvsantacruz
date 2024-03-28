@@ -237,4 +237,18 @@ class ProductoForm extends Form
             }
         }
     }
+
+    public function actualizar_stock_producto($producto_id,$almacen_id,$signo,$cantidad)
+    {
+        $producto_almacen = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+        if ($producto_almacen) {
+            if ($signo == '+') {
+                $producto_almacen->stock = $producto_almacen->stock+$cantidad;
+            }
+            if ($signo == '-') {
+                $producto_almacen->stock = $producto_almacen->stock-$cantidad;
+            }
+            $producto_almacen->save();
+        }
+    }
 }
