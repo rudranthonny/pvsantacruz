@@ -14,7 +14,20 @@
         <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
+        <style>
+            .select2-container .select2-selection--single {
+                height: 50px;
+            }
 
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 48px;
+            }
+
+            .select2-container--default .select2-selection--single {
+                padding: 0.75rem .75rem;
+            }
+            ul.ui-autocomplete { z-index: 1100;}
+        </style>
     </head>
     <body class="text-left">
         <noscript>
