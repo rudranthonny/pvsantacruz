@@ -37,75 +37,80 @@ class AdminController extends Controller
     public function buscar_productos_compra(Request $request)
     {
         $term = $request->get('term');
-        $querys = Producto::where('tipo','estandar')->Where(function($query) use ($term) {
-            $query->where('designacion','like','%' . $term.'%')
-                    ->orWhere('codigo', 'like', '%' . $term.'%');
+        $querys = Producto::where('tipo', 'estandar')->Where(function ($query) use ($term) {
+            $query->where('designacion', 'like', '%' . $term . '%')
+                ->orWhere('codigo', 'like', '%' . $term . '%');
         })->get();
 
         foreach ($querys as $query) {
-            $query['label'] =  $query->codigo."-".$query->designacion;
+            $query['label'] =  $query->codigo . "-" . $query->designacion;
         }
 
         $listaempleados = $querys;
-        if ($querys->count() == 0) { $listaempleados['label'] = 'Sin resultados';}
+        if ($querys->count() == 0) {
+            $listaempleados['label'] = 'Sin resultados';
+        }
         return $listaempleados;
     }
 
     public function buscar_productos_compra2(Request $request)
     {
         $term = $request->get('term');
-        $querys = Producto::Where(function($query) use ($term) {
-            $query->where('designacion','like','%' . $term.'%')
-                    ->orWhere('codigo', 'like', '%' . $term.'%');
+        $querys = Producto::Where(function ($query) use ($term) {
+            $query->where('designacion', 'like', '%' . $term . '%')
+                ->orWhere('codigo', 'like', '%' . $term . '%');
         })->get();
 
         foreach ($querys as $query) {
-            $query['label'] =  $query->codigo."-".$query->designacion;
+            $query['label'] =  $query->codigo . "-" . $query->designacion;
         }
 
         $listaempleados = $querys;
-        if ($querys->count() == 0) { $listaempleados['label'] = 'Sin resultados';}
+        if ($querys->count() == 0) {
+            $listaempleados['label'] = 'Sin resultados';
+        }
         return $listaempleados;
     }
 
     public function buscar_cliente(Request $request)
     {
         $term = $request->get('term');
-        $querys = Cliente::Where(function($query) use ($term) {
-            $query->where('name','like','%' . $term.'%')
-                    ->orWhere('email', 'like', '%' . $term.'%');
+        $querys = Cliente::Where(function ($query) use ($term) {
+            $query->where('name', 'like', '%' . $term . '%')
+                ->orWhere('email', 'like', '%' . $term . '%');
         })->get();
 
         foreach ($querys as $query) {
-            $query['label'] =  $query->id."-".$query->name;
+            $query['label'] =  $query->id . "-" . $query->name;
         }
 
         $listaempleados = $querys;
-        if ($querys->count() == 0) { $listaempleados['label'] = 'Sin resultados';}
+        if ($querys->count() == 0) {
+            $listaempleados['label'] = 'Sin resultados';
+        }
         return $listaempleados;
     }
 
 
-    public function direccionarusuario(){
+    public function direccionarusuario()
+    {
         #buscar usuario
         $busuario = User::find(Auth::user()->id);
         $obtener_roles = $busuario->getRoleNames();
 
-       if($obtener_roles->first() == 'Administrador'){
+        if ($obtener_roles->first() == 'Administrador') {
             return redirect()->route('admin.compras');
-        }
-
-        elseif($obtener_roles->first() == 'Cajero'){
+        } elseif ($obtener_roles->first() == 'Cajero') {
             return redirect()->route('admin.ventas.pos');
         }
     }
 
     public function consultar_barra()
     {
-        $barcode = session('barcode1');
-        $barcode_style = session('barcode_style1');
-        $lista_productos = session('lista_productos1');
-        return view('administrador.productos.codigo_barras_pdf',compact('barcode','barcode_style','lista_productos'));
+        $datos = session()->get('datos');
+        $barcode = $datos['barcode1'];
+        $barcode_style = $datos['barcode_style1'];
+        $lista_productos = $datos['lista_productos1'];
+        return view('administrador.productos.codigo_barras_pdf', compact('barcode', 'barcode_style', 'lista_productos'));
     }
-
 }

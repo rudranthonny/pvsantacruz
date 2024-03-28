@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,7 @@
     <title>Document</title>
 
     <style>
-        *{
+        * {
             margin-left: 2px;
             margin-top: 2px;
         }
@@ -42,15 +43,16 @@
             width: 8.45in;
         }
 
-        .barcode_non_a4, .barcodea4 {
+        .barcode_non_a4,
+        .barcodea4 {
             border: 1px solid #ccc;
             display: block;
             margin: 10px auto;
             page-break-after: always;
         }
 
-        .barcode_non_a4 .barcode-name, .barcodea4 .barcode-name
-        {
+        .barcode_non_a4 .barcode-name,
+        .barcodea4 .barcode-name {
             display: block;
         }
 
@@ -157,33 +159,34 @@
             margin-right: calc(-.5* var(--bs-gutter-x));
             margin-left: calc(-.5* var(--bs-gutter-x));
         }
-
-
     </style>
 </head>
+
 <body>
     <div class="row" style="display: flex;">
         <div class="col-md-12">
-            <div class="{{$barcode}}">
-                @foreach ($lista_productos as $tey => $lproduc)
+            <div class="{{ $barcode }}">
+                @forelse ($lista_productos as $tey => $lproduc)
                     @for ($i = 0; $i < $lista_productos[$tey]['cantidad']; $i++)
-                        <div class="{{$barcode_style}}">
+                        <div class="{{ $barcode_style }}">
                             <div class="head_barcode text-left" style="padding-left: 10px; font-weight: bold;">
-                                <span class="barcode-name">{{$lista_productos[$tey]['nombre']}}</span>
-                                <span class="barcode-price">S/ {{$lista_productos[$tey]['precio']}}</span>
+                                <span class="barcode-name">{{ $lista_productos[$tey]['nombre'] }}</span>
+                                <span class="barcode-price">S/ {{ $lista_productos[$tey]['precio'] }}</span>
                             </div>
                             <div textmargin="0" fontoptions="bold" class="barcode">
-                                <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],1,37) !!}</center>
+                                <center> {!! DNS1D::getBarcodeHTML($tey, $lista_productos[$tey]['simbologia'], 1, 37) !!}</center>
                             </div>
                         </div>
                     @endfor
-                @endforeach
+                @empty
+
+                @endforelse
             </div>
         </div>
     </div>
 </body>
 <script>
-        window.print();
-
+    window.print();
 </script>
+
 </html>

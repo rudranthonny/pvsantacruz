@@ -27,7 +27,7 @@
                 <label class="visually-hidden" for="buscar_producto">Nombre del Producto</label>
                 <div class="input-group">
                     <div class="input-group-text"><i class="fas fa-search"></i></div>
-                    <input type="text" class="form-control" id="buscar_producto"
+                    <input type="text" class="form-control" id="buscar_producto" autocomplete="off"
                         placeholder="Buscar Producto" wire:model.live.debounce.500ms='search'>
                 </div>
             </div>

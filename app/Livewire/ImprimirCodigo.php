@@ -87,13 +87,10 @@ class ImprimirCodigo extends Component
     }
 
     public function descargar_codigo_barrar_imprimir(){
-        $barcode = $this->barcode;
-        $barcode_style = $this->barcode_style;
-        $lista_productos = $this->lista_productos;
+        $datos = ['barcode' => $this->barcode, "barcode_style" => $this->barcode_style, "lista_productos" => $this->lista_productos];
+        //dd($barcode, $barcode_style, $lista_productos);
         return redirect()->route('admin.productos.consultar_barra')
-        ->with('barcode1', $barcode)
-        ->with('barcode_style1', $barcode_style)
-        ->with('lista_productos1', $lista_productos);
+        ->with('datos', $datos);
     }
 
     public function render()
