@@ -142,16 +142,19 @@ class Pos extends Component
     public function updatedImpuestoPorcentaje()
     {
         $this->actualizar_montos();
+        $this->dispatch('dirigir_cursor');
     }
 
     public function updatedDescuento()
     {
         $this->actualizar_montos();
+        $this->dispatch('dirigir_cursor');
     }
 
     public function updatedEnvio()
     {
         $this->actualizar_montos();
+        $this->dispatch('dirigir_cursor');
     }
 
     public function updatedCantidadRecibida()
@@ -245,6 +248,8 @@ class Pos extends Component
             $this->items[$key]['importe'] = $item['precio'] * $item['cantidad'];
         }
         $this->actualizar_montos();
+        $this->dispatch('dirigir_cursor');
+
     }
 
     public function eliminaritem(string $codigo)

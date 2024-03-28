@@ -71,7 +71,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" wire:click='crear_caja'>Aperturar Caja</button>
+                <button type="button" class="btn btn-primary" >Reporte de Caja</button>
             </div>
         </div>
     </div>
