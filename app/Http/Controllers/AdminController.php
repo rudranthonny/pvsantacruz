@@ -107,10 +107,11 @@ class AdminController extends Controller
 
     public function consultar_barra()
     {
-        $datos = session()->get('datos');
-        $barcode = $datos['barcode1'];
-        $barcode_style = $datos['barcode_style1'];
-        $lista_productos = $datos['lista_productos1'];
+        $barcode = session('barcode');
+        $barcode_style = session('barcode_style');
+        $lista_productos = session('lista_productos');
+
+        //$lista_productos = $datos['lista_productos1'];
         return view('administrador.productos.codigo_barras_pdf', compact('barcode', 'barcode_style', 'lista_productos'));
     }
 }
