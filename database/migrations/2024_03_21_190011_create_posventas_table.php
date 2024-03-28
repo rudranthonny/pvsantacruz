@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('posventas', function (Blueprint $table) {
             $table->id();
-            $table->string('almacen_id');
+            $table->unsignedBigInteger('almacen_id');
             $table->string('almacen_name');
-            $table->string('cliente_id');
+            $table->unsignedBigInteger('cliente_id');
             $table->string('cliente_name');
             $table->string('impuesto_porcentaje');
             $table->string('impuesto_monto');
@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('nota_venta');
             $table->string('nota_pago');
             $table->string('productos_totales');
+            $table->foreign('cliente_id')->references('id')->on('clientes');
+            $table->foreign('almacen_id')->references('id')->on('almacens');
             $table->timestamps();
         });
     }
