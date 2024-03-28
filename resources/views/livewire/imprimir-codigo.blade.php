@@ -82,7 +82,7 @@
             <div class="col-12">
                 <button class="btn btn-primary"><i class="fas fa-edit"></i> Actualizar</button>
                 <button class="btn btn-danger" wire:click='reiniciar_lista_productos'><i class="fas fa-sync"></i> Reiniciar</button>
-                <button class="btn btn-secondary" wire:loading.attr="disabled" wire:target="descargar_codigo_barrar_imprimir" wire:click='descargar_codigo_barrar_imprimir'><i class="fas fa-print"></i> Impresión</button>
+                <a href="#" class="btn btn-secondary"  target="_blank" wire:loading.attr="disabled" wire:target="descargar_codigo_barrar_imprimir" wire:click='descargar_codigo_barrar_imprimir'><i class="fas fa-print"></i> Impresión</a>
             </div>
         </div>
         @if ($stipo_papel <> '' && count($lista_productos) > 0)

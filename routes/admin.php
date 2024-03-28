@@ -18,6 +18,7 @@ Route::view("unidades", "administrador.productos.unidades")->middleware('can:adm
 Route::get('search/{id}/buscar_productos', [AdminController::class, 'buscar_productos'])->middleware('can:search.buscar_productos')->name('search.buscar_productos');
 Route::get('search/buscar_productos_compras',[AdminController::class,'buscar_productos_compra'])->middleware('can:search.buscar_productos_compra')->name('search.buscar_productos_compra');
 Route::get('producto/consulta_producto/{id}', ConsultarProducto::class)->middleware('can:admin.productos.consultar')->name('admin.productos.consultar');
+Route::get('producto/consultar_barra', [AdminController::class,'consultar_barra'])->name('admin.productos.consultar_barra');
 #compras
 Route::view("compras", "administrador.compras.compra")->middleware('can:admin.compras')->name("admin.compras");
 #personas

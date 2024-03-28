@@ -11,6 +11,20 @@
             margin-left: 2px;
             margin-top: 2px;
         }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+
         .barcodea4 {
             border: 1px solid #ccc;
             display: block;
@@ -129,6 +143,22 @@
             margin-bottom: 0.5rem !important;
         }
 
+        .col-md-12 {
+            flex: 0 0 auto;
+            width: 100%;
+        }
+
+        .row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(-1* var(--bs-gutter-y));
+            margin-right: calc(-.5* var(--bs-gutter-x));
+            margin-left: calc(-.5* var(--bs-gutter-x));
+        }
+
+
     </style>
 </head>
 <body>
@@ -152,4 +182,8 @@
         </div>
     </div>
 </body>
+<script>
+        window.print();
+
+</script>
 </html>

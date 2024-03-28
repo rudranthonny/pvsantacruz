@@ -63,4 +63,12 @@ class AdminController extends Controller
         }
     }
 
+
+    public function consultar_barra()
+    {
+        $barcode = session('barcode');
+        $barcode_style = session('barcode_style');
+        $lista_productos = session('lista_productos');
+        return view('administrador.productos.codigo_barras_pdf',compact('barcode','barcode_style','lista_productos'));
+    }
 }

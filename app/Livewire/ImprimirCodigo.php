@@ -89,17 +89,12 @@ class ImprimirCodigo extends Component
     public function descargar_codigo_barrar_imprimir(){
         $barcode = $this->barcode;
         $barcode_style = $this->barcode_style;
-
-        if (count($this->lista_productos) > 0) {
-        $nombre_archivo ='Lista_productos-'.date("F j, Y, g:i a").'.pdf';
         $lista_productos = $this->lista_productos;
-        $consultapdf = FacadePdf::loadView('administrador.productos.codigo_barras_pdf', compact('lista_productos','barcode','barcode_style'))->setPaper('a4','landscape');
-        $pdfContent = $consultapdf->output();
-            return response()->streamDownload(
-                fn () => print($pdfContent),
-                $nombre_archivo
-            );
-        }
+
+        return redirect()->route('admin.productos.consultar_barra')
+        ->with('barcode', $barcode)
+        ->with('barcode_style', $barcode_style)
+        ->with('lista_productos', $lista_productos);
     }
 
     public function render()
