@@ -29,3 +29,4 @@ Route::middleware([
 });
 
 Route::get('archivo/{path}/{archivo}', [ArchivoController::class, 'imagen'])->middleware('auth');
+Route::view('comp', 'administrador.pdf.comprobante');

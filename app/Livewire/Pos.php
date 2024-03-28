@@ -17,6 +17,7 @@ use App\Models\ProductoAlmacen;
 use App\Models\Tgasto;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Livewire\Component;
 
 class Pos extends Component
@@ -162,7 +163,7 @@ class Pos extends Component
 
     public function agregaritem(Producto $producto)
     {
-        $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($producto->id,$this->almacen_id);
+        $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($producto->id, $this->almacen_id);
 
         $stock_disponible = false;
         #verificar stock
@@ -170,7 +171,7 @@ class Pos extends Component
             $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
         }
 
-       /*elseif($producto->tipo = 'compuesto') {
+        /*elseif($producto->tipo = 'compuesto') {
             $cantidades_compuesta = [];
             foreach ($producto->pcompuestos as $key => $pcom)
             {
@@ -202,9 +203,8 @@ class Pos extends Component
             $this->items[$item->codigo] = $item->toArray();
             $this->actualizar_montos();
             #si no hay no guardar indicar que no hay stock
-        }
-        else {
-            dd('falta stock');
+        } else {
+            // dd('falta stock');
             $this->dispatch('avertencia_stock');
         }
     }
@@ -223,57 +223,68 @@ class Pos extends Component
         $this->actualizar_montos();
     }
 
+    public function descargar_pdf($posventa)
+    {
+        $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
+        $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa'))->setPaper('a4', 'landscape');
+        $pdfContent = $consultapdf->output();
+        dd("sdgf", $pdfContent);
+        return response()->streamDownload(
+            fn () => print($pdfContent),
+            $nombre_archivo
+        );
+    }
+
     public function guardarPosVenta()
     {
         $almacen = Almacen::find($this->almacen_id);
         if ($almacen) {
-        $cliente = Cliente::find($this->cliente_id);
-        $posventa = new Posventa();
-        $posventa->almacen_id = $almacen->id;
-        $posventa->almacen_name = $almacen->nombre;
-        $posventa->cliente_id = $cliente->id;
-        $posventa->cliente_name = $cliente->name;
-        $posventa->impuesto_porcentaje = $this->impuesto_porcentaje;
-        $posventa->impuesto_monto = $this->impuesto_monto;
-        $posventa->descuento = $this->descuento ?? 0;
-        $posventa->envio = $this->envio ?? 0;
-        $posventa->total_pagar = $this->total_pagar;
-        $posventa->cantidad_recibida = $this->cantidad_recibida;
-        $posventa->monto_pago = $this->monto_pago;
-        $posventa->cambio = $this->cambio;
-        $posventa->nota_venta = $this->nota_venta ?? '';
-        $posventa->nota_pago = $this->nota_pago ?? '';
-        $posventa->productos_totales = collect($this->items)->count();
-        $posventa->save();
-        $posventa->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => $this->cajaform->caja->id, 'signo' => '+', 'monto' => $this->total_pagar]);
-        $this->cajaform->caja->monto += $this->total_pagar;
-        $this->cajaform->caja->save();
+            $cliente = Cliente::find($this->cliente_id);
+            $posventa = new Posventa();
+            $posventa->almacen_id = $almacen->id;
+            $posventa->almacen_name = $almacen->nombre;
+            $posventa->cliente_id = $cliente->id;
+            $posventa->cliente_name = $cliente->name;
+            $posventa->impuesto_porcentaje = $this->impuesto_porcentaje;
+            $posventa->impuesto_monto = $this->impuesto_monto;
+            $posventa->descuento = $this->descuento ?? 0;
+            $posventa->envio = $this->envio ?? 0;
+            $posventa->total_pagar = $this->total_pagar;
+            $posventa->cantidad_recibida = $this->cantidad_recibida;
+            $posventa->monto_pago = $this->monto_pago;
+            $posventa->cambio = $this->cambio;
+            $posventa->nota_venta = $this->nota_venta ?? '';
+            $posventa->nota_pago = $this->nota_pago ?? '';
+            $posventa->productos_totales = collect($this->items)->count();
+            $posventa->save();
+            $posventa->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => $this->cajaform->caja->id, 'signo' => '+', 'monto' => $this->total_pagar]);
+            $this->cajaform->caja->monto += $this->total_pagar;
+            $this->cajaform->caja->save();
 
-        foreach ($this->items as $item) {
-            // $producto->stock -= $item['cantidad'];
-            $posventa_detalle = new PosventaDetalle();
-            $posventa_detalle->producto_id = $item['codigo'];
-            $posventa_detalle->producto_nombre = $item['designacion'];
-            $posventa_detalle->producto_precio = $item['precio'];
-            $posventa_detalle->producto_cantidad = $item['cantidad'];
-            $posventa_detalle->producto_importe = $item['importe'];
-            $posventa_detalle->producto_tipo = $item['tipo'];
-            $posventa_detalle->save();
+            foreach ($this->items as $item) {
+                // $producto->stock -= $item['cantidad'];
+                $posventa_detalle = new PosventaDetalle();
+                $posventa_detalle->producto_id = $item['codigo'];
+                $posventa_detalle->producto_nombre = $item['designacion'];
+                $posventa_detalle->producto_precio = $item['precio'];
+                $posventa_detalle->producto_cantidad = $item['cantidad'];
+                $posventa_detalle->producto_importe = $item['importe'];
+                $posventa_detalle->producto_tipo = $item['tipo'];
+                $posventa_detalle->save();
+            }
+            $this->descargar_pdf($posventa);
+            $this->dispatch('cerrar_modal_postventa');
+            $this->reiniciar();
+        } else {
+            $this->dispatch('advertencia_almacen');
         }
-        $this->dispatch('cerrar_modal_postventa');
-        $this->reiniciar();
-    }
-    else
-    {
-        $this->dispatch('advertencia_almacen');
-    }
     }
 
     public function guardar()
     {
-            $this->validate([
-                'gastoform.monto' => 'required|numeric|between:1,'.($this->cajaform->caja->monto),
-            ]);
+        $this->validate([
+            'gastoform.monto' => 'required|numeric|between:1,' . ($this->cajaform->caja->monto),
+        ]);
         if (isset($this->gastoform->gasto->id)) {
             $this->gastoform->update();
         } else {
