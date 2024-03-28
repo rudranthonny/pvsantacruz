@@ -169,7 +169,8 @@ class Pos extends Component
         if ($producto->tipo = 'estandar') {
             $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
         }
-        elseif($producto->tipo = 'compuesto') {
+
+       /*elseif($producto->tipo = 'compuesto') {
             $cantidades_compuesta = [];
             foreach ($producto->pcompuestos as $key => $pcom)
             {
@@ -177,6 +178,7 @@ class Pos extends Component
                 if ($con_alm_pro) {$cantidades_compuesta[] = $con_alm_pro->stock;}
             }
         }
+        */
 
 
         if ($cantidad_stock_disponible > $cantidad_existente) {
