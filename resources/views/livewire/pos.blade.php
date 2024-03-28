@@ -317,7 +317,6 @@
                         setTimeout(() => {
                         $('#buscar_cliente_oculto').val('');
                         $('#buscar_cliente_oculto').val(ui.item.id);
-                        $('#buscar_cliente_oculto')[0].dispatchEvent(new Event('input'));
                         $('#buscar_cliente').val(ui.item.name);
                         }, 750);
                     }
