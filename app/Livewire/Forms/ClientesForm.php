@@ -11,8 +11,6 @@ class ClientesForm extends Form
 {
     public ?Cliente $cliente;
 
-    #[Rule('required')]
-    public $codigo;
     public $name;
     public $email;
     public $telefono;
@@ -23,7 +21,6 @@ class ClientesForm extends Form
 
     public function set(Cliente $cliente){
         $this->cliente = $cliente;
-        $this->codigo = $cliente->codigo;
         $this->name = $cliente->name;
         $this->email = $cliente->email;
         $this->telefono = $cliente->telefono;
@@ -34,13 +31,13 @@ class ClientesForm extends Form
     }
 
     public function update(){
-        $this->validate();
+        $this->validate(['name'=> 'required']);
         $this->cliente->update($this->all());
     }
 
     public function store()
     {
-        $this->validate();
+        $this->validate(['name'=> 'required']);
         Cliente::create($this->all());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Producto;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ class AdminController extends Controller
         }
         return $listaempleados;
     }
+
     public function buscar_productos_compra(Request $request)
     {
         $term = $request->get('term');
@@ -49,6 +51,24 @@ class AdminController extends Controller
         return $listaempleados;
     }
 
+    public function buscar_cliente(Request $request)
+    {
+        $term = $request->get('term');
+        $querys = Cliente::Where(function($query) use ($term) {
+            $query->where('name','like','%' . $term.'%')
+                    ->orWhere('email', 'like', '%' . $term.'%');
+        })->get();
+
+        foreach ($querys as $query) {
+            $query['label'] =  $query->id."-".$query->name;
+        }
+
+        $listaempleados = $querys;
+        if ($querys->count() == 0) { $listaempleados['label'] = 'Sin resultados';}
+        return $listaempleados;
+    }
+
+
     public function direccionarusuario(){
         #buscar usuario
         $busuario = User::find(Auth::user()->id);
@@ -62,7 +82,6 @@ class AdminController extends Controller
             return redirect()->route('admin.ventas.pos');
         }
     }
-
 
     public function consultar_barra()
     {

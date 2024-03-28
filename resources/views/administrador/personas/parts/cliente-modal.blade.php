@@ -13,9 +13,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="cerrar_modal_cliente_x"></button>
             </div>
             <div class="modal-body">
-                <form wire:submit="guardar" id="formularioCliente">
+                <form wire:submit="guardar_cliente" id="formularioCliente">
                     <div class="row mb-3">
-                        <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-12">
                             <label for="name" class="form-label">Nombre del Cliente <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="name" placeholder="Ingrese Nombre del Cliente"
                                 required wire:model="clientesForm.name">
@@ -23,7 +23,7 @@
                                 <span class="error">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-sm-12">
                             <label for="email" class="form-label">Email</label>
                             <input type="text" class="form-control" id="email" placeholder="Ingrese Email" wire:model="clientesForm.email">
                         </div>
@@ -43,10 +43,6 @@
                             <label for="ciudad" class="form-label">Ciudad</label>
                             <input type="text" class="form-control" id="ciudad" placeholder="Ingrese Ciudad" wire:model="clientesForm.ciudad">
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6">
-                            <label for="num" class="form-label">Número de Impuesto</label>
-                            <input type="text" class="form-control" id="num" placeholder="Ingrese Número de Impuesto" wire:model="clientesForm.numero_impuesto">
-                        </div>
                     </div>
                 </form>
             </div>
@@ -57,3 +53,10 @@
         </div>
     </div>
 </div>
+@script
+    <script>
+        $wire.on('cerrar_modal_cliente', reservacion => {
+            ventana = document.getElementById('cerrar_modal_cliente_x').click();
+        });
+    </script>
+@endscript

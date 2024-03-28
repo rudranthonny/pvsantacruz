@@ -35,10 +35,12 @@ class GestionarCliente extends Component
         }
     }
 
-    public function guardar()
+    public function guardar_cliente()
     {
         if (isset($this->clientesForm->cliente->id)) {$this->clientesForm->update();}
-        else {$this->clientesForm->store();}
+        else {
+            $this->clientesForm->store();
+        }
         $this->dispatch('cerrar_modal_cliente');
     }
 

@@ -44,21 +44,17 @@
                                             <th>Teléfono</th>
                                             <th>Email</th>
                                             <th>Número de Impuesto</th>
-                                            <th>Deuda total de venta</th>
-                                            <th>Deuda total de devolución de venta</th>
                                             <th>Accion</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse ($clientes as $cliente)
                                             <tr class="text-center">
-                                                <td>{{ $cliente->codigo }}</td>
+                                                <td>{{ $cliente->id }}</td>
                                                 <td>{{ $cliente->name }}</td>
                                                 <td>{{ $cliente->telefono }}</td>
                                                 <td>{{ $cliente->email }}</td>
                                                 <td>{{ $cliente->numero_impuesto }}</td>
-                                                <td>{{ " " }}</td>
-                                                <td>{{ " " }}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-primary"
                                                         data-bs-toggle="modal" data-bs-target="#modalCliente"
@@ -98,10 +94,4 @@
         </div>
     </div>
 </div>
-@script
-    <script>
-        $wire.on('cerrar_modal_cliente', reservacion => {
-            ventana = document.getElementById('cerrar_modal_cliente_x').click();
-        });
-    </script>
-@endscript
+

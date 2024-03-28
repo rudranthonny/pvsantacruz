@@ -51,12 +51,16 @@
                                 @endif
                             </div>
                         @endif
+                        <div class="col-12">
+                            <input type="hidden" id="buscar_cliente_oculto" wire:model.live="bclienteoculto">
+                        </div>
                         <div class="col-12 my-1">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="usuariosform_username"
-                                    placeholder="Escribir Usuario" wire:model.live="usuariosform.username">
-                                <div class="input-group-text"><i class="bi bi-person-add"></i> <span
-                                        class="text-danger">*</span></div>
+                                <input type="text" class="form-control" id="buscar_cliente"
+                                    placeholder="Escribir Usuario" wire:model.live="bcliente">
+                                <div class="input-group-text" data-bs-toggle="modal" data-bs-target="#modalCliente" wire:click='modal_cliente'>
+                                    <i class="bi bi-person-add"></i> <span class="text-danger">*</span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 my-1">
@@ -263,9 +267,11 @@
     @include('livewire.modal.pos-modal')
     @include('administrador.gastos.parts.gasto-modal')
     @include('administrador.ventas.parts.modal_reporte_caja')
+    @include('administrador.personas.parts.cliente-modal')
 </div>
 @script
     <script>
+
         $wire.on('cerrar_modal_caja', reservacion => {
             ventana = document.getElementById('cerrar_modal_caja_x').click();
         });
@@ -289,5 +295,33 @@
             });
             ventana = document.getElementById('cerrar_modal_postventa_x').click();
         });
+
+        $wire.on('activar_buscador_cliente', ()  =>
+            {
+                $('#buscar_cliente').autocomplete({
+                source: function(request,response){
+                    $.ajax({
+                    url: '{{route("search.buscar_cliente")}}',
+                    dataType: 'json',
+                    data: {
+                        term: request.term
+                    },
+                    success: function(data){
+                        response(data)
+                    }
+                });
+                },
+                minLength: 3,
+                select: function(event,ui)
+                    {
+                        setTimeout(() => {
+                        $('#buscar_cliente_oculto').val('');
+                        $('#buscar_cliente_oculto').val(ui.item.id);
+                        $('#buscar_cliente_oculto')[0].dispatchEvent(new Event('input'));
+                        $('#buscar_cliente').val(ui.item.name);
+                        }, 750);
+                    }
+                    });
+            });
     </script>
 @endscript

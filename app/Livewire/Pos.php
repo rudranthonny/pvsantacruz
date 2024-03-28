@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\CajaForm;
+use App\Livewire\Forms\ClientesForm;
 use App\Livewire\Forms\GastosForm;
 use App\Livewire\Forms\ProductoForm;
 use App\Models\Almacen;
@@ -25,6 +26,7 @@ class Pos extends Component
     public GastosForm $gastoform;
     public CajaForm $cajaform;
     public ProductoForm $productoform;
+    public ClientesForm $clientesForm;
     public $cajero;
     public $almacen_id;
     public $cliente_id;
@@ -48,12 +50,33 @@ class Pos extends Component
     public $nota_pago;
     public $titlemodal = 'Añadir';
     public $configuracion;
+    public $bclienteoculto,$bcliente;
+
+    /*Cliente*/
+
+    public function updatedBcliente()
+    {
+        $this->dispatch('activar_buscador_cliente');
+    }
+
+    public function modal_cliente()
+    {
+        $this->reset('titlemodal');
+        $this->clientesForm->reset();
+    }
+
+    public function guardar_cliente()
+    {
+            $this->clientesForm->store();
+            $this->dispatch('cerrar_modal_cliente');
+    }
 
     public function modal_apertura_caja()
     {
         $this->cajaform->reset();
         $this->cajaform->monto_apertura = 0;
     }
+
     public function crear_caja()
     {
         $this->cajaform->store();
@@ -262,7 +285,8 @@ class Pos extends Component
             $this->cajaform->caja->monto += $this->total_pagar;
             $this->cajaform->caja->save();
 
-            foreach ($this->items as $item) {
+            foreach ($this->items as $item)
+            {
                 // $producto->stock -= $item['cantidad'];
                 $posventa_detalle = new PosventaDetalle();
                 $posventa_detalle->producto_id = $item['codigo'];
