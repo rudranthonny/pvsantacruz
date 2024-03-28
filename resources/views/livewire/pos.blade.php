@@ -56,8 +56,8 @@
                         </div>
                         <div class="col-12 my-1">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="buscar_cliente"
-                                    placeholder="Escribir Usuario" wire:model.live="bcliente">
+                                <input type="text" class="form-control" id="buscar_cliente" autocomplete="off"
+                                    placeholder="Escribir Usuario" wire:model.live="bcliente" >
                                 <div class="input-group-text" data-bs-toggle="modal" data-bs-target="#modalCliente" wire:click='modal_cliente'>
                                     <i class="bi bi-person-add"></i> <span class="text-danger">*</span>
                                 </div>
@@ -203,7 +203,7 @@
                             <div class="input-group">
                                 <div class="input-group-text"><i class="bi bi-search"></i></div>
                                 <input type="text" class="form-control" id="buscar_proveedor"
-                                    placeholder="Buscar Proveedor" wire:model.live="search">
+                                    placeholder="Buscar Proveedor">
                             </div>
                         </div>
                     </div>
@@ -317,6 +317,7 @@
                         setTimeout(() => {
                         $('#buscar_cliente_oculto').val('');
                         $('#buscar_cliente_oculto').val(ui.item.id);
+                        console.log($('#buscar_cliente_oculto').val());
                         $('#buscar_cliente_oculto')[0].dispatchEvent(new Event('input'));
                         $('#buscar_cliente').val(ui.item.name);
                         }, 750);

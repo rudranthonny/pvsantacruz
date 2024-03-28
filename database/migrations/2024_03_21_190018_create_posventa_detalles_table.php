@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('posventa_id');
             $table->string('producto_id');
+            $table->string('producto_codigo');
             $table->string('producto_nombre');
             $table->string('producto_precio');
             $table->string('producto_cantidad');

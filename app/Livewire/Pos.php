@@ -50,7 +50,7 @@ class Pos extends Component
     public $nota_pago;
     public $titlemodal = 'Añadir';
     public $configuracion;
-    public $bclienteoculto,$bcliente;
+    public $bclienteoculto, $bcliente;
 
     /*Cliente*/
 
@@ -67,8 +67,8 @@ class Pos extends Component
 
     public function guardar_cliente()
     {
-            $this->clientesForm->store();
-            $this->dispatch('cerrar_modal_cliente');
+        $this->clientesForm->store();
+        $this->dispatch('cerrar_modal_cliente');
     }
 
     public function modal_apertura_caja()
@@ -218,6 +218,7 @@ class Pos extends Component
             $importe = $producto->precio * $cantidad;
 
             $item = new PosventaDetalle();
+            $item->id = $producto->id;
             $item->codigo = $producto->codigo;
             $item->designacion = $producto->designacion;
             $item->precio = $producto->precio;
@@ -228,7 +229,7 @@ class Pos extends Component
             $this->actualizar_montos();
             #si no hay no guardar indicar que no hay stock
         } else {
-             dd('falta stock');
+            dd('falta stock');
             //$this->dispatch('avertencia_stock');
         }
     }
@@ -285,11 +286,11 @@ class Pos extends Component
             $this->cajaform->caja->monto += $this->total_pagar;
             $this->cajaform->caja->save();
 
-            foreach ($this->items as $item)
-            {
+            foreach ($this->items as $item) {
                 // $producto->stock -= $item['cantidad'];
                 $posventa_detalle = new PosventaDetalle();
                 $posventa_detalle->producto_id = $item['codigo'];
+                $posventa_detalle->producto_codigo = $item['codigo'];
                 $posventa_detalle->producto_nombre = $item['designacion'];
                 $posventa_detalle->producto_precio = $item['precio'];
                 $posventa_detalle->producto_cantidad = $item['cantidad'];
@@ -297,16 +298,16 @@ class Pos extends Component
                 $posventa_detalle->producto_tipo = $item['tipo'];
                 $posventa_detalle->posventa_id = $posventa->id;
                 $posventa_detalle->save();
-                $bcodigo = Producto::where('codigo',$item['codigo'])->first();
-                $this->productoform->actualizar_stock_producto($bcodigo->id,$posventa->almacen_id,'-',$posventa_detalle->producto_cantidad);
+                $bcodigo = Producto::where('codigo', $item['codigo'])->first();
+                $this->productoform->actualizar_stock_producto($bcodigo->id, $posventa->almacen_id, '-', $posventa_detalle->producto_cantidad);
             }
             #pdf descargar
             $paper_examen = 0;
             $paper_heigth = 352;
-            $paper_heigth =$paper_examen + $paper_heigth;
+            $paper_heigth = $paper_examen + $paper_heigth;
             $configuracion = Configuracion::find(1);
             $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
-            $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa','configuracion'))->setPaper([0, 0, 215.25, $paper_heigth+12.2*2*count($this->items)]);
+            $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + 12.2 * 2 * count($this->items)]);
             $this->dispatch('cerrar_modal_postventa');
             $this->reiniciar();
             $pdfContent = $consultapdf->output();
