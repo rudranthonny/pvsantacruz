@@ -37,6 +37,23 @@ class AdminController extends Controller
     public function buscar_productos_compra(Request $request)
     {
         $term = $request->get('term');
+        $querys = Producto::where('tipo','estandar')->Where(function($query) use ($term) {
+            $query->where('designacion','like','%' . $term.'%')
+                    ->orWhere('codigo', 'like', '%' . $term.'%');
+        })->get();
+
+        foreach ($querys as $query) {
+            $query['label'] =  $query->codigo."-".$query->designacion;
+        }
+
+        $listaempleados = $querys;
+        if ($querys->count() == 0) { $listaempleados['label'] = 'Sin resultados';}
+        return $listaempleados;
+    }
+
+    public function buscar_productos_compra2(Request $request)
+    {
+        $term = $request->get('term');
         $querys = Producto::Where(function($query) use ($term) {
             $query->where('designacion','like','%' . $term.'%')
                     ->orWhere('codigo', 'like', '%' . $term.'%');
@@ -85,9 +102,10 @@ class AdminController extends Controller
 
     public function consultar_barra()
     {
-        $barcode = session('barcode');
-        $barcode_style = session('barcode_style');
-        $lista_productos = session('lista_productos');
+        $barcode = session('barcode1');
+        $barcode_style = session('barcode_style1');
+        $lista_productos = session('lista_productos1');
         return view('administrador.productos.codigo_barras_pdf',compact('barcode','barcode_style','lista_productos'));
     }
+
 }

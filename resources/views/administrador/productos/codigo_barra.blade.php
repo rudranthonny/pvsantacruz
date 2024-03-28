@@ -156,7 +156,7 @@
             $('#buscar_producto').autocomplete({
             source: function(request,response){
                 $.ajax({
-                url: '{{route("search.buscar_productos_compra")}}',
+                url: '{{route("search.buscar_productos_compra2")}}',
                 dataType: 'json',
                 data: {
                     term: request.term

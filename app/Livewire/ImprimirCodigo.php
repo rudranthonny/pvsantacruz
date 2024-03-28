@@ -90,11 +90,10 @@ class ImprimirCodigo extends Component
         $barcode = $this->barcode;
         $barcode_style = $this->barcode_style;
         $lista_productos = $this->lista_productos;
-
         return redirect()->route('admin.productos.consultar_barra')
-        ->with('barcode', $barcode)
-        ->with('barcode_style', $barcode_style)
-        ->with('lista_productos', $lista_productos);
+        ->with('barcode1', $barcode)
+        ->with('barcode_style1', $barcode_style)
+        ->with('lista_productos1', $lista_productos);
     }
 
     public function render()
