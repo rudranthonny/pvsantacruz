@@ -244,15 +244,36 @@ class ProductoForm extends Form
 
     public function actualizar_stock_producto($producto_id,$almacen_id,$signo,$cantidad)
     {
-        $producto_almacen = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
-        if ($producto_almacen) {
-            if ($signo == '+') {
-                $producto_almacen->stock = $producto_almacen->stock+$cantidad;
+        $bproducto = Producto::find($producto_id);
+        if ($bproducto->tipo == 'estandar')
+        {
+            $producto_almacen = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+            if ($producto_almacen)
+            {
+                if ($signo == '+') {
+                    $producto_almacen->stock = $producto_almacen->stock+$cantidad;
+                }
+                if ($signo == '-') {
+                    $producto_almacen->stock = $producto_almacen->stock-$cantidad;
+                }
+                $producto_almacen->save();
             }
-            if ($signo == '-') {
-                $producto_almacen->stock = $producto_almacen->stock-$cantidad;
+        }
+        elseif ($bproducto->tipo == 'compuesto')
+        {
+            foreach ($bproducto->pcompuestos as $key => $pcom) {
+                $producto_almacen = ProductoAlmacen::where('producto_id',$pcom->producto_asignado_id)->where('almacen_id',$almacen_id)->first();
+                if ($producto_almacen)
+                {
+                    if ($signo == '+') {
+                        $producto_almacen->stock = $producto_almacen->stock+$cantidad;
+                    }
+                    if ($signo == '-') {
+                        $producto_almacen->stock = $producto_almacen->stock-$cantidad;
+                    }
+                    $producto_almacen->save();
+                }
             }
-            $producto_almacen->save();
         }
     }
 }

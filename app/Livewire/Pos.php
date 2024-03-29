@@ -112,7 +112,17 @@ class Pos extends Component
         $this->updatedAlmacenId();
         $this->impuesto_porcentaje = 0;
         $this->cajero = User::find(Auth::user()->id);
+        $this->cliente_por_defecto();
         $this->cajaform->caja = $this->cajero->cajas->where('fecha_cierre', false)->first();
+    }
+
+    public function cliente_por_defecto(){
+        $bcliente = Cliente::find(1);
+        if ($bcliente)
+        {
+            $this->bcliente = $bcliente->name;
+            $this->bclienteoculto = $bcliente->id;
+        }
     }
 
     public function updatedAlmacenId()
@@ -386,7 +396,7 @@ class Pos extends Component
             foreach ($this->items as $item) {
                 // $producto->stock -= $item['cantidad'];
                 $posventa_detalle = new PosventaDetalle();
-                $posventa_detalle->producto_id = $item['codigo'];
+                $posventa_detalle->producto_id = $item['id'];
                 $posventa_detalle->producto_codigo = $item['codigo'];
                 $posventa_detalle->producto_nombre = $item['designacion'];
                 $posventa_detalle->producto_precio = $item['precio'];

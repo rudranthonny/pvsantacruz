@@ -220,8 +220,12 @@
                                             <div class="col-12 m-0 p-0" style="padding: 0px;">
                                                 {{ $product->producto->designacion }}<br>
                                                 {{ $product->producto->codigo }}<br>
-                                                <span
-                                                    class="badge text-bg-warning">{{$configuracion->moneda->simbolo.number_format($product->producto->precio, 2) }}</span>
+                                                <span class="badge text-bg-warning">
+                                                    {{$configuracion->moneda->simbolo.number_format($product->producto->precio, 2) }}
+                                                </span>
+                                                <span class="badge text-bg-info">
+                                                    {{$product->producto->cunidad->name_cor." ".$product->stock }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
