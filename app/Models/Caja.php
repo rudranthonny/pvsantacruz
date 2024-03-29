@@ -14,4 +14,8 @@ class Caja extends Model
     public function mcajas(){
         return  $this->hasMany(MCaja::class);
     }
+
+    public function user(){
+        return  $this->belongsTo(User::class);
+    }
 }

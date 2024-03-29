@@ -6,7 +6,7 @@
                     <div class="row justify-content-between" style="text-align: right;">
                         <div class="col-auto">
                             <a href="{{ route('admin.index') }}">
-                                <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
+                                <img src="{{ asset($configuracion->logo) }}" alt="" width="64px;">
                             </a>
                         </div>
                         <div class="row col-auto align-items-center">
@@ -17,7 +17,7 @@
                                 <button role="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalGasto"><i class="bi bi-bookmark-dash-fill"></i></button>
                             </div>
                             <div class="col-auto">
-                                <img src="{{ asset('imagenes/logo.png') }}" alt="" width="64px;">
+                                <img src="{{ asset($configuracion->logo) }}" alt="" width="64px;">
                             </div>
                         </div>
                     </div>
@@ -38,10 +38,10 @@
                                     {{ $cajero->cajas->where('fecha_cierre', false)->first()->fecha_apertura }} </b><br>
                                 @if ($cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first())
                                     Monto Inicial :
-                                    <b>s/.{{ $cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first()->monto }}</b>
+                                    <b>{{$configuracion->moneda->simbolo.$cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first()->monto }}</b>
                                     <br>
                                     Monto Actual :
-                                    <b>s/.{{ $cajero->cajas->where('fecha_cierre', false)->first()->monto }}</b>
+                                    <b>{{$configuracion->moneda->simbolo.$cajero->cajas->where('fecha_cierre', false)->first()->monto }}</b>
                                     <br>
                                     <button class="btn btn-success"
                                         wire:click="cerrar_caja('{{ $cajero->cajas->where('fecha_cierre', false)->first()->id }}')"
@@ -99,14 +99,14 @@
                                                 <span class="badge text-bg-success">{{ $item['designacion'] }}</span>
                                                 <i style="color:green;" class="bi bi-pencil-square"></i>
                                             </td>
-                                            <td>{{ $item['precio'] }}</td>
+                                            <td>{{ $configuracion->moneda->simbolo.$item['precio'] }}</td>
                                             <td>
                                                 @php $valor_cantidad = 'items.'.$key.'.cantidad';@endphp
-                                                <center><input type="number" class="form-control" style="width: 80px;"
+                                                <center><input type="number" class="form-control text-center" style="width: 80px;"
                                                         min=1 wire:model.live='{{ $valor_cantidad }}'>
                                                 </center>
                                             </td>
-                                            <td>{{ $item['importe'] }}</td>
+                                            <td>{{ $configuracion->moneda->simbolo.$item['importe'] }}</td>
                                             <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"
                                                     role="button"
                                                     wire:click="eliminaritem('{{ $key }}')"></i>
@@ -135,7 +135,7 @@
                                 <div class="col-sm-4 col-12">
                                     <label for="descuento" class="form-label"><b>Descuento</b></label>
                                     <div class="input-group">
-                                        <div class="input-group-text">S/</div>
+                                        <div class="input-group-text">{{$configuracion->moneda->simbolo}}</div>
                                         <input type="number" class="form-control" min=0 id="descuento" placeholder="0"
                                             wire:model.live="descuento">
                                     </div>
@@ -143,7 +143,7 @@
                                 <div class="col-sm-4 col-12">
                                     <label for="envio" class="form-label"><b>Envió</b></label>
                                     <div class="input-group">
-                                        <div class="input-group-text">S/ </div>
+                                        <div class="input-group-text">{{$configuracion->moneda->simbolo}} </div>
                                         <input type="number" class="form-control" min=0 id="envio"
                                             placeholder="0" wire:model.live="envio">
                                     </div>
@@ -221,7 +221,7 @@
                                                 {{ $product->producto->designacion }}<br>
                                                 {{ $product->producto->codigo }}<br>
                                                 <span
-                                                    class="badge text-bg-warning">{{ number_format($product->producto->precio, 2) }}</span>
+                                                    class="badge text-bg-warning">{{$configuracion->moneda->simbolo.number_format($product->producto->precio, 2) }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -245,7 +245,7 @@
                                                 {{ $productoscompuesto->designacion }}<br>
                                                 {{ $productoscompuesto->codigo }}<br>
                                                 <span
-                                                    class="badge text-bg-warning">{{ number_format($productoscompuesto->precio, 2) }}</span>
+                                                    class="badge text-bg-warning">{{$configuracion->moneda->simbolo.number_format($productoscompuesto->precio, 2) }}</span>
                                             </div>
                                         </div>
                                     </div>

@@ -38,7 +38,6 @@
                                             <th class="text-center">Signo</th>
                                             <th class="text-center">Ingreso</th>
                                             <th class="text-center">Egreso</th>
-                                            <th class="text-center">Total</th>
                                             <th class="text-center">Acciones</th>
                                         </tr>
                                     </thead>
@@ -49,20 +48,25 @@
                                                 <td class="text-center">{{$mcaja->signo}}</td>
                                                 <td class="text-center">
                                                     @if ($mcaja->signo == '+')
-                                                    {{$mcaja->monto}}
+                                                    {{$configuracion->moneda->simbolo.$mcaja->monto}}
                                                     @else
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
                                                     @if ($mcaja->signo == '-')
-                                                    {{$mcaja->monto}}
+                                                        {{$configuracion->moneda->simbolo.$mcaja->monto}}
                                                     @else
                                                     @endif
                                                 </td>
-                                                <td class="text-center">{{$mcaja->monto}}</td>
                                                 <td class="text-center">Acciones</td>
                                             </tr>
                                         @endforeach
+                                            <tr>
+                                                <td colspan="2" class="table-dark text-center">Total</td>
+                                                <td class="table-success text-center">{{$configuracion->moneda->simbolo.$cajero->cajas->where('fecha_cierre', false)->first()->mcajas->where('signo','+')->sum('monto')}}</td>
+                                                <td class="table-danger text-center">{{$configuracion->moneda->simbolo.$cajero->cajas->where('fecha_cierre', false)->first()->mcajas->where('signo','-')->sum('monto')}}</td>
+                                                <td class="table-info text-center">{{$configuracion->moneda->simbolo.($cajero->cajas->where('fecha_cierre', false)->first()->mcajas->where('signo','+')->sum('monto')-$cajero->cajas->where('fecha_cierre', false)->first()->mcajas->where('signo','-')->sum('monto'))}}</td>
+                                            </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -71,7 +75,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" >Reporte de Caja</button>
+                <button type="button" class="btn btn-danger" wire:loading.attr="disabled" wire:target="descargar_reporte_caja"   wire:click='descargar_reporte_caja' >Descargar Reporte</button>
             </div>
         </div>
     </div>

@@ -52,8 +52,13 @@ class Pos extends Component
     public $configuracion;
     public $bclienteoculto = '', $bcliente = '';
 
+    /*caja*/
+    public function descargar_reporte_caja()
+    {
+        $caja = Caja::where('user_id',Auth::user()->id)->whereNull('fecha_cierre')->first();
+        return $this->cajaform->descargar_reporte_caja_pdf($caja);
+    }
     /*Cliente*/
-
     public function updatedBcliente()
     {
         $this->dispatch('activar_buscador_cliente');
@@ -260,7 +265,6 @@ class Pos extends Component
 
     public function descargar_pdf($posventa)
     {
-
         $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
         $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa'))->setPaper('a4', 'landscape');
         $pdfContent = $consultapdf->output();
@@ -379,6 +383,7 @@ class Pos extends Component
     {
         $caja_id->fecha_cierre = now();
         $caja_id->save();
+        return $this->cajaform->descargar_reporte_caja_pdf($caja_id);
     }
 
     public function render()

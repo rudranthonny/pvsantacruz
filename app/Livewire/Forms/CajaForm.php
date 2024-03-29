@@ -3,9 +3,11 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Caja;
+use App\Models\Configuracion;
 use App\Models\MCaja;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Livewire\Form;
 
 class CajaForm extends Form
@@ -64,6 +66,20 @@ class CajaForm extends Form
             $n_mcaja->m_cajable_id = 1;
             $n_mcaja->m_cajable_type = 'apertura_caja';
             $n_mcaja->save();
+        }
+    }
+
+    public function descargar_reporte_caja_pdf(Caja $caja)
+    {
+        if ($caja == true) {
+            $configuracion = Configuracion::find(1);
+            $nombre_archivo = 'Reprte-caja'.$caja->user->lastname.'-'.$caja->fecha_apertura.'.pdf';
+            $consultapdf = FacadePdf::loadView('administrador.caja.reporte_caja_pdf', compact('caja','configuracion'))->setPaper('a4', 'landscape');
+            $pdfContent = $consultapdf->output();
+            return response()->streamDownload(
+                fn () => print($pdfContent),
+                $nombre_archivo
+            );
         }
     }
 }
