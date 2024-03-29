@@ -103,7 +103,7 @@
                                             <td>
                                                 @php $valor_cantidad = 'items.'.$key.'.cantidad';@endphp
                                                 <center><input type="number" class="form-control text-center" style="width: 80px;"
-                                                        min=1 wire:model.live='{{ $valor_cantidad }}'>
+                                                        min=1 wire:model.live.debounce.500ms='{{ $valor_cantidad }}'>
                                                 </center>
                                             </td>
                                             <td>{{ $configuracion->moneda->simbolo.$item['importe'] }}</td>

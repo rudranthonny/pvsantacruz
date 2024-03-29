@@ -54,7 +54,7 @@
                             <div class="input-group">
                                 <div class="input-group-text"><i class="fas fa-search"></i></div>
                                 <input type="text" class="form-control" id="buscar_producto"
-                                    placeholder="Escanear / Buscar producto por nombre de código" wire:model.live='buscar_producto' autocomplete="off">
+                                    placeholder="Escanear / Buscar producto por nombre de código" wire:model.live.debounce.500ms='buscar_producto' autocomplete="off">
                             </div>
                         </div>
                     </div>
