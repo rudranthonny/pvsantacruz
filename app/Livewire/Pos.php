@@ -425,6 +425,7 @@ class Pos extends Component
         } else {
             $this->dispatch('advertencia_almacen');
         }
+        $this->cliente_por_defecto();
     }
 
     public function guardar()
