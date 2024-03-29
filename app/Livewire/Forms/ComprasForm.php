@@ -74,11 +74,15 @@ class ComprasForm extends Form
                 'detalle_compra' => 'required',
                 ]
         );
-        #si cambiaron el almacen eliminar todos el detalle
+
+        #eliminar el stock de la compra
+        if ($this->compra->estado == 1) { $this->eliminar_stock_compra($this->compra);}
+
         $guardar_almacen_anterior = $this->compra->almacen_id;
         if($this->compra->almacen_id != $this->almacen) {
             $this->eliminar_dcompra_compra($this->compra);
         }
+
         $this->compra->fecha = $this->fecha;
         $this->compra->proveedor_id= $this->prove;
         $this->compra->almacen_id = $this->almacen;
@@ -92,12 +96,17 @@ class ComprasForm extends Form
         $this->compra->nota =  $this->nota;
         $this->compra->debido = $this->total;
         $this->compra->save();
+
         if($guardar_almacen_anterior != $this->almacen) {
             $this->generar_dcompra_compra($this->compra->id);
         }
+
         else {
             $this->actualizar_dcompra_compra();
         }
+
+        $consultar_compra = Compra::find($this->compra->id);
+        if ($this->compra->estado == 1) { $this->agregar_stock_compra($consultar_compra);}
     }
 
     public function actualizar_dcompra_compra(){
@@ -121,7 +130,6 @@ class ComprasForm extends Form
                 $dcompra->total_parcial = $this->detalle_compra[$dcompra->codigo]['total_parcial'];
                 $dcompra->producto_id = $this->detalle_compra[$dcompra->codigo]['producto_id'];
                 $dcompra->save();
-                $this->actualizar_stock_almacen($dcompra->producto_id,$cantidad_anterior,$dcompra->cantidad,$this->compra->almacen_id);
             }
             else {
                 $dcompra->delete();
@@ -150,16 +158,28 @@ class ComprasForm extends Form
             $n_dcompra->producto_id = $this->detalle_compra[$key]['producto_id'];
             $n_dcompra->compra_id = $compra_id;
             $n_dcompra->save();
-            $this->agregar_stock_almacen($this->detalle_compra[$key]['producto_id'],$n_dcompra->cantidad,$this->almacen);
         }
     }
 
-    public function eliminar_dcompra_compra(Compra $compra){
+    public function agregar_stock_compra(Compra $compra){
+        foreach ($compra->dcompras as $key => $dcompra) {
+            $this->agregar_stock_almacen($dcompra->producto_id,$dcompra->cantidad,$compra->almacen_id);
+        }
+    }
+
+    public function eliminar_stock_compra(Compra $compra){
         foreach ($compra->dcompras as $key => $dcompra) {
             $this->quitar_stock_almacen($dcompra->producto_id,$dcompra->cantidad,$compra->almacen_id);
+        }
+    }
+
+    public function eliminar_dcompra_compra(Compra $compra)
+    {
+        foreach ($compra->dcompras as $key => $dcompra) {
             $dcompra->delete();
         }
     }
+
     public function eliminar_compra()
     {
         $this->eliminar_dcompra_compra($this->compra);
@@ -211,7 +231,9 @@ class ComprasForm extends Form
             $n_dcompra->producto_id = $this->detalle_compra[$key]['producto_id'];
             $n_dcompra->compra_id = $n_compra->id;
             $n_dcompra->save();
-            $this->agregar_stock_almacen($this->detalle_compra[$key]['producto_id'],$n_dcompra->cantidad,$n_compra->almacen_id);
+            if ($n_compra->estado == 1) {
+                $this->agregar_stock_almacen($this->detalle_compra[$key]['producto_id'],$n_dcompra->cantidad,$n_compra->almacen_id);
+            }
         }
     }
 

@@ -118,9 +118,15 @@ class ProductoForm extends Form
         if ($this->tipo == 'compuesto') {
             $this->validate(['productos_compuesto' => 'required']);
         }
+        if ($this->marca_id == false) {
+            $this->marca_id = null;
+        }
 
+        $this->marca_id = ($this->marca_id == false) ? null : $this->marca_id;
         (isset($this->producto)) ? $this->updat() : $this->producto = Producto::create($this->all());
-        if ($imagen) {
+
+        if ($imagen)
+        {
             $this->eliminar_imagen($this->producto->imagen);
             $this->producto->imagen = $this->subir_imagen($imagen, $this->producto->id, "producto_img");
             $this->producto->save();

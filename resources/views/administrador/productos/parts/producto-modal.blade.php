@@ -19,7 +19,7 @@
                             <label for="designacion" class="form-label">Nombre del Producto <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="designacion"
-                                placeholder="Ingrese Designacion" wire:model="productoForm.designacion">
+                                placeholder="Escribe el producto" wire:model="productoForm.designacion">
                             @error('productoForm.designacion')
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror
@@ -52,7 +52,7 @@
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-4 col-lg-4">
                             <label for="marca_id" class="form-label">Marca</label>
-                            <select class="form-control" id="marca_id" wire:model="productoForm.marca_id">
+                            <select  class="form-select" id="marca_id" wire:model="productoForm.marca_id">
                                 <option value="">Elegir</option>
                                 @forelse ($marcas as $marca)
                                     <option value="{{ $marca->id }}">{{ $marca->name }}</option>

@@ -85,6 +85,7 @@ class GestionarCompras extends Component
         $this->item_compra_unidad    = $this->comprasform->detalle_compra[$item_id]['compra_unidad'];
         $this->item_cantidad         = $this->comprasform->detalle_compra[$item_id]['cantidad'];
         $this->item_nombre_producto  = $this->comprasform->detalle_compra[$item_id]['nombre_producto'];
+        $this->item_producto_id      = $this->comprasform->detalle_compra[$item_id]['producto_id'];
     }
 
     public function modificar_item(){

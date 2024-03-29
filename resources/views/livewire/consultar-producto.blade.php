@@ -1,5 +1,12 @@
 <div>
     <div class="card">
+        <div class="row m-2 mt-4">
+            <div class="">
+                <a class="btn btn-success" href="{{route('admin.productos')}}" >
+                    <i class="fas fa-undo"></i> Volver a Productos
+                </a>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12 px-4 pt-4">
                 @php
@@ -29,7 +36,11 @@
                     </tr>
                     <tr>
                         <td>Marca</td>
-                        <td>{{$producto->marca->name}}</td>
+                        <td>
+                            @if (isset($producto->marca))
+                            {{$producto->marca->name}}
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <td>Costo</td>
