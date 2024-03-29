@@ -9,6 +9,7 @@ use App\Livewire\Forms\ProductoForm;
 use App\Models\Almacen;
 use App\Models\Caja;
 use App\Models\Cliente;
+use App\Models\CompuestoProducto;
 use App\Models\Configuracion;
 use App\Models\Gasto;
 use App\Models\Posventa;
@@ -196,31 +197,42 @@ class Pos extends Component
         $this->actualizar_Cambio();
     }
 
-    public function agregaritem(Producto $producto)
-    {
-        $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($producto->id, $this->almacen_id);
-
+    public function verificar_stock_disponible(Producto $producto,$almacen_id){
         $stock_disponible = false;
-        #verificar stock
-        if ($producto->tipo = 'estandar') {
+        $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($producto->id, $almacen_id);
+        if ($producto->tipo == 'estandar')
+        {
             $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
+            #verificar si no productos compuesta en en la lista
+            $compuesto_producto = CompuestoProducto::where('producto_asignado_id',$producto->id)->get();
+            $lista_cantidades2 = 0;
+            foreach ($compuesto_producto as $tey => $pcomp) {
+                $lcantidad = isset($this->items[$pcomp->producto_principal->codigo]['cantidad']) ? $this->items[$pcomp->producto_principal->codigo]['cantidad'] : 0;
+                $lista_cantidades2 = $lista_cantidades2+$lcantidad;
+            }
+            $cantidad_stock_disponible = $cantidad_stock_disponible-$lista_cantidades2;
         }
 
-        /*
-        elseif($producto->tipo = 'compuesto')
-        {
-            $cantidades_compuesta = [];
-            foreach ($producto->pcompuestos as $key => $pcom)
-            {
-                $con_alm_pro = ProductoAlmacen::where('producto_id',$pcom->producto_asignado_id)->where('almacen_id',$this->almacen_id)->first();
-                if ($con_alm_pro) {$cantidades_compuesta[] = $con_alm_pro->stock;}
+        elseif($producto->tipo == 'compuesto') {
+            $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
+            $lista_cantidades = [];
+            foreach ($producto->pcompuestos as $key => $pcom) {
+                $lista_cantidades[] = isset($this->items[$pcom->producto->codigo]['cantidad']) ? $this->items[$pcom->producto->codigo]['cantidad'] : 0;
             }
+            $cantidad_stock_disponible = $cantidad_stock_disponible-max($lista_cantidades);
         }
-        */
+
+
 
         if ($cantidad_stock_disponible > $cantidad_existente) {
             $stock_disponible = true;
         }
+        return $stock_disponible;
+    }
+
+    public function agregaritem(Producto $producto)
+    {
+        $stock_disponible = $this->verificar_stock_disponible($producto, $this->almacen_id);
         if ($stock_disponible) {
             #si hay guardar
             $cantidad = 1;
@@ -240,7 +252,8 @@ class Pos extends Component
             $this->items[$item->codigo] = $item->toArray();
             $this->actualizar_montos();
             #si no hay no guardar indicar que no hay stock
-        } else {
+        }
+        else {
            // dd('falta stock');
             $this->dispatch('avertencia_stock');
         }
@@ -249,12 +262,20 @@ class Pos extends Component
 
     public function updatedItems()
     {
-        foreach ($this->items as $key => $item) {
-            $this->items[$key]['importe'] = $item['precio'] * $item['cantidad'];
-        }
-        $this->actualizar_montos();
-        $this->dispatch('dirigir_cursor');
+        if ($this->almacen_id == true) {
+            foreach ($this->items as $key => $item) {
+                #verificar si la cantidad no supere el stock
+                $bproducto = Producto::where('codigo',$item['codigo'])->first();
 
+                $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($bproducto->id, $this->almacen_id);
+                if ($cantidad_stock_disponible < $item['cantidad']) {
+                    $this->items[$key]['cantidad'] = $cantidad_stock_disponible;
+                }
+                $this->items[$key]['importe'] = $this->items[$key]['precio'] * $this->items[$key]['cantidad'];
+            }
+            $this->actualizar_montos();
+            $this->dispatch('dirigir_cursor');
+        }
     }
 
     public function eliminaritem(string $codigo)
