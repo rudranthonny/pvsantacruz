@@ -222,12 +222,37 @@ class Pos extends Component
             $cantidad_stock_disponible = $cantidad_stock_disponible-max($lista_cantidades);
         }
 
-
-
         if ($cantidad_stock_disponible > $cantidad_existente) {
             $stock_disponible = true;
         }
         return $stock_disponible;
+    }
+
+    public function obtener_stock_disponible(Producto $producto,$almacen_id){
+        $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($producto->id, $almacen_id);
+        if ($producto->tipo == 'estandar')
+        {
+            $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
+            #verificar si no productos compuesta en en la lista
+            $compuesto_producto = CompuestoProducto::where('producto_asignado_id',$producto->id)->get();
+            $lista_cantidades2 = 0;
+            foreach ($compuesto_producto as $tey => $pcomp) {
+                $lcantidad = isset($this->items[$pcomp->producto_principal->codigo]['cantidad']) ? $this->items[$pcomp->producto_principal->codigo]['cantidad'] : 0;
+                $lista_cantidades2 = $lista_cantidades2+$lcantidad;
+            }
+            $cantidad_stock_disponible = $cantidad_stock_disponible-$lista_cantidades2;
+        }
+
+        elseif($producto->tipo == 'compuesto') {
+            $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
+            $lista_cantidades = [];
+            foreach ($producto->pcompuestos as $key => $pcom) {
+                $lista_cantidades[] = isset($this->items[$pcom->producto->codigo]['cantidad']) ? $this->items[$pcom->producto->codigo]['cantidad'] : 0;
+            }
+            $cantidad_stock_disponible = $cantidad_stock_disponible-max($lista_cantidades);
+        }
+
+        return $cantidad_stock_disponible;
     }
 
     public function agregaritem(Producto $producto)
@@ -266,11 +291,48 @@ class Pos extends Component
             foreach ($this->items as $key => $item) {
                 #verificar si la cantidad no supere el stock
                 $bproducto = Producto::where('codigo',$item['codigo'])->first();
+                $cantidad_stock_disponible = 0;
+                if ($bproducto)
+                {
+                    #stock disponible actual
+                    $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($bproducto->id, $this->almacen_id);
+                    if ($bproducto->tipo == 'estandar')
+                    {
+                        #stock disponible con el carrito
+                        $productos_compuestos = CompuestoProducto::where('producto_asignado_id',$bproducto->id)->get();
+                        foreach ($productos_compuestos as $con => $pro_com)
+                        {
+                            $cantidad_existente = isset($this->items[$pro_com->producto_principal->codigo]['cantidad']) ? $this->items[$pro_com->producto_principal->codigo]['cantidad'] : 0;
+                            $cantidad_stock_disponible = $cantidad_stock_disponible-$cantidad_existente;
+                        }
+                    }
 
-                $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($bproducto->id, $this->almacen_id);
+                    elseif($bproducto->tipo == 'compuesto'){
+                        $cantidad = [];
+                        #descontar productos estandar
+                        foreach ($bproducto->pcompuestos as $ale => $pcom) {
+                            $cantidad[] = isset($this->items[$pcom->producto->codigo]['cantidad']) ? $this->items[$pcom->producto->codigo]['cantidad'] : 0;
+                        }
+                        $cantidad_stock_disponible = $cantidad_stock_disponible-max($cantidad);
+                        #descontar productos compuestos que conforme otros itmes
+                        foreach ($this->items as $lam => $sitem) {
+                            if ($sitem['codigo'] != $item['codigo']) {
+                                $b2producto = Producto::find($sitem['id']);
+                                if ($b2producto->tipo == 'compuesto') {
+                                    foreach ($b2producto->pcompuestos as $ale => $pcom2) {
+                                        $cantidad2[] = isset($this->items[$pcom2->producto->codigo]['cantidad']) ? $this->items[$pcom2->producto->codigo]['cantidad'] : 0;
+                                    }
+                                    $cantidad_stock_disponible = $cantidad_stock_disponible-max($cantidad2);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if ($cantidad_stock_disponible < $item['cantidad']) {
                     $this->items[$key]['cantidad'] = $cantidad_stock_disponible;
                 }
+
                 $this->items[$key]['importe'] = $this->items[$key]['precio'] * $this->items[$key]['cantidad'];
             }
             $this->actualizar_montos();
