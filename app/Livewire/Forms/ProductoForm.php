@@ -19,18 +19,18 @@ class ProductoForm extends Form
     public $designacion;
     public $simbologia;
     public $codigo;
-    public $marca_id;
+    public $marca_id = null;
     public $impuesto_orden;
-    public $metodo_impuesto;
+    public $metodo_impuesto = 'exclusivo';
     public $categoria_id;
     public $descripcion;
-    public $tipo;
+    public $tipo = 'estandar';
     public $costo;
     public $precio;
     public $unitario;
     public $venta_unidad;
     public $compra_unidad;
-    public $alerta_stock;
+    public $alerta_stock = 0;
     public $imagen;
     public $productos_compuesto = [];
     public $productos_compuesto_total = 0;
@@ -79,8 +79,6 @@ class ProductoForm extends Form
             }
             $this->verificar_productos();
         }
-
-
     }
 
     public function updat()

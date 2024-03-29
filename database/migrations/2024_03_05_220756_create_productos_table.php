@@ -28,7 +28,7 @@ return new class extends Migration
             $table->unsignedBigInteger('unitario');
             $table->unsignedBigInteger('venta_unidad');
             $table->unsignedBigInteger('compra_unidad');
-            $table->integer('alerta_stock');
+            $table->integer('alerta_stock')->nullable();
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->foreign('marca_id')->references('id')->on('marcas');
             $table->foreign('unitario')->references('id')->on('unidads');

@@ -16,6 +16,7 @@ class Producto extends Model
     'simbologia' ,
     'codigo',
     'categoria_id' ,
+    'marca_id',
     'tipo' ,
     'costo' ,
     'unitario' ,

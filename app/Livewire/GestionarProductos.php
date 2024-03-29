@@ -60,6 +60,7 @@ class GestionarProductos extends Component
         $this->iteration++;
         $this->productoForm->reset();
         $this->productoForm->resetValidation();
+        $this->generar_codigo();
         if ($producto->id == true) {
             $this->titlemodal = 'Editar Producto';
             $this->productoForm->set($producto);

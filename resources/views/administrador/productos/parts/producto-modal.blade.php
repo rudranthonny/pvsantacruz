@@ -16,7 +16,7 @@
             <div class="modal-body">
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-4 col-lg-4">
-                            <label for="designacion" class="form-label">Designacion <span
+                            <label for="designacion" class="form-label">Nombre del Producto <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="designacion"
                                 placeholder="Ingrese Designacion" wire:model="productoForm.designacion">
@@ -34,6 +34,9 @@
                                 <option value="EAN 13">EAN13</option>
                                 <option value="UPC-A">UPC</option>
                             </select>
+                            @error('productoForm.simbologia')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-4">
                             <label for="codigo" class="form-label">Codigo <span class="text-danger">*</span></label>
@@ -112,7 +115,6 @@
                                 <option value="">Elegir</option>
                                 <option value="estandar">Producto Estandar</option>
                                 <option value="compuesto">Producto Compuesto</option>
-                                <option value="servicio">Producto Servicio</option>
                             </select>
                             @error('productoForm.tipo')
                                 <span class="error text-danger">{{ $message }}</span>
