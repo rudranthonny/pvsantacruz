@@ -349,7 +349,7 @@
                     }
                 });
                 if (password) {
-                    Livewire.emitTo('generar-comprobante', 'emitirComprobante', password);
+                    $wire.emitTo('generar-comprobante', 'emitirComprobante', password);
                 }
 
             })
