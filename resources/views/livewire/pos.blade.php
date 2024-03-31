@@ -11,10 +11,12 @@
                         </div>
                         <div class="row col-auto align-items-center">
                             <div class="col-auto" style="vertical-align: middle;">
-                                <button role="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalReporteCaja"><i class="bi bi-book-fill"></i></button>
+                                <button role="button" class="btn btn-info" data-bs-toggle="modal"
+                                    data-bs-target="#modalReporteCaja"><i class="bi bi-book-fill"></i></button>
                             </div>
                             <div class="col-auto" style="vertical-align: middle;">
-                                <button role="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalGasto"><i class="bi bi-bookmark-dash-fill"></i></button>
+                                <button role="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#modalGasto"><i class="bi bi-bookmark-dash-fill"></i></button>
                             </div>
                             <div class="col-auto">
                                 <img src="{{ asset($configuracion->logo) }}" alt="" width="64px;">
@@ -38,10 +40,10 @@
                                     {{ $cajero->cajas->where('fecha_cierre', false)->first()->fecha_apertura }} </b><br>
                                 @if ($cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first())
                                     Monto Inicial :
-                                    <b>{{$configuracion->moneda->simbolo.$cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first()->monto }}</b>
+                                    <b>{{ $configuracion->moneda->simbolo . $cajero->cajas->where('fecha_cierre', false)->first()->mcajas->first()->monto }}</b>
                                     <br>
                                     Monto Actual :
-                                    <b>{{$configuracion->moneda->simbolo.$cajero->cajas->where('fecha_cierre', false)->first()->monto }}</b>
+                                    <b>{{ $configuracion->moneda->simbolo . $cajero->cajas->where('fecha_cierre', false)->first()->monto }}</b>
                                     <br>
                                     <button class="btn btn-success"
                                         wire:click="cerrar_caja('{{ $cajero->cajas->where('fecha_cierre', false)->first()->id }}')"
@@ -57,8 +59,9 @@
                         <div class="col-12 my-1">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="buscar_cliente2" autocomplete="off"
-                                    placeholder="Escribir Usuario" wire:model.live="bcliente" >
-                                <div class="input-group-text" data-bs-toggle="modal" data-bs-target="#modalCliente" wire:click='modal_cliente'>
+                                    placeholder="Escribir Usuario" wire:model.live="bcliente">
+                                <div class="input-group-text" data-bs-toggle="modal" data-bs-target="#modalCliente"
+                                    wire:click='modal_cliente'>
                                     <i class="bi bi-person-add"></i> <span class="text-danger">*</span>
                                 </div>
                             </div>
@@ -99,14 +102,15 @@
                                                 <span class="badge text-bg-success">{{ $item['designacion'] }}</span>
                                                 <i style="color:green;" class="bi bi-pencil-square"></i>
                                             </td>
-                                            <td>{{ $configuracion->moneda->simbolo.$item['precio'] }}</td>
+                                            <td>{{ $configuracion->moneda->simbolo . $item['precio'] }}</td>
                                             <td>
                                                 @php $valor_cantidad = 'items.'.$key.'.cantidad';@endphp
-                                                <center><input type="number" class="form-control text-center" style="width: 80px;"
-                                                        min=1 wire:model.live.debounce.500ms='{{ $valor_cantidad }}'>
+                                                <center><input type="number" class="form-control text-center"
+                                                        style="width: 80px;" min=1
+                                                        wire:model.live.debounce.500ms='{{ $valor_cantidad }}'>
                                                 </center>
                                             </td>
-                                            <td>{{ $configuracion->moneda->simbolo.$item['importe'] }}</td>
+                                            <td>{{ $configuracion->moneda->simbolo . $item['importe'] }}</td>
                                             <td><i style="color:red;font-size: 24px;" class="bi bi-x-circle"
                                                     role="button"
                                                     wire:click="eliminaritem('{{ $key }}')"></i>
@@ -135,15 +139,15 @@
                                 <div class="col-sm-4 col-12">
                                     <label for="descuento" class="form-label"><b>Descuento</b></label>
                                     <div class="input-group">
-                                        <div class="input-group-text">{{$configuracion->moneda->simbolo}}</div>
-                                        <input type="number" class="form-control" min=0 id="descuento" placeholder="0"
-                                            wire:model.live="descuento">
+                                        <div class="input-group-text">{{ $configuracion->moneda->simbolo }}</div>
+                                        <input type="number" class="form-control" min=0 id="descuento"
+                                            placeholder="0" wire:model.live="descuento">
                                     </div>
                                 </div>
                                 <div class="col-sm-4 col-12">
                                     <label for="envio" class="form-label"><b>Envió</b></label>
                                     <div class="input-group">
-                                        <div class="input-group-text">{{$configuracion->moneda->simbolo}} </div>
+                                        <div class="input-group-text">{{ $configuracion->moneda->simbolo }} </div>
                                         <input type="number" class="form-control" min=0 id="envio"
                                             placeholder="0" wire:model.live="envio">
                                     </div>
@@ -162,10 +166,8 @@
                                     Aperturar Caja <i class="fas fa-box"></i>
                                 </button>
                             @else
-                                <button @if (count($items) == 0 or $bclienteoculto == false or $bcliente == false)
-                                    disabled
-                                @endif class="btn btn-danger btn-lg" data-bs-toggle="modal"
-                                    data-bs-target="#agregarPagoPosModal">Pagar Ahora</button>
+                                <button @if (count($items) == 0 or $bclienteoculto == false or $bcliente == false) disabled @endif class="btn btn-danger btn-lg"
+                                    data-bs-toggle="modal" data-bs-target="#agregarPagoPosModal">Pagar Ahora</button>
                             @endif
                         </div>
                     </div>
@@ -221,10 +223,10 @@
                                                 {{ $product->producto->designacion }}<br>
                                                 {{ $product->producto->codigo }}<br>
                                                 <span class="badge text-bg-warning">
-                                                    {{$configuracion->moneda->simbolo.number_format($product->producto->precio, 2) }}
+                                                    {{ $configuracion->moneda->simbolo . number_format($product->producto->precio, 2) }}
                                                 </span>
                                                 <span class="badge text-bg-info">
-                                                    {{$product->producto->cunidad->name_cor." ".$product->stock }}
+                                                    {{ $product->producto->cunidad->name_cor . ' ' . $product->stock }}
                                                 </span>
                                             </div>
                                         </div>
@@ -249,7 +251,7 @@
                                                 {{ $productoscompuesto->designacion }}<br>
                                                 {{ $productoscompuesto->codigo }}<br>
                                                 <span
-                                                    class="badge text-bg-warning">{{$configuracion->moneda->simbolo.number_format($productoscompuesto->precio, 2) }}</span>
+                                                    class="badge text-bg-warning">{{ $configuracion->moneda->simbolo . number_format($productoscompuesto->precio, 2) }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -275,7 +277,7 @@
 </div>
 @script
     <script>
-         $wire.on('dirigir_cursor', () => {
+        $wire.on('dirigir_cursor', () => {
             $("#buscar_producto").focus();
         });
 
@@ -295,44 +297,65 @@
             ventana = document.getElementById('cerrar_modal_gasto_x').click();
         });
 
-        $wire.on('advertencia_almacen', () =>
-        {
+        $wire.on('advertencia_almacen', () => {
             Swal.fire({
-            position: "center-center",
-            icon: "warning",
-            title: "Elegir un Almacen para realizar la compra",
-            showConfirmButton: false,
-            timer: 1500
+                position: "center-center",
+                icon: "warning",
+                title: "Elegir un Almacen para realizar la compra",
+                showConfirmButton: false,
+                timer: 1500
             });
             ventana = document.getElementById('cerrar_modal_postventa_x').click();
         });
 
-        $wire.on('activar_buscador_cliente', ()  =>
-            {
-                $('#buscar_cliente2').autocomplete({
-                source: function(request,response){
+        $wire.on('activar_buscador_cliente', () => {
+            $('#buscar_cliente2').autocomplete({
+                source: function(request, response) {
                     $.ajax({
-                    url: '{{route("search.buscar_cliente")}}',
-                    dataType: 'json',
-                    data: {
-                        term: request.term
-                    },
-                    success: function(data){
-                        response(data)
-                    }
-                });
+                        url: '{{ route('search.buscar_cliente') }}',
+                        dataType: 'json',
+                        data: {
+                            term: request.term
+                        },
+                        success: function(data) {
+                            response(data)
+                        }
+                    });
                 },
                 minLength: 3,
-                select: function(event,ui)
-                    {
-                        setTimeout(() => {
+                select: function(event, ui) {
+                    setTimeout(() => {
                         $('#buscar_cliente_oculto2').val('');
                         $('#buscar_cliente_oculto2').val(ui.item.id);
                         $('#buscar_cliente_oculto2')[0].dispatchEvent(new Event('input'));
                         $('#buscar_cliente2').val(ui.item.name);
-                        }, 750);
-                    }
-                    });
+                    }, 750);
+                }
             });
+        });
+    </script>
+
+    <script>
+        Livewire.on('advetencia_re02_emitir', () => {
+            (async () => {
+                const {
+                    value: password
+                } = await Swal.fire({
+                    title: "Necesitas Autorización de un Administrador",
+                    input: "password",
+                    inputPlaceholder: "Ingresar Contraseña",
+                    inputAttributes: {
+                        maxlength: "50",
+                        autocapitalize: "off",
+                        autocorrect: "off"
+                    }
+                });
+                if (password) {
+                    Livewire.emitTo('generar-comprobante', 'emitirComprobante', password);
+                }
+                console.log("sdgf");
+
+            })
+        })
     </script>
 @endscript

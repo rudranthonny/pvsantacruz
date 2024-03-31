@@ -11,11 +11,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{asset('js/jquery-ui-1.13.1/jquery-ui.min.css')}}">
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-    <script src="{{asset('js/select2.min.js')}}"></script>
     <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('js/jquery-ui-1.13.1/jquery-ui.min.js')}}"></script>
-
+    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
+    <script src="{{asset('js/select2.min.js')}}"></script>
+    @livewireStyles
     <style>
         .select2-container .select2-selection--single {
             height: 50px;
@@ -51,6 +51,7 @@
     <div id="app">
         {{ $slot }}
     </div>
+    @livewireScripts
 </body>
 
 </html>

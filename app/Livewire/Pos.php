@@ -295,6 +295,10 @@ class Pos extends Component
         $this->dispatch('dirigir_cursor');
     }
 
+    public function emitirComprobanteRe02(){
+        $this->dispatch('advetencia_re02_emitir');
+    }
+
     public function updatedItems()
     {
         if ($this->almacen_id == true) {
