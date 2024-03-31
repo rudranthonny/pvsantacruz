@@ -333,10 +333,8 @@
                 }
             });
         });
-    </script>
 
-    <script>
-        Livewire.on('advetencia_re02_emitir', () => {
+        $wire.on('advetencia_re02_emitir', () => {
             (async () => {
                 const {
                     value: password
@@ -353,9 +351,10 @@
                 if (password) {
                     Livewire.emitTo('generar-comprobante', 'emitirComprobante', password);
                 }
-                console.log("sdgf");
 
             })
+            console.log("sdgf");
         })
+
     </script>
 @endscript

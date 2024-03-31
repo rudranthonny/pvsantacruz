@@ -9,12 +9,12 @@
     <title>Stocky | Ultimate Inventory With POS</title>
     <link rel="stylesheet" href="{{ asset('css/css_bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="{{asset('js/jquery-ui-1.13.1/jquery-ui.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('js/jquery-ui-1.13.1/jquery-ui.min.css') }}">
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('js/jquery-ui-1.13.1/jquery-ui.min.js')}}"></script>
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui-1.13.1/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-    <script src="{{asset('js/select2.min.js')}}"></script>
+    <script src="{{ asset('js/select2.min.js') }}"></script>
     @livewireStyles
     <style>
         .select2-container .select2-selection--single {
@@ -28,7 +28,6 @@
         .select2-container--default .select2-selection--single {
             padding: 0.75rem .75rem;
         }
-
     </style>
 </head>
 
@@ -52,6 +51,29 @@
         {{ $slot }}
     </div>
     @livewireScripts
+    <script>
+        function myfuncion() {
+            (async () => {
+                const {
+                    value: password
+                } = await Swal.fire({
+                    title: "Necesitas Autorización de un Administrador",
+                    input: "password",
+                    inputPlaceholder: "Ingresar Contraseña",
+                    inputAttributes: {
+                        maxlength: "50",
+                        autocapitalize: "off",
+                        autocorrect: "off"
+                    }
+                });
+                if (password) {
+                    Livewire.emitTo('generar-comprobante', 'emitirComprobante', password);
+                }
+
+            })
+
+        }
+    </script>
 </body>
 
 </html>
