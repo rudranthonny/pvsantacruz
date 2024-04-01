@@ -61,7 +61,7 @@
                                             </td>
                                             <td class="text-center">
                                                 @if ($mcaja->tmovimiento_caja_id == 3)
-                                                    <input wire:click="eliminar_venta"
+                                                    <input wire:click="eliminar_venta('{{ $mcaja->m_cajable_id }}')"
                                                         wire:loading.attr="disabled" class="btn btn-info" type="button"
                                                         id="Eliminar_venta-{{$mcaja->id}}" value="Eliminar venta">
                                                 @endif

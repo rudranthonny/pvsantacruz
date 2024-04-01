@@ -20,6 +20,7 @@ use App\Models\Tgasto;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -53,22 +54,22 @@ class Pos extends Component
     public $titlemodal = 'Añadir';
     public $configuracion;
     public $bclienteoculto = '', $bcliente = '';
+    public $posventa_id_eliminar;
 
     /*caja*/
     public function descargar_reporte_caja()
     {
-        $caja = Caja::where('user_id',Auth::user()->id)->whereNull('fecha_cierre')->first();
+        $caja = Caja::where('user_id', Auth::user()->id)->whereNull('fecha_cierre')->first();
         return $this->cajaform->descargar_reporte_caja_pdf($caja);
     }
     /*Cliente*/
     public function updatedBcliente()
     {
         $this->dispatch('activar_buscador_cliente');
-        $bcliente = Cliente::where('name',$this->bcliente)->first();
+        $bcliente = Cliente::where('name', $this->bcliente)->first();
         if ($bcliente == false) {
             $this->reset('bclienteoculto');
         }
-
     }
 
     public function modal_cliente()
@@ -117,10 +118,10 @@ class Pos extends Component
         $this->cajaform->caja = $this->cajero->cajas->where('fecha_cierre', false)->first();
     }
 
-    public function cliente_por_defecto(){
+    public function cliente_por_defecto()
+    {
         $bcliente = Cliente::find(1);
-        if ($bcliente)
-        {
+        if ($bcliente) {
             $this->bcliente = $bcliente->name;
             $this->bclienteoculto = $bcliente->id;
         }
@@ -208,29 +209,27 @@ class Pos extends Component
         $this->actualizar_Cambio();
     }
 
-    public function verificar_stock_disponible(Producto $producto,$almacen_id){
+    public function verificar_stock_disponible(Producto $producto, $almacen_id)
+    {
         $stock_disponible = false;
         $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($producto->id, $almacen_id);
-        if ($producto->tipo == 'estandar')
-        {
+        if ($producto->tipo == 'estandar') {
             $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
             #verificar si no productos compuesta en en la lista
-            $compuesto_producto = CompuestoProducto::where('producto_asignado_id',$producto->id)->get();
+            $compuesto_producto = CompuestoProducto::where('producto_asignado_id', $producto->id)->get();
             $lista_cantidades2 = 0;
             foreach ($compuesto_producto as $tey => $pcomp) {
                 $lcantidad = isset($this->items[$pcomp->producto_principal->codigo]['cantidad']) ? $this->items[$pcomp->producto_principal->codigo]['cantidad'] : 0;
-                $lista_cantidades2 = $lista_cantidades2+$lcantidad;
+                $lista_cantidades2 = $lista_cantidades2 + $lcantidad;
             }
-            $cantidad_stock_disponible = $cantidad_stock_disponible-$lista_cantidades2;
-        }
-
-        elseif($producto->tipo == 'compuesto') {
+            $cantidad_stock_disponible = $cantidad_stock_disponible - $lista_cantidades2;
+        } elseif ($producto->tipo == 'compuesto') {
             $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
             $lista_cantidades = [];
             foreach ($producto->pcompuestos as $key => $pcom) {
                 $lista_cantidades[] = isset($this->items[$pcom->producto->codigo]['cantidad']) ? $this->items[$pcom->producto->codigo]['cantidad'] : 0;
             }
-            $cantidad_stock_disponible = $cantidad_stock_disponible-max($lista_cantidades);
+            $cantidad_stock_disponible = $cantidad_stock_disponible - max($lista_cantidades);
         }
 
         if ($cantidad_stock_disponible > $cantidad_existente) {
@@ -239,28 +238,26 @@ class Pos extends Component
         return $stock_disponible;
     }
 
-    public function obtener_stock_disponible(Producto $producto,$almacen_id){
+    public function obtener_stock_disponible(Producto $producto, $almacen_id)
+    {
         $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($producto->id, $almacen_id);
-        if ($producto->tipo == 'estandar')
-        {
+        if ($producto->tipo == 'estandar') {
             $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
             #verificar si no productos compuesta en en la lista
-            $compuesto_producto = CompuestoProducto::where('producto_asignado_id',$producto->id)->get();
+            $compuesto_producto = CompuestoProducto::where('producto_asignado_id', $producto->id)->get();
             $lista_cantidades2 = 0;
             foreach ($compuesto_producto as $tey => $pcomp) {
                 $lcantidad = isset($this->items[$pcomp->producto_principal->codigo]['cantidad']) ? $this->items[$pcomp->producto_principal->codigo]['cantidad'] : 0;
-                $lista_cantidades2 = $lista_cantidades2+$lcantidad;
+                $lista_cantidades2 = $lista_cantidades2 + $lcantidad;
             }
-            $cantidad_stock_disponible = $cantidad_stock_disponible-$lista_cantidades2;
-        }
-
-        elseif($producto->tipo == 'compuesto') {
+            $cantidad_stock_disponible = $cantidad_stock_disponible - $lista_cantidades2;
+        } elseif ($producto->tipo == 'compuesto') {
             $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
             $lista_cantidades = [];
             foreach ($producto->pcompuestos as $key => $pcom) {
                 $lista_cantidades[] = isset($this->items[$pcom->producto->codigo]['cantidad']) ? $this->items[$pcom->producto->codigo]['cantidad'] : 0;
             }
-            $cantidad_stock_disponible = $cantidad_stock_disponible-max($lista_cantidades);
+            $cantidad_stock_disponible = $cantidad_stock_disponible - max($lista_cantidades);
         }
 
         return $cantidad_stock_disponible;
@@ -288,22 +285,44 @@ class Pos extends Component
             $this->items[$item->codigo] = $item->toArray();
             $this->actualizar_montos();
             #si no hay no guardar indicar que no hay stock
-        }
-        else {
-           // dd('falta stock');
+        } else {
+            // dd('falta stock');
             $this->dispatch('avertencia_stock');
         }
         $this->dispatch('dirigir_cursor');
     }
 
-    public function eliminar_venta(){
+    public function eliminar_venta(Posventa $posventa_id)
+    {
+        $this->posventa_id_eliminar = $posventa_id;
         $this->dispatch('advertencia_eliminar_venta');
     }
 
     #[On('eliminar_pos_venta')]
-    public function eliminar_pos_venta($password_id){
-        dd("dfgh");
-        $this->dispatch('advertencia_eliminar_venta');
+    public function eliminar_pos_venta($password_id)
+    {
+        $autorizacion = $this->verificarAutorizacion($password_id);
+        if ($autorizacion == false) {
+            $this->dispatch('mensaje_error_autorización');
+        }
+        $this->posventa_id_eliminar->estado_posventa = 'eliminado';
+        $this->posventa_id_eliminar->save();
+        dd($this->posventa_id_eliminar);
+
+    }
+
+    public function verificarAutorizacion($password)
+    {
+        $lista_addministradores = User::role('Administrador')->get();
+        $autorizar = false;
+        foreach ($lista_addministradores as $key => $ladmin) {
+
+            $autorizar = Hash::check($password, $ladmin->password);
+            if ($autorizar) {
+                break;
+            }
+        }
+        return $autorizar;
     }
 
     public function updatedItems()
@@ -311,30 +330,25 @@ class Pos extends Component
         if ($this->almacen_id == true) {
             foreach ($this->items as $key => $item) {
                 #verificar si la cantidad no supere el stock
-                $bproducto = Producto::where('codigo',$item['codigo'])->first();
+                $bproducto = Producto::where('codigo', $item['codigo'])->first();
                 $cantidad_stock_disponible = 0;
-                if ($bproducto)
-                {
+                if ($bproducto) {
                     #stock disponible actual
                     $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($bproducto->id, $this->almacen_id);
-                    if ($bproducto->tipo == 'estandar')
-                    {
+                    if ($bproducto->tipo == 'estandar') {
                         #stock disponible con el carrito
-                        $productos_compuestos = CompuestoProducto::where('producto_asignado_id',$bproducto->id)->get();
-                        foreach ($productos_compuestos as $con => $pro_com)
-                        {
+                        $productos_compuestos = CompuestoProducto::where('producto_asignado_id', $bproducto->id)->get();
+                        foreach ($productos_compuestos as $con => $pro_com) {
                             $cantidad_existente = isset($this->items[$pro_com->producto_principal->codigo]['cantidad']) ? $this->items[$pro_com->producto_principal->codigo]['cantidad'] : 0;
-                            $cantidad_stock_disponible = $cantidad_stock_disponible-$cantidad_existente;
+                            $cantidad_stock_disponible = $cantidad_stock_disponible - $cantidad_existente;
                         }
-                    }
-
-                    elseif($bproducto->tipo == 'compuesto'){
+                    } elseif ($bproducto->tipo == 'compuesto') {
                         $cantidad = [];
                         #descontar productos estandar
                         foreach ($bproducto->pcompuestos as $ale => $pcom) {
                             $cantidad[] = isset($this->items[$pcom->producto->codigo]['cantidad']) ? $this->items[$pcom->producto->codigo]['cantidad'] : 0;
                         }
-                        $cantidad_stock_disponible = $cantidad_stock_disponible-max($cantidad);
+                        $cantidad_stock_disponible = $cantidad_stock_disponible - max($cantidad);
                         #descontar productos compuestos que conforme otros itmes
                         foreach ($this->items as $lam => $sitem) {
                             if ($sitem['codigo'] != $item['codigo']) {
@@ -343,7 +357,7 @@ class Pos extends Component
                                     foreach ($b2producto->pcompuestos as $ale => $pcom2) {
                                         $cantidad2[] = isset($this->items[$pcom2->producto->codigo]['cantidad']) ? $this->items[$pcom2->producto->codigo]['cantidad'] : 0;
                                     }
-                                    $cantidad_stock_disponible = $cantidad_stock_disponible-max($cantidad2);
+                                    $cantidad_stock_disponible = $cantidad_stock_disponible - max($cantidad2);
                                 }
                             }
                         }
