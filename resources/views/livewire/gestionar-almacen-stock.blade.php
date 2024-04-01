@@ -23,13 +23,31 @@
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
-                            <div class="col-12">
-                                <label class="visually-hidden" for="buscar_productos">Buscar Producto</label>
+                            <div class="col-12 col-sm-6">
+                                <label  for="buscar_productos">Buscar Producto</label>
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
                                     <input type="text" class="form-control" id="buscar_productos"
                                         placeholder="Buscar Productos" wire:model.live='search'>
                                 </div>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <label for="seleccionar_almacen">Seleccionar Almacen</label>
+                                <select class="form-select" id="seleccionar_almacen" wire:model.live="salmacen">
+                                        <option value="">Elegir</option>
+                                    @foreach ($almacens as $almacen)
+                                        <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <label for="seleccionar_almacen">Estado del Producto</label>
+                                <select class="form-select" id="seleccionar_almacen" wire:model.live="sestado">
+                                        <option value="">Elegir</option>
+                                        <option value="suficiente">Suficiente</option>
+                                        <option value="poracabar">Por Acabar</option>
+                                        <option value="insuficiente">Insuficiente</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row">
@@ -40,6 +58,8 @@
                                             <th>Producto</th>
                                             <th>Almacen</th>
                                             <th>Stock</th>
+                                            <th>Stock Limite</th>
+                                            <th>Estado</th>
                                             <th>Accion</th>
                                         </tr>
                                     </thead>
@@ -49,6 +69,20 @@
                                                 <td>{{ $palmacen->producto->designacion }}</td>
                                                 <td>{{ $palmacen->almacen->nombre }}</td>
                                                 <td>{{ $palmacen->stock }}</td>
+                                                <td>{{ $palmacen->producto->alerta_stock }}</td>
+                                                <td>
+                                                    @if ($palmacen->stock < $palmacen->producto->alerta_stock)
+                                                        <span class="badge text-bg-danger">Insuficiente</span>
+                                                    @elseif (
+                                                    $palmacen->stock > $palmacen->producto->alerta_stock
+                                                            &&
+                                                    $palmacen->stock < ($palmacen->producto->alerta_stock+10)
+                                                    )
+                                                        <span class="badge text-bg-warning">Por Acabar</span>
+                                                    @elseif ($palmacen->stock > $palmacen->producto->alerta_stock)
+                                                        <span class="badge text-bg-success">Suficiente</span>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <button type="button" class="btn btn-primary"
                                                         data-bs-toggle="modal" data-bs-target="#modalProductoAlmacen"
