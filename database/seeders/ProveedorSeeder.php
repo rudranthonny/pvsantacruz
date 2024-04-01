@@ -13,6 +13,7 @@ class ProveedorSeeder extends Seeder
      */
     public function run(): void
     {
+        /*
         $n_proveedor = new Proveedor();
         $n_proveedor->codigo = '1' ;
         $n_proveedor->name = 'RAPIMARCAS SAS' ;
@@ -23,6 +24,7 @@ class ProveedorSeeder extends Seeder
         $n_proveedor->numero_impuesto = '1' ;
         $n_proveedor->direccion = 'no tiene' ;
         $n_proveedor->save();
+        */
 
     }
 }

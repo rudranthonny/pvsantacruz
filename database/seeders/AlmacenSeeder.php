@@ -21,14 +21,5 @@ class AlmacenSeeder extends Seeder
         $almacen->email = 'email1@gmail.com';
         $almacen->codigo_postal = 'codigo_postal1';
         $almacen->save();
-
-        $almacen = new Almacen();
-        $almacen->nombre = 'Almacen 2';
-        $almacen->telefono = '999888777';
-        $almacen->pais = 'Pais 2';
-        $almacen->ciudad = 'ciudad 2';
-        $almacen->email = 'email2@gmail.com';
-        $almacen->codigo_postal = 'codigo_postal2';
-        $almacen->save();
     }
 }
