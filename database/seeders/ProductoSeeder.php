@@ -15,7 +15,7 @@ class ProductoSeeder extends Seeder
      */
     public function run(): void
     {
-        /*
+
         $producto = new Producto();
         $producto -> imagen = null;
         $producto -> designacion = "designacion producto1";
@@ -84,6 +84,6 @@ class ProductoSeeder extends Seeder
         $nproducto_compuesto->producto_asignado_id = 2;
         $nproducto_compuesto->cantidad = 1;
         $nproducto_compuesto->save();
-        */
+
     }
 }
