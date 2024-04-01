@@ -19,9 +19,9 @@ return new class extends Migration
             $table->double('monto');
             $table->foreign('tmovimiento_caja_id')->references('id')->on('tmovimiento_cajas');
             $table->foreign('caja_id')->references('id')->on('cajas');
-
             $table->unsignedBigInteger('m_cajable_id');
             $table->string('m_cajable_type');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
