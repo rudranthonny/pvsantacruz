@@ -13,7 +13,7 @@ class MarcaSeeder extends Seeder
      */
     public function run(): void
     {
-        /*
+
         $marca = new Marca();
         $marca -> name = "marca1";
         $marca -> description = "desc1";
@@ -31,6 +31,6 @@ class MarcaSeeder extends Seeder
         $marca -> description = "desc3";
         $marca -> image = "image3";
         $marca -> save();
-        */
+
     }
 }
