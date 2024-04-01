@@ -13,7 +13,7 @@ class CompraSeeder extends Seeder
      */
     public function run(): void
     {
-        $compra = new Compra();
+       /* $compra = new Compra();
         $compra -> fecha = "2024-01-06";
         $compra -> refe = "PR_112";
         $compra -> prove = "RAPICOSAS SA";
@@ -36,6 +36,6 @@ class CompraSeeder extends Seeder
         $compra -> debido = "0.00";
         $compra -> estado_pago = "Pagado";
         $compra -> save();
-
+        */
     }
 }
