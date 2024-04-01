@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('nota_pago');
             $table->string('productos_totales');
             $table->string('estado_posventa')->nullable();
+            $table->softDeletes();
             $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->foreign('almacen_id')->references('id')->on('almacens');
             $table->timestamps();
