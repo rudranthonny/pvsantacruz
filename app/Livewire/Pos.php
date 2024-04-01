@@ -20,6 +20,7 @@ use App\Models\Tgasto;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Pos extends Component
@@ -296,6 +297,12 @@ class Pos extends Component
     }
 
     public function eliminar_venta(){
+        $this->dispatch('advertencia_eliminar_venta');
+    }
+
+    #[On('eliminar_pos_venta')]
+    public function eliminar_pos_venta($password_id){
+        dd("dfgh");
         $this->dispatch('advertencia_eliminar_venta');
     }
 

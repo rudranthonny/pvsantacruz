@@ -352,7 +352,7 @@
                     }
                 });
                 if (password) {
-                    alert(password);
+                    @this.dispatchSelf('eliminar_pos_venta', password_id: password);
                 }
                 })()
         })
