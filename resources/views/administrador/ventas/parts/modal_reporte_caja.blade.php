@@ -4,7 +4,7 @@
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="modalReporteCaja" tabindex="-1" aria-labelledby="modalReporteCajaLabel" aria-hidden="true"
+<div class="modal fade " data-bs-focus="false" id="modalReporteCaja" tabindex="-1" aria-labelledby="modalReporteCajaLabel" aria-hidden="true"
     wire:ignore.self>
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -61,9 +61,9 @@
                                             </td>
                                             <td class="text-center">
                                                 @if ($mcaja->tmovimiento_caja_id == 3)
-                                                    <input wire:click="emitirComprobanteRe02"
+                                                    <input wire:click="eliminar_venta"
                                                         wire:loading.attr="disabled" class="btn btn-info" type="button"
-                                                        id="guardar" value="Guardar">
+                                                        id="Eliminar_venta-{{$mcaja->id}}" value="Eliminar venta">
                                                 @endif
                                             </td>
                                         </tr>

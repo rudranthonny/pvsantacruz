@@ -28,6 +28,10 @@
         .select2-container--default .select2-selection--single {
             padding: 0.75rem .75rem;
         }
+
+        ul.ui-autocomplete {
+            z-index: 1100;
+        }
     </style>
 </head>
 
@@ -51,29 +55,6 @@
         {{ $slot }}
     </div>
     @livewireScripts
-    <script>
-        function myfuncion() {
-            (async () => {
-                const {
-                    value: password
-                } = await Swal.fire({
-                    title: "Necesitas Autorización de un Administrador",
-                    input: "password",
-                    inputPlaceholder: "Ingresar Contraseña",
-                    inputAttributes: {
-                        maxlength: "50",
-                        autocapitalize: "off",
-                        autocorrect: "off"
-                    }
-                });
-                if (password) {
-                    Livewire.emitTo('generar-comprobante', 'emitirComprobante', password);
-                }
-
-            })
-
-        }
-    </script>
 </body>
 
 </html>

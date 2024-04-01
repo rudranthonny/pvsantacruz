@@ -334,27 +334,37 @@
             });
         });
 
-        $wire.on('advetencia_re02_emitir', () => {
+        $wire.on('advertencia_eliminar_venta', () => {
+
             (async () => {
-                const {
-                    value: password
-                } = await Swal.fire({
-                    title: "Necesitas Autorización de un Administrador",
+                const { value: password } = await Swal.fire({
+                    title: "Enter your password",
                     input: "password",
-                    inputPlaceholder: "Ingresar Contraseña",
                     inputAttributes: {
-                        maxlength: "50",
-                        autocapitalize: "off",
-                        autocorrect: "off"
+                    autocapitalize: "off"
+                    },
+                    inputLabel: "Password",
+                    inputPlaceholder: "Enter your password",
+                    inputAttributes: {
+                    maxlength: "10",
+                    autocapitalize: "off",
+                    autocorrect: "off"
                     }
                 });
                 if (password) {
-                    $wire.emitTo('generar-comprobante', 'emitirComprobante', password);
+                    alert(password);
                 }
-
-            })
-            console.log("sdgf");
+                })()
         })
+
+        $wire.on('advertencia_almacen', () => {
+            Swal.fire({
+            title: "Good job!",
+            text: "You clicked the button!",
+            icon: "success"
+            });
+        });
+
 
     </script>
 @endscript

@@ -295,8 +295,8 @@ class Pos extends Component
         $this->dispatch('dirigir_cursor');
     }
 
-    public function emitirComprobanteRe02(){
-        $this->dispatch('advetencia_re02_emitir');
+    public function eliminar_venta(){
+        $this->dispatch('advertencia_eliminar_venta');
     }
 
     public function updatedItems()
