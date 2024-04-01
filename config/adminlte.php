@@ -366,6 +366,10 @@ return [
                     'text' => 'Lista de Compras',
                     'route'  => 'admin.compras',
                 ],
+                [
+                    'text' => 'Almacen Stock',
+                    'route'  => 'admin.almacen_stock',
+                ],
             ],
         ],
         [

@@ -23,6 +23,5 @@ class ProveedorSeeder extends Seeder
         $n_proveedor->numero_impuesto = '1' ;
         $n_proveedor->direccion = 'no tiene' ;
         $n_proveedor->save();
-
     }
 }

@@ -14,28 +14,13 @@ class CategoriaSeeder extends Seeder
     public function run(): void
     {
         $categoria = new Categoria();
-        $categoria -> cat_cod = "1";
-        $categoria -> name = "Lacteos";
+        $categoria -> cat_cod = "locetas";
+        $categoria -> name = "Locetas";
         $categoria -> save();
 
         $categoria = new Categoria();
-        $categoria -> cat_cod = "2";
-        $categoria -> name = "Pan";
-        $categoria -> save();
-
-        $categoria = new Categoria();
-        $categoria -> cat_cod = "3";
-        $categoria -> name = "Snacks";
-        $categoria -> save();
-
-        $categoria = new Categoria();
-        $categoria -> cat_cod = "4";
-        $categoria -> name = "Gaseosas";
-        $categoria -> save();
-
-        $categoria = new Categoria();
-        $categoria -> cat_cod = "5";
-        $categoria -> name = "Carnes";
+        $categoria -> cat_cod = "herramient_de_jardin";
+        $categoria -> name = "Herremientas de Jardin ";
         $categoria -> save();
     }
 }

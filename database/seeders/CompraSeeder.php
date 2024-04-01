@@ -35,7 +35,7 @@ class CompraSeeder extends Seeder
         $compra -> pagado = "10,000.00";
         $compra -> debido = "0.00";
         $compra -> estado_pago = "Pagado";
-        $compra -> save();*/
-
+        $compra -> save();
+        */
     }
 }
