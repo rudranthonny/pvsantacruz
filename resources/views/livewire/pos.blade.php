@@ -19,7 +19,10 @@
                                     data-bs-target="#modalGasto"><i class="bi bi-bookmark-dash-fill"></i></button>
                             </div>
                             <div class="col-auto">
-                                <img src="{{ asset($configuracion->logo) }}" alt="" width="64px;">
+                                <form action="{{ route('logout') }}" method="post">
+                                    <button class="btn btn-danger">Cerrar Sesion</button>
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </div>
