@@ -155,13 +155,15 @@ class GestionarCompras extends Component
 
     public function modal(Compra $compra = null)
     {
-        $this->reset('titlemodal');
+        $this->reset('titlemodal','buscar_proveedor','buscar_proveedor_oculto');
         $this->comprasform->reset();
         $this->comprasform->fecha = date('Y-m-d');
         $this->comprasform->almacen = Almacen::find(1) ? Almacen::find(1)->id : null;
         if ($compra->id == true) {
             $this->titlemodal = 'Editar';
             $this->comprasform->set($compra);
+            $this->buscar_producto_oculto = $this->comprasform->compra->proveedor_id;
+            $this->buscar_proveedor = Proveedor::find($this->comprasform->compra->proveedor_id)->name;
             $this->comprasform->fecha = $compra->fecha;
         }
     }
