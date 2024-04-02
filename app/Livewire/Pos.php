@@ -217,6 +217,7 @@ class Pos extends Component
     {
         $stock_disponible = false;
         $cantidad_stock_disponible = $this->productoform->obtener_stock_producto($producto->id, $almacen_id);
+
         if ($producto->tipo == 'estandar') {
             $cantidad_existente = isset($this->items[$producto->codigo]['cantidad']) ? $this->items[$producto->codigo]['cantidad'] : 0;
             #verificar si no productos compuesta en en la lista
@@ -269,7 +270,9 @@ class Pos extends Component
 
     public function agregaritem(Producto $producto)
     {
+
         $stock_disponible = $this->verificar_stock_disponible($producto, $this->almacen_id);
+
         if ($stock_disponible) {
             #si hay guardar
             $cantidad = 1;

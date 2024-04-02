@@ -216,6 +216,7 @@ class ProductoForm extends Form
     public function obtener_stock_producto($producto_id,$almacen_id)
     {
         $bproducto = Producto::find($producto_id);
+
         $consulta_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
         if ($bproducto->tipo == 'estandar') {
             if ($consulta_almacen_producto) {

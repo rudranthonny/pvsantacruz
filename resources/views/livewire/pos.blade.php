@@ -212,8 +212,8 @@
                     <!--lista de producto-->
                     <div class="row my-2">
                         @forelse ($productos as $product)
-                            <div class="col-2" role="button" wire:key="{{ $product->id }}"
-                                wire:click="agregaritem('{{ $product->id }}')">
+                            <div class="col-2" role="button" wire:key="{{ $product->producto->id }}"
+                                wire:click="agregaritem('{{ $product->producto->id }}')">
                                 <div class="card">
                                     <img src="{{ asset($product->producto->imagen) }}" style="object-fit: cover;"
                                         height="80px;" class="card-img-top" alt="...">
