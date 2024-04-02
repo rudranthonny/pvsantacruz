@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Exports\ReporteProductosExport;
 use App\Livewire\Forms\ProductoForm;
 use App\Models\Categoria;
 use App\Models\Configuracion;
@@ -11,6 +12,7 @@ use App\Models\Unidad;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GestionarProductos extends Component
 {
@@ -124,6 +126,14 @@ class GestionarProductos extends Component
             $bcodigo = Producto::where('codigo',$codigo)->first();
         }
         $this->productoForm->codigo = $codigo;
+    }
+
+    public function descargar_reporte_productos_excel()
+    {
+        $lista_productos = Producto::orwhere('designacion','like','%'.$this->search.'%')
+        ->orwhere('codigo','like','%'.$this->search.'%')->get();
+        $configuracion = Configuracion::find(1);
+        return Excel::download(new ReporteProductosExport($lista_productos), 'ReporteProductos.xlsx');
     }
 
     public function render()
