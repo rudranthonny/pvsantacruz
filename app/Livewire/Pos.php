@@ -342,6 +342,7 @@ class Pos extends Component
         $this->nota_pago = $this->posventa_id_eliminar->nota_pago;
         $this->items = [];
         foreach ($this->posventa_id_eliminar->posventadetalles as $posventadetalle) {
+            $this->productoform->actualizar_stock_producto($posventadetalle->producto_id,$this->posventa_id_eliminar->almacen_id,'+',$posventadetalle->producto_cantidad);
             $this->items[$posventadetalle->producto_codigo] =
                 ['id' => $posventadetalle->id, 'codigo' => $posventadetalle->producto_codigo, 'designacion' => $posventadetalle->producto_nombre, 'precio' => $posventadetalle->producto_precio, 'cantidad' => $posventadetalle->producto_cantidad, 'importe' => $posventadetalle->producto_importe, 'tipo' => $posventadetalle->producto_tipo];
         }
