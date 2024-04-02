@@ -48,7 +48,14 @@
                                     <tbody>
                                         @forelse ($posventas as $pventa)
                                             <tr class="text-center">
-                                                <td style="vertical-align: middle;">{{ $compra->fecha }}</td>
+                                                <td style="vertical-align: middle;">{{ $pventa->fecha }}</td>
+                                                <td style="vertical-align: middle;">{{ $pventa->almacen_name }}</td>
+                                                <td style="vertical-align: middle;">{{ $pventa->cliente_name }}</td>
+                                                <td style="vertical-align: middle;">{{ $pventa->impuesto_porcentaje }}</td>
+                                                <td style="vertical-align: middle;">{{ $pventa->impuesto_monto }}</td>
+                                                <td style="vertical-align: middle;">{{ $pventa->descuento }}</td>
+                                                <td style="vertical-align: middle;">{{ $pventa->envio }}</td>
+                                                <td style="vertical-align: middle;">{{ $pventa->total_pagar }}</td>
                                             </tr>
                                         @empty
                                         @endforelse

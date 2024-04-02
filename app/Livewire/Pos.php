@@ -505,11 +505,7 @@ class Pos extends Component
         $this->reset([
             'almacen_id',
             'cliente_id',
-            'productos',
-            'productoscompuestos',
-            'categorias',
             'categoria_id',
-            'marcas',
             'marca_id',
             'items',
             'impuesto_porcentaje',
