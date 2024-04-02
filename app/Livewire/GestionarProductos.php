@@ -85,7 +85,7 @@ class GestionarProductos extends Component
 
     public function modal(Producto $producto = null)
     {
-        $this->reset('titlemodal', 'imagen_producto','bproducto');
+        $this->reset('titlemodal', 'imagen_producto','bproducto','buscar_marca_oculto','buscar_marca','buscar_categoria_oculto','buscar_categoria');
         $this->iteration++;
         $this->productoForm->reset();
         $this->productoForm->resetValidation();
@@ -93,6 +93,10 @@ class GestionarProductos extends Component
         if ($producto->id == true) {
             $this->titlemodal = 'Editar Producto';
             $this->productoForm->set($producto);
+            $this->buscar_marca_oculto = $this->productoForm->producto->marca_id;
+            $this->buscar_marca = Marca::find($this->productoForm->producto->marca_id)->name;
+            $this->buscar_categoria_oculto = $this->productoForm->producto->categoria_id;
+            $this->buscar_categoria = Categoria::find($this->productoForm->producto->categoria_id)->name;
         }
     }
 
