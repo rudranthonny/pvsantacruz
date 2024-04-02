@@ -192,6 +192,10 @@ class Pos extends Component
 
     public function actualizar_montos()
     {
+        $this->impuesto_porcentaje = empty($this->impuesto_porcentaje) ? 0 : $this->impuesto_porcentaje;
+        $this->descuento = empty($this->descuento) ? 0 : $this->descuento;
+        $this->envio = empty($this->envio) ? 0 : $this->envio;
+
         $total_pagar = 0;
 
         foreach ($this->items as $item) {
@@ -274,6 +278,7 @@ class Pos extends Component
             }
             $importe = $producto->precio * $cantidad;
 
+            $cantidad = empty($cantidad) ? 1 : $cantidad;
             $item = new PosventaDetalle();
             $item->id = $producto->id;
             $item->codigo = $producto->codigo;
@@ -328,7 +333,7 @@ class Pos extends Component
         $this->items = [];
         foreach ($this->posventa_id_eliminar->posventadetalles as $posventadetalle) {
             $this->items[$posventadetalle->producto_codigo] =
-            ['id' => $posventadetalle->id, 'codigo' => $posventadetalle->producto_codigo, 'designacion' => $posventadetalle->producto_nombre, 'precio' => $posventadetalle->producto_precio, 'cantidad' => $posventadetalle->producto_cantidad, 'importe' => $posventadetalle->producto_importe, 'tipo' => $posventadetalle->producto_tipo];
+                ['id' => $posventadetalle->id, 'codigo' => $posventadetalle->producto_codigo, 'designacion' => $posventadetalle->producto_nombre, 'precio' => $posventadetalle->producto_precio, 'cantidad' => $posventadetalle->producto_cantidad, 'importe' => $posventadetalle->producto_importe, 'tipo' => $posventadetalle->producto_tipo];
         }
     }
 
@@ -388,7 +393,7 @@ class Pos extends Component
                 if ($cantidad_stock_disponible < $item['cantidad']) {
                     $this->items[$key]['cantidad'] = $cantidad_stock_disponible;
                 }
-
+                $this->items[$key]['cantidad'] = empty($this->items[$key]['cantidad']) ? 1 : $this->items[$key]['cantidad'];
                 $this->items[$key]['importe'] = $this->items[$key]['precio'] * $this->items[$key]['cantidad'];
             }
             $this->actualizar_montos();
