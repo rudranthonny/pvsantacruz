@@ -127,7 +127,8 @@ class GestionarProductos extends Component
         $categorias = Categoria::all();
         $marcas = Marca::all();
         $unidades = Unidad::all();
-        $lista_productos = Producto::where('designacion','like','%'.$this->search.'%')->paginate($this->pagina);
+        $lista_productos = Producto::orwhere('designacion','like','%'.$this->search.'%')
+        ->orwhere('codigo','like','%'.$this->search.'%')->paginate($this->pagina);
         return view('livewire.gestionar-productos', compact('lista_productos', 'categorias', 'marcas', 'unidades'));
     }
 }
