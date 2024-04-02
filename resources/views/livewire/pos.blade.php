@@ -239,9 +239,6 @@
                                 </div>
 
                             @empty
-                                @if ($productoscompuestos->count() == 0)
-                                    <span>SIN PRODUCTOS</span>
-                                @endif
                             @endforelse
                         </div>
                         <!--paginacion-->

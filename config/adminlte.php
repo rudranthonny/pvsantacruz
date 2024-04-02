@@ -356,6 +356,10 @@ return [
                     'text' => 'POS',
                     'route'  => 'admin.ventas.pos',
                 ],
+                [
+                    'text' => 'Gestionar Ventas',
+                    'route'  => 'admin.ventas.index',
+                ],
             ],
         ],
         [
