@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Forms\CajaForm;
 use App\Livewire\Forms\ClientesForm;
 use App\Livewire\Forms\GastosForm;
+use App\Livewire\Forms\PosVentaForm;
 use App\Livewire\Forms\ProductoForm;
 use App\Models\Almacen;
 use App\Models\Caja;
@@ -36,6 +37,7 @@ class Pos extends Component
     public CajaForm $cajaform;
     public ProductoForm $productoform;
     public ClientesForm $clientesForm;
+    public PosVentaForm $posventaform;
     public $cajero;
     public $almacen_id;
     public $seleccionar_almacen;
@@ -61,6 +63,10 @@ class Pos extends Component
     public $posventa_id_eliminar;
     public $buscar_producto;
 
+    public function descargar_venta_pdf(Posventa $posventa){
+        $this->posventaform->reset();
+        return $this->posventaform->descargar_pdf($posventa);
+    }
     /*caja*/
 
     public function updatedBuscarProducto(){

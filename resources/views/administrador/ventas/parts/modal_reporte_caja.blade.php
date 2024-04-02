@@ -61,8 +61,9 @@
                                             </td>
                                             <td class="text-center">
                                                 @if ($mcaja->tmovimiento_caja_id == 3)
+                                                    <button class="btn btn-success" wire:loading.attr='disabled' id="venta_descargar-{{$mcaja->m_cajable_id}}" wire:target='descargar_venta_pdf({{$mcaja->m_cajable_id}})' wire:click='descargar_venta_pdf({{$mcaja->m_cajable_id}})'><i class="bi bi-download"></i></button>
                                                     <input wire:click="eliminar_venta('{{ $mcaja->m_cajable_id }}')"
-                                                        wire:loading.attr="disabled" class="btn btn-info" type="button"
+                                                        wire:loading.attr="disabled" class="btn btn-danger" type="button"
                                                         id="Eliminar_venta-{{$mcaja->id}}" value="Eliminar venta">
                                                 @endif
                                             </td>
