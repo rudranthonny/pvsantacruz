@@ -55,6 +55,7 @@ class Pos extends Component
     public $configuracion;
     public $bclienteoculto = '', $bcliente = '';
     public $posventa_id_eliminar;
+    public $buscar_producto;
 
     /*caja*/
     public function descargar_reporte_caja()
