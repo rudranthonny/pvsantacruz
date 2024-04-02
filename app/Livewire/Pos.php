@@ -8,10 +8,12 @@ use App\Livewire\Forms\GastosForm;
 use App\Livewire\Forms\ProductoForm;
 use App\Models\Almacen;
 use App\Models\Caja;
+use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\CompuestoProducto;
 use App\Models\Configuracion;
 use App\Models\Gasto;
+use App\Models\Marca;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
 use App\Models\Producto;
@@ -20,24 +22,26 @@ use App\Models\Tgasto;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Pos extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public GastosForm $gastoform;
     public CajaForm $cajaform;
     public ProductoForm $productoform;
     public ClientesForm $clientesForm;
     public $cajero;
     public $almacen_id;
+    public $seleccionar_almacen;
     public $cliente_id;
-    public $productos;
     public $productoscompuestos;
-    public $categorias;
     public $categoria_id;
-    public $marcas;
     public $marca_id;
     public $items;
     public $impuesto_porcentaje;
@@ -58,6 +62,14 @@ class Pos extends Component
     public $buscar_producto;
 
     /*caja*/
+
+    public function updatedBuscarProducto(){
+        $bproducto = Producto::where('codigo',$this->buscar_producto)->first();
+        $balmacen = Almacen::find($this->almacen_id);
+        if ($bproducto && $balmacen) {
+            $this->agregaritem($bproducto);
+        }
+    }
     public function descargar_reporte_caja()
     {
         $caja = Caja::where('user_id', Auth::user()->id)->whereNull('fecha_cierre')->first();
@@ -109,7 +121,7 @@ class Pos extends Component
 
     public function mount()
     {
-        $this->almacen_id = Almacen::first()->id;
+        $this->almacen_id = Almacen::first() ? Almacen::first()->id : null;
         $this->configuracion = Configuracion::find(1);
         $this->items = [];
         $this->updatedAlmacenId();
@@ -130,27 +142,14 @@ class Pos extends Component
 
     public function updatedAlmacenId()
     {
-        $this->productos = ProductoAlmacen::with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')->where('almacen_id', $this->almacen_id)->get();
-        $this->productoscompuestos = Producto::with('categoria', 'marca', 'cunitario')->where('tipo', 'compuesto')->get();
-        $this->categorias = $this->productos->pluck('producto.categoria')->unique();
-        $this->marcas = $this->productos->pluck('producto.marca')->unique();
+        $balmacen = Almacen::find($this->almacen_id);
+        $this->seleccionar_almacen = $balmacen == true ? $balmacen->id :null ;
         $this->reset(['categoria_id', 'marca_id']);
     }
 
     public function updatedCategoriaId()
     {
-        $this->productos = ProductoAlmacen::with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')->where('almacen_id', $this->almacen_id)
-            ->whereHas('producto.categoria', function ($query) {
-                if ($this->categoria_id) {
-                    $query->where('id', $this->categoria_id);
-                }
-            })
-            ->whereHas('producto.marca', function ($query) {
-                if ($this->marca_id) {
-                    $query->where('id', $this->marca_id);
-                }
-            })
-            ->get();
+        $this->actualizar_montos();
     }
 
     public function updatedMarcaId()
@@ -298,6 +297,7 @@ class Pos extends Component
             // dd('falta stock');
             $this->dispatch('avertencia_stock');
         }
+        $this->reset('buscar_producto');
         $this->dispatch('dirigir_cursor');
     }
 
@@ -540,6 +540,41 @@ class Pos extends Component
         $clientes = Cliente::all();
         $almacens = Almacen::all();
         $tgastos = Tgasto::all();
-        return view('livewire.pos', compact('clientes', 'almacens', 'tgastos'))->layout('administrador.ventas.pos');
+
+        $productos = ProductoAlmacen::query()
+        ->with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')
+        ->whereExists(function ($query)  {
+            $query->select()
+                  ->from(DB::raw('productos'))
+                  ->whereColumn('producto_almacens.producto_id', 'productos.id')
+                  ->where('producto_almacens.almacen_id',$this->seleccionar_almacen)
+                  ->where('productos.designacion','like','%'.$this->buscar_producto.'%');
+        });
+
+        $productos->when($this->categoria_id <> '',function ($q) {
+            return $q->whereExists(function ($query)  {
+                $query->select()
+                      ->from(DB::raw('productos'))
+                      ->whereColumn('producto_almacens.producto_id', 'productos.id')
+                      ->where('producto_almacens.almacen_id',$this->seleccionar_almacen)
+                      ->where('productos.categoria_id',$this->categoria_id);
+            });
+        });
+
+        $productos->when($this->marca_id <> '',function ($q) {
+            return $q->whereExists(function ($query)  {
+                $query->select()
+                      ->from(DB::raw('productos'))
+                      ->whereColumn('producto_almacens.producto_id', 'productos.id')
+                      ->where('producto_almacens.almacen_id',$this->seleccionar_almacen)
+                      ->where('productos.marca_id',$this->marca_id);
+            });
+        });
+
+        $productos =  $productos->paginate(10);
+        $categorias = $productos ? $productos->pluck('producto.categoria')->unique() : Categoria::all();
+        $marcas =  $productos ? $productos->pluck('producto.marca')->unique() : Marca::all();
+
+        return view('livewire.pos', compact('clientes', 'almacens', 'tgastos','productos','categorias','marcas'))->layout('administrador.ventas.pos');
     }
 }

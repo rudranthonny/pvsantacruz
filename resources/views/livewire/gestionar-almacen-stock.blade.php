@@ -66,6 +66,8 @@
                                             <th>Almacen</th>
                                             <th>Stock</th>
                                             <th>Stock Limite</th>
+                                            <th>Marca</th>
+                                            <th>Categoría</th>
                                             <th>Estado</th>
                                             <th>Accion</th>
                                         </tr>
@@ -77,6 +79,8 @@
                                                 <td>{{ $palmacen->almacen->nombre }}</td>
                                                 <td>{{ $palmacen->stock }}</td>
                                                 <td>{{ $palmacen->producto->alerta_stock }}</td>
+                                                <td>{{ $palmacen->producto->marca->name }}</td>
+                                                <td>{{ $palmacen->producto->categoria->name }}</td>
                                                 <td>
                                                     @if ($palmacen->stock == 0)
                                                         <span class="badge text-bg-danger">Insuficiente</span>
