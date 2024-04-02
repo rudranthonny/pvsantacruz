@@ -16,7 +16,7 @@ class AjustesSistemaSeed extends Seeder
         $n_configuracion = new Configuracion();
         $n_configuracion->moneda_id = 1;
         $n_configuracion->email_predeterminado = 'ing.anthonny.joel@gmail.com';
-        $n_configuracion->logo = '';
+        $n_configuracion->logo = 'imagenes/logo.png';
         $n_configuracion->name = 'Ferretería Gemelos';
         $n_configuracion->telefono_empresa = '987987987';
         $n_configuracion->desarrollador = 'JNetwork';
