@@ -22,8 +22,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-12 col-sm-6">
+                        <div class="row mb-4 align-items-end">
+                            <div class="col-12 col-sm-4">
                                 <label  for="buscar_productos">Buscar Producto</label>
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
@@ -34,7 +34,7 @@
                             <div class="col-12 col-sm-3">
                                 <label for="seleccionar_almacen">Seleccionar Almacen</label>
                                 <select class="form-select" id="seleccionar_almacen" wire:model.live="salmacen">
-                                        <option value="">Elegir</option>
+                                        <option value="">Todos</option>
                                     @foreach ($almacens as $almacen)
                                         <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
                                     @endforeach
@@ -47,7 +47,11 @@
                                         <option value="suficiente">Suficiente</option>
                                         <option value="poracabar">Por Acabar</option>
                                         <option value="insuficiente">Insuficiente</option>
+                                        <option value="exceso">Exceso</option>
                                 </select>
+                            </div>
+                            <div class="col-12 col-sm-2 text-right">
+                                <button class="btn btn-outline-danger" wire:loading.attr="disabled" wire:target="descargar_reporte_almacen" wire:click='descargar_reporte_almacen'><i class="fas fa-file"></i> EXCEL</button>
                             </div>
                         </div>
                         <div class="row">
@@ -71,16 +75,18 @@
                                                 <td>{{ $palmacen->stock }}</td>
                                                 <td>{{ $palmacen->producto->alerta_stock }}</td>
                                                 <td>
-                                                    @if ($palmacen->stock < $palmacen->producto->alerta_stock)
+                                                    @if ($palmacen->stock == 0)
                                                         <span class="badge text-bg-danger">Insuficiente</span>
                                                     @elseif (
-                                                    $palmacen->stock > $palmacen->producto->alerta_stock
+                                                    $palmacen->stock > 0
                                                             &&
-                                                    $palmacen->stock < ($palmacen->producto->alerta_stock+10)
+                                                    $palmacen->stock <=2
                                                     )
                                                         <span class="badge text-bg-warning">Por Acabar</span>
-                                                    @elseif ($palmacen->stock > $palmacen->producto->alerta_stock)
+                                                    @elseif ($palmacen->stock >= 3 && $palmacen->stock <= $palmacen->producto->alerta_stock)
                                                         <span class="badge text-bg-success">Suficiente</span>
+                                                    @elseif ($palmacen->stock > $palmacen->producto->alerta_stock )
+                                                    <span class="badge text-bg-info">Exceso</span>
                                                     @endif
                                                 </td>
                                                 <td>
