@@ -5,11 +5,13 @@ namespace App\Livewire;
 use App\Exports\ReporteAlmacenStockExport;
 use App\Livewire\Forms\AlmacenStockForm;
 use App\Models\Almacen;
+use App\Models\Configuracion;
 use App\Models\ProductoAlmacen;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class GestionarAlmacenStock extends Component
 {
@@ -93,7 +95,7 @@ class GestionarAlmacenStock extends Component
         return view('livewire.gestionar-almacen-stock', compact('productos_almacen','almacens'));
     }
 
-    public function descargar_reporte_almacen(){
+    /*public function descargar_reporte_almacen_excel(){
         $productos_almacen = ProductoAlmacen::query()->whereExists(function ($query)  {
             $query->select()
                   ->from(DB::raw('productos'))
@@ -132,5 +134,53 @@ class GestionarAlmacenStock extends Component
         });
         $productos_almacen =  $productos_almacen->get();
         return Excel::download(new ReporteAlmacenStockExport($productos_almacen), 'ReporteProductosAlmacen.xlsx');
+    }*/
+
+    public function descargar_reporte_almacen_pdf(){
+        $productos_almacen = ProductoAlmacen::query()->whereExists(function ($query)  {
+            $query->select()
+                  ->from(DB::raw('productos'))
+                  ->whereColumn('producto_almacens.producto_id', 'productos.id')
+                  ->where('productos.designacion','like','%'.$this->search.'%');
+        });
+
+        $productos_almacen->when($this->salmacen <> '',function ($q) {
+            return $q->where('almacen_id',$this->salmacen);
+        });
+
+        $productos_almacen->when($this->sestado == 'suficiente',function ($q) {
+            return $q->where('stock','>=',3)->whereExists(function ($query)  {
+                $query->select()
+                      ->from(DB::raw('productos'))
+                      ->whereColumn('productos.id', 'producto_almacens.producto_id')
+                      ->whereRaw('producto_almacens.stock <= productos.alerta_stock');
+            });
+        });
+
+        $productos_almacen->when($this->sestado == 'exceso',function ($q) {
+            return $q->whereExists(function ($query)  {
+                $query->select()
+                      ->from(DB::raw('productos'))
+                      ->whereColumn('productos.id', 'producto_almacens.producto_id')
+                      ->whereRaw('producto_almacens.stock > productos.alerta_stock');
+            });
+        });
+
+        $productos_almacen->when($this->sestado == 'insuficiente',function ($q) {
+            return $q->where('stock','==',0);
+        });
+
+        $productos_almacen->when($this->sestado == 'poracabar',function ($q) {
+            return $q->where('stock','<=',2);
+        });
+        $productos_almacen =  $productos_almacen->get();
+        $configuracion = Configuracion::find(1);
+        $nombre_archivo = 'Reporte-productos-almacen-' . date("F j, Y, g:i a") . '.pdf';
+        $consultapdf = FacadePdf::loadView('administrador.almacen.reporte_productos_almacen_pdf', compact('productos_almacen','configuracion'))->setPaper('a4', 'landscape');
+        $pdfContent = $consultapdf->output();
+        return response()->streamDownload(
+            fn () => print($pdfContent),
+            $nombre_archivo
+        );
     }
 }

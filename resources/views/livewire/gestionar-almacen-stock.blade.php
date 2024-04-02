@@ -51,7 +51,10 @@
                                 </select>
                             </div>
                             <div class="col-12 col-sm-2 text-right">
-                                <button class="btn btn-outline-danger" wire:loading.attr="disabled" wire:target="descargar_reporte_almacen" wire:click='descargar_reporte_almacen'><i class="fas fa-file"></i> EXCEL</button>
+                                <button class="btn btn-outline-success"  wire:loading.attr="disabled" wire:target='descargar_reporte_almacen_pdf' wire:click='descargar_reporte_almacen_pdf' ><i class="fas fa-file"></i> PDF</button>
+                                <!--
+                                    <button class="btn btn-outline-danger" wire:loading.attr="disabled" wire:target='descargar_reporte_almacen_excel' wire:click='descargar_reporte_almacen_excel'><i class="fas fa-file"></i> EXCEL</button>
+                                -->
                             </div>
                         </div>
                         <div class="row">
