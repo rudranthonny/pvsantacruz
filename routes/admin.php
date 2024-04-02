@@ -20,6 +20,9 @@ Route::view("unidades", "administrador.productos.unidades")->middleware('can:adm
 Route::get('search/{id}/buscar_productos', [AdminController::class, 'buscar_productos'])->middleware('can:search.buscar_productos')->name('search.buscar_productos');
 Route::get('search/buscar_productos_compras',[AdminController::class,'buscar_productos_compra'])->middleware('can:search.buscar_productos_compra')->name('search.buscar_productos_compra');
 Route::get('search/buscar_productos_compras2',[AdminController::class,'buscar_productos_compra2'])->middleware('can:search.buscar_productos_compra')->name('search.buscar_productos_compra2');
+Route::get('search/buscar_proveedor',[AdminController::class,'buscar_proveedors'])->middleware('can:search.buscar_proveedor')->name('search.buscar_proveedor');
+Route::get('search/buscar_marca',[AdminController::class,'buscar_marca'])->middleware('can:search.buscar_marca')->name('search.buscar_marca');
+Route::get('search/buscar_categoria',[AdminController::class,'buscar_categoria'])->middleware('can:search.buscar_categoria')->name('search.buscar_categoria');
 Route::get('producto/consulta_producto/{id}', ConsultarProducto::class)->middleware('can:admin.productos.consultar')->name('admin.productos.consultar');
 Route::get('producto/consultar_barra', [AdminController::class,'consultar_barra'])->middleware('can:admin.productos.consultar_barra')->name('admin.productos.consultar_barra');
 #compras

@@ -13,7 +13,7 @@ class Posventa extends Model
     protected $fillable = [];
 
     public function m_caja(){
-        return $this->morphOne('App\Models\Mcaja', 'm_cajable');
+        return $this->morphOne('App\Models\MCaja', 'm_cajable');
     }
 
     public function posventadetalles(){

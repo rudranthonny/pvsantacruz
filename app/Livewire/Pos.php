@@ -461,7 +461,7 @@ class Pos extends Component
             }
             #pdf descargar
             $paper_examen = 0;
-            $paper_heigth = 352;
+            $paper_heigth = 412;
             $paper_heigth = $paper_examen + $paper_heigth;
             $configuracion = Configuracion::find(1);
             $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';

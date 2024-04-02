@@ -30,6 +30,9 @@ class RoleSeeder extends Seeder
         Permission::create(['name' =>'admin.categorias'])->syncRoles(['Administrador']);
         Permission::create(['name' =>'admin.unidades'])->syncRoles(['Administrador']);
         Permission::create(['name' =>'search.buscar_productos'])->syncRoles(['Administrador','cajero']);
+        Permission::create(['name' =>'search.buscar_proveedor'])->syncRoles(['Administrador','cajero']);
+        Permission::create(['name' =>'search.buscar_marca'])->syncRoles(['Administrador','cajero']);
+        Permission::create(['name' =>'search.buscar_categoria'])->syncRoles(['Administrador','cajero']);
         Permission::create(['name' =>'search.buscar_productos_compra'])->syncRoles(['Administrador','cajero']);
         Permission::create(['name' =>'admin.productos.consultar'])->syncRoles(['Administrador']);
         Permission::create(['name' =>'admin.compras'])->syncRoles(['Administrador']);

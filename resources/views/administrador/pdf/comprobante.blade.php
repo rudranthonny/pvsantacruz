@@ -18,7 +18,10 @@
 
 <body>
     <center>
-    <img src="{{ asset($configuracion->logo) }}" alt="" srcset="" width="64px;">
+    <img src="{{ asset($configuracion->logo) }}" alt="" srcset="" width="136px;">
+    </center>
+    <center>
+        <h3 style="font-size: 24px;">{{$configuracion->name}}</h3>
     </center>
     <table>
         <tbody>
@@ -35,7 +38,7 @@
             </tr>
             <tr>
                 <td>
-                   <b> Cliente :</b> {{$configuracion->cliente_name }}
+                   <b> Cliente :</b> {{$posventa->cliente_name }}
                 </td>
             </tr>
             <tr>

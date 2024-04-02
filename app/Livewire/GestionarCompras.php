@@ -22,7 +22,9 @@ class GestionarCompras extends Component
     public $sel_almacen;
     public $pagina = 5;
     public $buscar_producto = '';
+    public $buscar_proveedor = '';
     public $buscar_producto_oculto = '';
+    public $buscar_proveedor_oculto = '';
     public $iteration=0;
     public $editar_item_id;
     public $editar_item = false;
@@ -33,6 +35,8 @@ class GestionarCompras extends Component
     public function mount(){  $this->configuracion = Configuracion::find(1); }
 
     public function save_compra(){
+        $bproveedor = Proveedor::find($this->buscar_proveedor_oculto);
+        $this->comprasform->prove =  $bproveedor ? $this->buscar_proveedor_oculto : null;
         if (isset($this->comprasform->compra)) {$this->comprasform->update();}
 
         else {$this->comprasform->store();}
@@ -118,8 +122,27 @@ class GestionarCompras extends Component
     {
         $this->iteration++;
         $valmacen = Almacen::find($this->comprasform->almacen);
-        if ($valmacen) {$this->dispatch('activar_buscador_producto');}
+        if ($valmacen) {
+            $this->dispatch('activar_buscador_producto');
+            $bproducto = Producto::where('codigo',$this->buscar_producto)->first();
+            if ($bproducto) {
+                $this->comprasform->agregar_item($bproducto);
+                $this->comprasform->obtener_datos_compra();
+            }
+        }
         else {$this->dispatch('advertencia_almacen'); }
+    }
+
+    public function updatedBuscarProveedor()
+    {
+        $this->iteration++;
+        $this->dispatch('activar_buscador_proveedor');
+
+        $bproveedor = Proveedor::where('name',$this->buscar_proveedor)->first();
+
+        if($bproveedor == false){
+            $this->buscar_proveedor_oculto = null;
+        }
     }
 
     public function updatedSelAlmacen(){
@@ -134,6 +157,8 @@ class GestionarCompras extends Component
     {
         $this->reset('titlemodal');
         $this->comprasform->reset();
+        $this->comprasform->fecha = date('Y-m-d');
+        $this->comprasform->almacen = Almacen::find(1) ? Almacen::find(1)->id : null;
         if ($compra->id == true) {
             $this->titlemodal = 'Editar';
             $this->comprasform->set($compra);

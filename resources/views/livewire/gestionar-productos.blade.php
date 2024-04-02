@@ -66,7 +66,7 @@
                                                 <td class="align-middle">{{ $produc->codigo }}</td>
                                                 <td class="align-middle">{{ optional($produc->marca)->name }}</td>
                                                 <td class="align-middle">{{ optional($produc->categoria)->name }}</td>
-                                                <td class="align-middle text-center">s/.{{ $produc->precio }}</td>
+                                                <td class="align-middle text-center">{{$configuracion->moneda->simbolo}}{{ $produc->precio }}</td>
                                                 <td class="align-middle">{{ optional($produc->cunitario)->name }}</td>
                                                 <td class="align-middle text-center">{{ $produc->obtener_cantidad }}</td>
                                                 <td class="align-middle text-center">

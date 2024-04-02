@@ -50,19 +50,12 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-sm-12 col-md-4 col-lg-4">
-                            <label for="marca_id" class="form-label">Marca</label>
-                            <select  class="form-select" id="marca_id" wire:model="productoForm.marca_id">
-                                <option value="">Elegir</option>
-                                @forelse ($marcas as $marca)
-                                    <option value="{{ $marca->id }}">{{ $marca->name }}</option>
-                                @empty
-                                    <option value="">Sin Marcas</option>
-                                @endforelse
-                            </select>
-                            @error('productoForm.marca_id')
-                                <span class="error text-danger">{{ $message }}</span>
-                            @enderror
+                        <div class="col-12 col-sm-4">
+                                <label for="buscar_marca_oculto" class="form-label">Marca <span class='text-red'>(*)</span></label>
+                                <input type="hidden" id="buscar_marca_oculto" wire:model.live='buscar_marca_oculto'>
+                                <input type="text" class="form-control" id="buscar_marca" wire:model.live='buscar_marca' placeholder="Buscar Marca"
+                                 wire:model.live.debounce.500ms='buscar_marca' autocomplete="off">
+                            @error ('productoForm.marca_id')<span class="error text-danger">{{ $message }}</span> @enderror
                         </div>
                         <div class="col-12 col-sm-4">
                             <label class="form-label" for="impuesto_orden">Impuesto de orden</label>
@@ -82,16 +75,11 @@
                                 <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                         </div>
-                        <div class="col-sm-12 col-md-4 col-lg-4">
-                            <label for="categoria_id" class="form-label">Categoria<span style="color:red;">*</span></label>
-                            <select class="form-select" id="categoria_id" wire:model="productoForm.categoria_id">
-                                <option value="">Elegir</option>
-                                @forelse ($categorias as $categoria)
-                                    <option value="{{ $categoria->id }}">{{ $categoria->name }}</option>
-                                @empty
-                                    <option value="">Sin Categorias</option>
-                                @endforelse
-                            </select>
+                        <div class="col-12 col-sm-4">
+                            <label for="buscar_categoria_oculto" class="form-label">Categoria <span class='text-red'>(*)</span></label>
+                            <input type="hidden" id="buscar_categoria_oculto" wire:model.live='buscar_categoria_oculto'>
+                            <input type="text" class="form-control" id="buscar_categoria" wire:model.live='buscar_categoria' placeholder="Buscar Categoría"
+                             wire:model.live.debounce.500ms='buscar_categoria' autocomplete="off">
                             @error('productoForm.categoria_id')
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror

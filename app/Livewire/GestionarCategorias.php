@@ -21,7 +21,8 @@ class GestionarCategorias extends Component
 
     public function mount(){  $this->configuracion = Configuracion::find(1); }
 
-    public function updatedSearch(){
+    public function updatedSearch()
+    {
         $this->resetPage();
     }
 
@@ -42,7 +43,8 @@ class GestionarCategorias extends Component
         $this->dispatch('cerrar_modal_categoria');
     }
 
-    public function eliminar(Categoria $categoria){
+    public function eliminar(Categoria $categoria)
+    {
         $categoria->delete();
         $this->updatedSearch();
     }
