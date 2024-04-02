@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\Producto;
+use App\Models\Proveedor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,24 @@ class AdminController extends Controller
         }
         return $listaempleados;
     }
+
+    public function buscar_proveedors(Request $request)
+    {
+        $term = $request->get('term');
+        $querys = Proveedor::where('name', 'like', '%' . $term . '%')->get();
+
+        foreach ($querys as $query) {
+            $query['label'] =  $query->id . "-" . $query->name;
+        }
+
+        $listaproveedores = $querys;
+        if ($querys->count() == 0) {
+            $listaproveedores['label'] = 'Sin resultados';
+        }
+        return $listaproveedores;
+    }
+
+
 
     public function buscar_productos_compra2(Request $request)
     {

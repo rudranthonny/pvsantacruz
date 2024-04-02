@@ -297,7 +297,7 @@ class ComprasForm extends Form
         $this->detalle_compra[$producto->codigo]['impuesto_orden'] = $producto->impuesto_orden;
         $this->detalle_compra[$producto->codigo]['costo'] = $producto->costo;
         $this->detalle_compra[$producto->codigo]['compra_unidad'] = 'unidad';
-        $this->detalle_compra[$producto->codigo]['descuento_unitario'] = 1;
+        $this->detalle_compra[$producto->codigo]['descuento_unitario'] = 0;
         $this->detalle_compra[$producto->codigo]['nombre_producto'] = $producto->designacion;
         if ($this->detalle_compra[$producto->codigo]['metodo_impuesto'] == 'exclusivo') {
             $this->detalle_compra[$producto->codigo]['costo_unitario'] = number_format(($this->detalle_compra[$producto->codigo]['costo']-$this->detalle_compra[$producto->codigo]['descuento_unitario']),3);
@@ -307,7 +307,7 @@ class ComprasForm extends Form
         }
         $consultar_stock = ProductoAlmacen::where('producto_id',$producto->id)->where('almacen_id',$this->almacen)->first();
         $this->detalle_compra[$producto->codigo]['stock_actual'] =  $consultar_stock == true ? $consultar_stock->stock : 0;
-        $this->detalle_compra[$producto->codigo]['cantidad'] = 10;
+        $this->detalle_compra[$producto->codigo]['cantidad'] = 1;
         $this->detalle_compra[$producto->codigo]['descuento'] = $this->detalle_compra[$producto->codigo]['cantidad']*$this->detalle_compra[$producto->codigo]['descuento_unitario'];
         $this->detalle_compra[$producto->codigo]['impuesto'] =  number_format(((($this->detalle_compra[$producto->codigo]['costo_unitario']-$this->detalle_compra[$producto->codigo]['descuento_unitario'])*$this->detalle_compra[$producto->codigo]['cantidad'])*$producto->impuesto_orden/100),2);
         $this->detalle_compra[$producto->codigo]['total_parcial'] = $this->detalle_compra[$producto->codigo]['costo_unitario']*$this->detalle_compra[$producto->codigo]['cantidad']+$this->detalle_compra[$producto->codigo]['impuesto'];
@@ -329,10 +329,10 @@ class ComprasForm extends Form
         $this->detalle_compra[$item_id]['producto_id']        = $item_producto_id;
         $this->detalle_compra[$item_id]['metodo_descuento']   = $item_metodo_descuento;
         $this->detalle_compra[$item_id]['metodo_impuesto']    = $item_metodo_impuesto;
-        $this->detalle_compra[$item_id]['impuesto_orden']     = $item_impuesto_orden;
-        $this->detalle_compra[$item_id]['costo']              = $item_costo_producto;
+        $this->detalle_compra[$item_id]['impuesto_orden']     = $item_impuesto_orden ? $item_impuesto_orden : 0;
+        $this->detalle_compra[$item_id]['costo']              = $item_costo_producto ? $item_costo_producto : 1;
         $this->detalle_compra[$item_id]['compra_unidad']      = $item_compra_unidad;
-        $this->detalle_compra[$item_id]['descuento_unitario'] = $item_descuento;
+        $this->detalle_compra[$item_id]['descuento_unitario'] = $item_descuento ? $item_descuento : 0;
         $this->detalle_compra[$item_id]['nombre_producto'] = $item_nombre_producto;
         $consultar_stock = ProductoAlmacen::where('producto_id',$item_producto_id)->where('almacen_id',$this->almacen)->first();
         $this->detalle_compra[$item_id]['stock_actual'] = $consultar_stock == true ? $consultar_stock->stock : 0;

@@ -68,6 +68,36 @@
                 });
         });
 
+
+        window.Livewire.on('activar_buscador_proveedor', proveedor_id =>
+        {
+            $('#buscar_proveedor').autocomplete({
+            source: function(request,response){
+                $.ajax({
+                url: '{{route("search.buscar_proveedor")}}',
+                dataType: 'json',
+                data: {
+                    term: request.term
+                },
+                success: function(data){
+                    response(data)
+                }
+            });
+            },
+            minLength: 3,
+            select: function(event,ui)
+                {
+                    setTimeout(() => {
+                    $('#buscar_proveedor_oculto').val('');
+                    $('#buscar_proveedor_oculto').val(ui.item.id);
+                    $('#buscar_proveedor_oculto')[0].dispatchEvent(new Event('input'));
+                    $('#buscar_proveedor').val(ui.item.name);
+                    }, 750);
+                }
+                });
+        });
+
+
         window.Livewire.on('advertencia_almacen', () =>
         {
             Swal.fire({

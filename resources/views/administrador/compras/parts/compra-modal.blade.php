@@ -24,13 +24,10 @@
                             @error('comprasform.fecha')<div class="p-1" style="color:red;"> {{ $message }}</div>@enderror
                         </div>
                         <div class="col-sm-4 col-12">
-                            <label for="compra_proveedor" class="form-label">Proveedor <span class='text-red'>(*)</span></label>
-                            <select class="form-select" id="compra_proveedor" wire:model.live='comprasform.prove'>
-                                <option value="">Elegir</option>
-                                @foreach ($proveedors as $prove)
-                                <option value="{{$prove->id}}">{{$prove->name}}</option>
-                                @endforeach
-                            </select>
+                                <label for="compra_proveedor" class="form-label">Proveedor <span class='text-red'>(*)</span></label>
+                                <input type="hidden" id="buscar_proveedor_oculto" wire:model.live='buscar_proveedor_oculto'>
+                                <input type="text" class="form-control" id="buscar_proveedor" wire:model.live='buscar_proveedor' placeholder="Buscar Proveedor"
+                                 wire:model.live.debounce.500ms='buscar_proveedor' autocomplete="off">
                             @error('comprasform.prove')<div class="p-1" style="color:red;"> {{ $message }}</div>@enderror
                         </div>
                         <div class="col-sm-4 col-12">

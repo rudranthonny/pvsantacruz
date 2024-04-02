@@ -12,19 +12,20 @@ class Producto extends Model
     use HasFactory;
 
     protected $fillable = [
-    'designacion' ,
-    'simbologia' ,
-    'codigo',
-    'categoria_id' ,
-    'marca_id',
-    'tipo' ,
-    'costo' ,
-    'unitario' ,
-    'venta_unidad' ,
-    'compra_unidad' ,
-    'precio' ,
-    'metodo_impuesto',
-    'alerta_stock',
+        'designacion' ,
+        'simbologia' ,
+        'codigo',
+        'categoria_id' ,
+        'marca_id',
+        'tipo' ,
+        'costo' ,
+        'unitario' ,
+        'impuesto_orden',
+        'venta_unidad' ,
+        'compra_unidad' ,
+        'precio' ,
+        'metodo_impuesto',
+        'alerta_stock',
     ];
 
     public function pcompuestos(){
@@ -45,10 +46,12 @@ class Producto extends Model
     {
         return $this->belongsTo(Unidad::class,'unitario');
     }
+
     public function vunidad()
     {
         return $this->belongsTo(Unidad::class,'venta_unidad');
     }
+
     public function cunidad()
     {
         return $this->belongsTo(Unidad::class,'compra_unidad');
