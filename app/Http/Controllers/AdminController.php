@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use App\Models\Cliente;
+use App\Models\Marca;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use App\Models\User;
@@ -70,7 +72,37 @@ class AdminController extends Controller
         return $listaproveedores;
     }
 
+    public function buscar_marca(Request $request)
+    {
+        $term = $request->get('term');
+        $querys = Marca::where('name', 'like', '%' . $term . '%')->get();
 
+        foreach ($querys as $query) {
+            $query['label'] =  $query->id . "-" . $query->name;
+        }
+
+        $listamarcas = $querys;
+        if ($querys->count() == 0) {
+            $listamarcas['label'] = 'Sin resultados';
+        }
+        return $listamarcas;
+    }
+
+    public function buscar_categoria(Request $request)
+    {
+        $term = $request->get('term');
+        $querys = Categoria::where('name', 'like', '%' . $term . '%')->get();
+
+        foreach ($querys as $query) {
+            $query['label'] =  $query->id . "-" . $query->name;
+        }
+
+        $listacategorias = $querys;
+        if ($querys->count() == 0) {
+            $listacategorias['label'] = 'Sin resultados';
+        }
+        return $listacategorias;
+    }
 
     public function buscar_productos_compra2(Request $request)
     {
