@@ -18,7 +18,12 @@
 
 <body>
     <center>
-    <img src="{{ asset($configuracion->logo) }}" alt="" srcset="" width="64px;">
+    <img src="{{ asset($configuracion->logo) }}" alt="" srcset="" width="128px;">
+    </center>
+    <center>
+    <div>
+        <b>{{$configuracion->name}}</b>
+    </div>
     </center>
     <table>
         <tbody>
