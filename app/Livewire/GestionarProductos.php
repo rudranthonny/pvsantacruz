@@ -70,6 +70,10 @@ class GestionarProductos extends Component
         $this->productoForm->verificar_productos();
     }
 
+    public function updatedBproducto(){
+        $this->dispatch('activar_buscador_producto');
+    }
+
     public function agregar_producto_compuesto()
     {
         $this->productoForm->agregar_producto_compuesto($this->bproducto);

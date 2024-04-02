@@ -46,6 +46,9 @@
         });
     </script>
      <script type="text/javascript">
+
+
+
         window.Livewire.on('activar_buscador_marca', marca_id =>
         {
                 $('#buscar_marca').autocomplete({
@@ -100,6 +103,33 @@
                     }, 750);
                 }
                 });
+        });
+
+        window.Livewire.on('activar_buscador_producto', producto_id =>
+        {
+            $('#buscar_producto2').autocomplete({
+                source: function(request,response){
+                    $.ajax({
+                    url: '{{route("search.buscar_productos_compra")}}',
+                    dataType: 'json',
+                    data: {
+                        term: request.term
+                    },
+                    success: function(data){
+                        response(data)
+                    }
+                });
+                },
+                minLength: 3,
+                select: function(event,ui)
+                    {
+                        setTimeout(() => {
+                        $('#buscar_producto2').val('');
+                        $('#buscar_producto2').val(ui.item.codigo);
+                        $('#buscar_producto2')[0].dispatchEvent(new Event('input'));
+                        }, 750);
+                    }
+                    });
         });
      </script>
 @stop

@@ -177,7 +177,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-12 col-sm-4">
-                            <input type="text" class="form-control" wire:model.live='bproducto' placeholder="Escriba el nombre del producto agregar o el codigo">
+                            <input type="text" class="form-control" id="buscar_producto2" wire:model.live='bproducto' placeholder="Escriba el nombre del producto agregar o el codigo">
                         </div>
                         <div class="col-12 col-sm-4">
                             <button class="btn btn-success" wire:loading.attr="disabled" wire:target="agregar_producto_compuesto" wire:click='agregar_producto_compuesto'>
