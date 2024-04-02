@@ -64,17 +64,51 @@
                                     </thead>
                                     <tbody>
                                         @forelse ($posventas as $pventa)
-                                            <tr class="text-center">
-                                                <td style="vertical-align: middle;">{{ $pventa->created_at }}</td>
-                                                <td style="vertical-align: middle;">{{ $pventa->almacen_name }}</td>
-                                                <td style="vertical-align: middle;">{{ $pventa->cliente_name }}</td>
-                                                <td style="vertical-align: middle;">{{ $pventa->impuesto_porcentaje }}%</td>
-                                                <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->impuesto_monto }}</td>
-                                                <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->descuento }}</td>
-                                                <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->envio }}</td>
-                                                <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->total_pagar }}</td>
-                                                <td style="vertical-align: middle;">-</td>
-                                            </tr>
+                                        <tr role="row" class="accordion-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#tablecollapse-{{$pventa->id}}" aria-expanded="false" aria-controls="tablecollapse-{{$pventa->id}}">
+                                            <td role="cell" class="text-center"  style="vertical-align: middle;">{{ $pventa->created_at }}</td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">{{ $pventa->almacen_name }}</td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">{{ $pventa->cliente_name }}</td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">{{ $pventa->impuesto_porcentaje }}%</td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->impuesto_monto }}</td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->descuento }}</td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->envio }}</td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->total_pagar }}</td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">-</td>
+
+                                        </tr>
+                                        <tr role="row">
+                                            <td role="cell" colspan="9" class="p-0">
+                                                <div id="tablecollapse-{{$pventa->id}}" class="accordion-collapse collapse" aria-labelledby="heading-1" data-bs-parent="#accordionExample" style="">
+                                                    <div>
+                                                        <table role="table" width="100%" class="table table-primary">
+                                                            <thead role="rowgroup">
+                                                                <tr>
+                                                                    <th colspan="7"><center>DETALLE DE LA VENTA</center></th>
+                                                                </tr>
+                                                                <tr role="row">
+                                                                    <th class="text-center" role="columnheader">Codigo</th>
+                                                                    <th class="text-center" role="columnheader">Producto</th>
+                                                                    <th class="text-center" role="columnheader">Cantidad</th>
+                                                                    <th class="text-center" role="columnheader">Precio</th>
+                                                                    <th class="text-center" role="columnheader">importe</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody role="rowgroup">
+                                                                @foreach ($pventa->posventadetalles as $pdetalle)
+                                                                <tr role="row">
+                                                                    <td role="cell" class="text-center"> {{$pdetalle->producto_codigo}} </td>
+                                                                    <td role="cell" class="text-center"> {{$pdetalle->producto_nombre}} </td>
+                                                                    <td role="cell" class="text-center"> {{$pdetalle->producto_cantidad}} </td>
+                                                                    <td role="cell" class="text-center"> {{$configuracion->moneda->simbolo.$pdetalle->producto_precio}} </td>
+                                                                    <td role="cell" class="text-center"> {{$configuracion->moneda->simbolo.$pdetalle->producto_importe}}  </td>
+                                                                </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         @empty
                                         @endforelse
                                             <tr>
