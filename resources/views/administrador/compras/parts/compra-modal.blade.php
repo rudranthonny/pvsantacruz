@@ -257,6 +257,13 @@
             </div>
         </div>
     </div>
+    @script
+    <script>
+        $wire.on('cerrar_modal_compra', reservacion => {
+            ventana = document.getElementById('cerrar_modal_compra_x').click();
+        });
+    </script>
+    @endscript
 </div>
 
 

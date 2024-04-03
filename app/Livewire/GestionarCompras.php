@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Exports\ReporteComprasExport;
 use App\Livewire\Forms\ComprasForm;
 use App\Livewire\Forms\PagoCompraForm;
 use App\Models\Almacen;
@@ -10,8 +11,10 @@ use App\Models\Configuracion;
 use App\Models\PagoCompra;
 use App\Models\Producto;
 use App\Models\Proveedor;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GestionarCompras extends Component
 {
@@ -29,10 +32,13 @@ class GestionarCompras extends Component
     public $buscar_proveedor = '';
     public $buscar_producto_oculto = '';
     public $buscar_proveedor_oculto = '';
+    public $search2;
+    public $referencia_compra_id;
     public $iteration=0;
     public $editar_item_id;
     public $editar_item = false;
     public $configuracion;
+    public $finicio,$ffinal,$salmacen;
     #editar item
     public $item_costo_producto,$item_metodo_impuesto,$item_impuesto_orden,$item_metodo_descuento,$item_descuento,$item_compra_unidad,$item_producto_id;
     public $item_cantidad,$item_nombre_producto;
@@ -172,14 +178,29 @@ class GestionarCompras extends Component
         }
     }
 
-    public function modal_pago_compra(PagoCompra $pagocompra = null,Compra $compra)
+    public function modal_pago_compra(Compra $compra,PagoCompra $pagocompra = null)
     {
+        $this->reset('referencia_compra_id');
         $this->pagocompraform->reset();
         $this->pagocompraform->fecha_pago = date('Y-m-d');
+        $this->pagocompraform->compra = $compra;
+        $this->pagocompraform->cantidad_recibida = $compra->total-$compra->pagocompras->sum('monto_pago');
+        $this->pagocompraform->monto_pago = $compra->total-$compra->pagocompras->sum('monto_pago');
+        $this->pagocompraform->cambio = 0;
+        $this->referencia_compra_id = 'COM_'.$compra->id;
         if ($pagocompra->id == true) {
             $this->titlemodal_pagocompra = 'Editar';
             $this->pagocompraform->set($pagocompra);
         }
+    }
+
+    public function guardar_pago(){
+        $this->pagocompraform->store();
+        $this->dispatch('cerrar_modal_pago_compra');
+    }
+
+    public function updatedPagocompraForm(){
+        $this->pagocompraform->calcular_campos();
     }
 
     public function eliminar(Compra $compra){
@@ -189,9 +210,51 @@ class GestionarCompras extends Component
         $this->updatedSearch();
     }
 
+    public function eliminar_pago_compra(PagoCompra $pagoCompra){
+        $compra_id = $pagoCompra->compra_id;
+        $pagoCompra->delete();
+        $this->pagocompraform->actualizar_compra($compra_id);
+    }
+
+    public function descargar_reporte_compras_excel(){
+        $compras = Compra::query()->orwhere('id','like',"%".$this->search."%")->orwhereExists(function ($query)  {
+            $query->select()
+                  ->from(DB::raw('proveedors'))
+                  ->whereColumn('compras.proveedor_id', 'proveedors.id')
+                  ->where('proveedors.name','like','%'.$this->search.'%');
+        })->orderByDesc('id');
+
+        $compras->when($this->salmacen <> '',function ($q) {
+            return $q->where('almacen_id',$this->salmacen);
+        });
+
+        $compras->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
+            return $q->where('fecha','>=',$this->finicio)->where('fecha','<=',$this->ffinal);
+        });
+
+        $compras = $compras->get();
+
+        return Excel::download(new ReporteComprasExport($compras), 'ReporteCompras.xlsx');
+    }
+
     public function render()
     {
-        $compras = Compra::orderByDesc('id')->paginate($this->pagina); //metodo
+        $compras = Compra::query()->orwhere('id','like',"%".$this->search."%")->orwhereExists(function ($query)  {
+            $query->select()
+                  ->from(DB::raw('proveedors'))
+                  ->whereColumn('compras.proveedor_id', 'proveedors.id')
+                  ->where('proveedors.name','like','%'.$this->search.'%');
+        })->orderByDesc('id');
+
+        $compras->when($this->salmacen <> '',function ($q) {
+            return $q->where('almacen_id',$this->salmacen);
+        });
+
+        $compras->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
+            return $q->where('fecha','>=',$this->finicio)->where('fecha','<=',$this->ffinal);
+        });
+
+        $compras = $compras->paginate($this->pagina);
         $proveedors = Proveedor::all();
         $almacens = Almacen::all();
         return view('livewire.gestionar-compras', compact('compras','proveedors','almacens'));

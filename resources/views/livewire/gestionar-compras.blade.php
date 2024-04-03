@@ -22,16 +22,38 @@
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
-                            <div class="col-12">
-                                <label class="visually-hidden" for="buscar_compras">Buscar Compra</label>
+                            <div class="col-12 col-sm-3">
+                                <label  for="buscar_compras_c">Buscar Compra</label>
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
-                                    <input type="text" class="form-control" id="buscar_compras"
+                                    <input type="text" class="form-control" id="buscar_compras_c"
                                         placeholder="Buscar Compra" wire:model.live='search'>
                                 </div>
                             </div>
+                            <div class="col-12 col-sm-3">
+                                <label for="seleccionar_almacen" class="form-label">Almacen</label>
+                                <select class="form-select" id="seleccionar_almacen" wire:model.live="salmacen">
+                                    <option value="">Elegir</option>
+                                    @foreach ($almacens as $almacen)
+                                    <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <label for="f_inicio">F.Inicio</label>
+                                <input type="date" id="f_inicio" class="form-control" wire:model.live='finicio'>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <label for="f_inicio">F.Final</label>
+                                <input type="date" id="f_final" class="form-control" wire:model.live='ffinal'>
+                            </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <button class="btn btn-outline-success" wire:loading.attr="disabled" wire:target="descargar_reporte_compras_excel" wire:click="descargar_reporte_compras_excel"><i class="fas fa-download"></i> Descargar Reporte</button>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
                             <div class="col-12">
                                 <table class="table table-hover">
                                     <thead class="table-light">
@@ -69,11 +91,22 @@
                                                 <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$compra->debido }}</td>
                                                 <td style="vertical-align: middle;">
                                                     @if ($compra->estado_pago == 1)
-                                                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalpagocompra" id="agregar-pago-compra-{{ $compra->id }}" wire:click="modal_pago_compra('',{{ $compra->id}}')">No Pagado</button>
+                                                        <button class="btn btn-warning"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalpagocompra"
+                                                        id="agregar-pago-compra-{{ $compra->id }}"
+                                                         wire:click="modal_pago_compra({{$compra->id}})">
+                                                        No Pagado
+                                                        </button>
                                                     @elseif($compra->estado_pago == 2)
                                                     <button class="btn btn-success" disabled>Pagado</button>
                                                     @elseif($compra->estado_pago == 3)
-                                                        <button class="btn btn-primary">Parcial</button>
+                                                        <button class="btn btn-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalpagocompra"
+                                                        id="agregar-pago-compra-{{ $compra->id }}"
+                                                         wire:click="modal_pago_compra({{$compra->id}})"
+                                                         >Parcial</button>
                                                     @endif
                                                 </td>
                                                 <td style="vertical-align: middle;">
@@ -84,6 +117,9 @@
                                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuAcciones-1">
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalCompra" id="editar-compra-{{ $compra->id }}" wire:click="modal('{{ $compra->id }}')" href="#"><i class="fas fa-edit"></i> Editar Compra</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalreportepagoscompra" id="consultar-pago-compra-{{ $compra->id }}" wire:click="modal_pago_compra({{$compra->id}})" href="#"><i class="fas fa-pager"></i> Ver Pagos</a>
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item" wire:click="eliminar({{ $compra->id }})"
@@ -116,15 +152,10 @@
                     </div>
                     @include('administrador.compras.parts.compra-modal')
                     @include('administrador.compras.parts.registrar-pago-compra-modal')
+                    @include('administrador.compras.parts.reporte-pagos-compra-modal')
                 </div>
             </div>
         </div>
-    @script
-    <script>
-        $wire.on('cerrar_modal_compra', reservacion => {
-            ventana = document.getElementById('cerrar_modal_compra_x').click();
-        });
-    </script>
-    @endscript
+
 </div>
 
