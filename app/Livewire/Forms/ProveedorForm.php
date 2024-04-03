@@ -11,8 +11,8 @@ class ProveedorForm extends Form
 {
     public ?Proveedor $proveedor;
 
-    #[Rule('required')]
     public $codigo;
+    #[Rule('required')]
     public $name;
     public $email;
     public $telefono;
@@ -41,6 +41,7 @@ class ProveedorForm extends Form
     public function store()
     {
         $this->validate();
+        $this->codigo = Proveedor::all()->count()+1;
         Proveedor::create($this->all());
     }
 }
