@@ -20,6 +20,11 @@ class Compra extends Model
         return $this->belongsTo(Proveedor::class);
     }
 
+    public function pagocompras()
+    {
+        return $this->hasMany(PagoCompra::class);
+    }
+
     public function almacen()
     {
         return $this->belongsTo(Almacen::class);

@@ -3,9 +3,11 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\ComprasForm;
+use App\Livewire\Forms\PagoCompraForm;
 use App\Models\Almacen;
 use App\Models\Compra;
 use App\Models\Configuracion;
+use App\Models\PagoCompra;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use Livewire\Component;
@@ -17,8 +19,10 @@ class GestionarCompras extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public ComprasForm $comprasform;
+    public PagoCompraForm $pagocompraform;
     public $search = '';
     public $titlemodal = 'Añadir';
+    public $titlemodal_pagocompra = 'Añadir';
     public $sel_almacen;
     public $pagina = 5;
     public $buscar_producto = '';
@@ -165,6 +169,16 @@ class GestionarCompras extends Component
             $this->buscar_producto_oculto = $this->comprasform->compra->proveedor_id;
             $this->buscar_proveedor = Proveedor::find($this->comprasform->compra->proveedor_id)->name;
             $this->comprasform->fecha = $compra->fecha;
+        }
+    }
+
+    public function modal_pago_compra(PagoCompra $pagocompra = null,Compra $compra)
+    {
+        $this->pagocompraform->reset();
+        $this->pagocompraform->fecha_pago = date('Y-m-d');
+        if ($pagocompra->id == true) {
+            $this->titlemodal_pagocompra = 'Editar';
+            $this->pagocompraform->set($pagocompra);
         }
     }
 

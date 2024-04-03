@@ -69,7 +69,7 @@
                                                 <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$compra->debido }}</td>
                                                 <td style="vertical-align: middle;">
                                                     @if ($compra->estado_pago == 1)
-                                                        <button class="btn btn-warning">No Pagado</button>
+                                                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalpagocompra" id="agregar-pago-compra-{{ $compra->id }}" wire:click="modal_pago_compra('',{{ $compra->id}}')">No Pagado</button>
                                                     @elseif($compra->estado_pago == 2)
                                                     <button class="btn btn-success" disabled>Pagado</button>
                                                     @elseif($compra->estado_pago == 3)
@@ -115,6 +115,7 @@
                         </div>
                     </div>
                     @include('administrador.compras.parts.compra-modal')
+                    @include('administrador.compras.parts.registrar-pago-compra-modal')
                 </div>
             </div>
         </div>
