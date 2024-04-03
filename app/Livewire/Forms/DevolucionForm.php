@@ -132,13 +132,19 @@ class DevolucionForm extends Form
             $n_det_dev->producto_importe = $this->detalles_devolucion[$key]['producto_importe'];
             $n_det_dev->producto_tipo = $this->detalles_devolucion[$key]['producto_tipo'];
             $n_det_dev->save();
-            $this->quitar_stock_almacen($n_det_dev->producto_id,$n_det_dev->producto_cantidad,$n_devolucion->almacen_id);
+            $this->agregar_stock_almacen($n_det_dev->producto_id,$n_det_dev->producto_cantidad,$n_devolucion->almacen_id);
         }
     }
 
-    public function quitar_stock_almacen($producto_id,$cantidad,$almacen_id){
+    public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id){
         $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
-        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-$cantidad;}
+        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock+$cantidad;}
+        else{
+            $b_almacen_producto = new ProductoAlmacen();
+            $b_almacen_producto->almacen_id = $almacen_id;
+            $b_almacen_producto->producto_id = $producto_id;
+            $b_almacen_producto->stock = $cantidad;
+        }
         $b_almacen_producto->save();
     }
 
