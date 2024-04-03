@@ -100,7 +100,7 @@ class GestionarProductos extends Component
             $this->titlemodal = 'Editar Producto';
             $this->productoForm->set($producto);
             $this->buscar_marca_oculto = $this->productoForm->producto->marca_id;
-            $this->buscar_marca = Marca::find($this->productoForm->producto->marca_id)->name;
+            $this->buscar_marca = Marca::find($this->productoForm->producto->marca_id) ? Marca::find($this->productoForm->producto->marca_id)->name : null;
             $this->buscar_categoria_oculto = $this->productoForm->producto->categoria_id;
             $this->buscar_categoria = Categoria::find($this->productoForm->producto->categoria_id)->name;
         }
