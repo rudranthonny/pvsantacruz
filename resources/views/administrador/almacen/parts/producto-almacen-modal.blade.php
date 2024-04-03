@@ -17,7 +17,7 @@
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <label for="nombre" class="form-label">Stock <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="name"
+                            <input type="number" step="0.01" class="form-control" id="name"
                                 required wire:model="almacenstockform.stock">
                             @error('almacenstockform.stock')
                                 <span class="error">{{ $message }}</span>
