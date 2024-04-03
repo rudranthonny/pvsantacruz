@@ -156,11 +156,13 @@
                             <textarea class="form-control" id="devolucionform_nota" rows="3" wire:model.live='devolucionform.nota_devolucion'></textarea>
                         </div>
                     </div>
+                    @if ($devolucionform->total_sin_impuesto > 0)
                     <div class="row my-4">
                         <div class="col-12">
                             <button class="btn btn-primary" wire:loading.attr="disabled" wire:target="save_devolucion" wire:click='save_devolucion'>Crear Devolución</button>
                         </div>
                     </div>
+                    @endif
             </div>
         </div>
     </div>
