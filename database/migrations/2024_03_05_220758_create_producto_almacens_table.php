@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('producto_id')->nullable();
             $table->unsignedBigInteger('almacen_id')->nullable();
-            $table->integer('stock')->default(0);
+            $table->double('stock')->default(0);
             $table->timestamps();
         });
     }
