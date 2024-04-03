@@ -78,7 +78,12 @@
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->descuento }}</td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->envio }}</td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->total_pagar }}</td>
-                                            <td role="cell" class="text-center" style="vertical-align: middle;"><button class="btn btn-danger" wire:loading.attr='disabled' id="venta_descargar-{{$pventa->id}}" wire:target='descargar_venta_pdf({{$pventa->id}})' wire:click='descargar_venta_pdf({{$pventa->id}})'><i class="fas fa-download"></i></button></td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">
+                                                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalDevolucion" wire:click="modal_devolucion({{$pventa->id}})">
+                                                    <i class="fas fa-backward"></i>
+                                                </button>
+                                                <button class="btn btn-danger" wire:loading.attr='disabled' id="venta_descargar-{{$pventa->id}}" wire:target='descargar_venta_pdf({{$pventa->id}})' wire:click='descargar_venta_pdf({{$pventa->id}})'><i class="fas fa-download"></i></button>
+                                            </td>
                                         </tr>
                                         <tr role="row">
                                             <td role="cell" colspan="9" class="p-0">
@@ -142,6 +147,7 @@
                             </div>
 
                         </div>
+                        @include('administrador.ventas.parts.devolucion-modal')
                     </div>
                 </div>
             </div>

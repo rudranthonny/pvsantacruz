@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Exports\ReporteVentasExport;
+use App\Livewire\Forms\DevolucionForm;
 use App\Models\Almacen;
 use App\Models\Configuracion;
 use App\Models\Posventa;
@@ -16,11 +17,20 @@ class GestionarVentas extends Component
 
     use WithPagination;
     public PosVentaForm $posventaform;
+    public DevolucionForm $devolucionform;
     protected $paginationTheme = 'bootstrap';
     public $pagina = 5;
     public $configuracion;
     public $search,$finicio,$ffinal,$salmacen;
     public function mount(){  $this->configuracion = Configuracion::find(1); }
+
+    public function updatedDevolucionform(){
+        $this->devolucionform->actualizar_datos();
+    }
+
+    public function eliminar_item_devolucion($item_id){
+        $this->devolucionform->eliminar_item_devolucion($item_id);
+    }
 
     public function descargar_reporte_ventas_excel(){
         $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
@@ -50,6 +60,14 @@ class GestionarVentas extends Component
         $this->resetPage();
     }
 
+    public function modal_devolucion(Posventa $posventa){
+        $this->devolucionform->agregar_datos_venta($posventa);
+    }
+
+    public function save_devolucion(){
+        $this->devolucionform->crear_devolucion();
+        $this->dispatch('cerrar_modal_devolucion');
+    }
 
     public function render()
     {

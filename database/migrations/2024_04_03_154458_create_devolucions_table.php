@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('devolucions', function (Blueprint $table) {
             $table->id();
+            $table->date('fecha');
             $table->unsignedBigInteger('posventa_id');
             $table->unsignedBigInteger('almacen_id');
             $table->string('almacen_name');
