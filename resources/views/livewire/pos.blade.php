@@ -208,7 +208,7 @@
                                 <label class="visually-hidden" for="buscar_producto">Buscar Producto</label>
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="bi bi-search"></i></div>
-                                    <input type="hidden" class="form-control" id="buscar_producto" wire:model.live='buscar_producto'
+                                    <input type="text" class="form-control" id="buscar_producto" wire:model.live='buscar_producto'
                                         placeholder="Buscar Producto" autofocus>
                                 </div>
                             </div>
