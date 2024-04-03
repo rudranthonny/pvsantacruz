@@ -18,7 +18,7 @@ class PosVentaForm extends Form
             $paper_heigth = $paper_examen + $paper_heigth;
             $configuracion = Configuracion::find(1);
             $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
-            $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + 12.2 * 2 * $posventa->posventadetalles->count()]);
+            $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + 18.2 * 2 * $posventa->posventadetalles->count()]);
             $pdfContent = $consultapdf->output();
             return response()->streamDownload(
                 fn () => print($pdfContent),
