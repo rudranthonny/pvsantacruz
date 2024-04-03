@@ -20,6 +20,10 @@ class RoleSeeder extends Seeder
 
         //Role::create(['name' => 'Administrador']);
        // Role::create(['name' => 'Cajero']);
+       $permisos = Permission::all();
+       foreach ($permisos as $key => $per) {
+        $per->delete();
+       }
         Permission::create(['name' =>'admin.configuracion.ajustesistema'])->syncRoles(['Administrador']);
         Permission::create(['name' =>'admin.index'])->syncRoles(['Administrador','Cajero']);
         Permission::create(['name' =>'admin.moneda'])->syncRoles(['Administrador']);
