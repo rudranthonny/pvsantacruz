@@ -35,6 +35,10 @@ class DevolucionForm extends Form
     public $estado_devolucion;
     public $detalles_devolucion = [];
 
+    public $rules = [
+        'fecha' => 'required',
+    ];
+
     public function agregar_datos_venta(Posventa $posventa){
         $this->fecha = date('Y-m-d');
         $this->posventa = $posventa;
@@ -99,7 +103,7 @@ class DevolucionForm extends Form
     }
 
     public function crear_devolucion(){
-
+        $this->validate($this->rules);
         $n_devolucion = new Devolucion();
         $n_devolucion->fecha = $this->fecha;
         $n_devolucion->posventa_id =$this->posventa_id;
