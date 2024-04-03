@@ -6,6 +6,7 @@ use App\Models\Devolucion;
 use App\Models\DevolucionDetalle;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
+use App\Models\ProductoAlmacen;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -13,7 +14,7 @@ class DevolucionForm extends Form
 {
     public ?Devolucion $devolucion;
     public ?Posventa $posventa;
-    public ComprasForm $comproform;
+    public ComprasForm $comprasform;
     public $fecha;
     public $posventa_id;
     public $almacen_id;
@@ -131,8 +132,14 @@ class DevolucionForm extends Form
             $n_det_dev->producto_importe = $this->detalles_devolucion[$key]['producto_importe'];
             $n_det_dev->producto_tipo = $this->detalles_devolucion[$key]['producto_tipo'];
             $n_det_dev->save();
-            $this->comproform->quitar_stock_almacen($n_det_dev->producto_id,$n_det_dev->producto_cantidad,$n_devolucion->almacen_id);
+            $this->quitar_stock_almacen($n_det_dev->producto_id,$n_det_dev->producto_cantidad,$n_devolucion->almacen_id);
         }
+    }
+
+    public function quitar_stock_almacen($producto_id,$cantidad,$almacen_id){
+        $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-$cantidad;}
+        $b_almacen_producto->save();
     }
 
     public function eliminar_item_devolucion($item_id)
