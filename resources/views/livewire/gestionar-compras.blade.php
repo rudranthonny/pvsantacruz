@@ -64,16 +64,16 @@
                                                     <span class="badge text-bg-warning">Ordenado</span>
                                                     @endif
                                                 </td>
-                                                <td style="vertical-align: middle;">{{ $compra->total }}</td>
-                                                <td style="vertical-align: middle;">{{ $compra->pagado }}</td>
-                                                <td style="vertical-align: middle;">{{ $compra->debido }}</td>
+                                                <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$compra->total }}</td>
+                                                <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$compra->pagado }}</td>
+                                                <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$compra->debido }}</td>
                                                 <td style="vertical-align: middle;">
                                                     @if ($compra->estado_pago == 1)
-                                                        <span class="badge text-bg-warning">No Pagado</span>
+                                                        <button class="btn btn-warning">No Pagado</button>
                                                     @elseif($compra->estado_pago == 2)
-                                                        <span class="badge text-bg-success">Pagado</span>
+                                                    <button class="btn btn-success" disabled>Pagado</button>
                                                     @elseif($compra->estado_pago == 3)
-                                                        <span class="badge text-bg-primary">Parcial</span>
+                                                        <button class="btn btn-primary">Parcial</button>
                                                     @endif
                                                 </td>
                                                 <td style="vertical-align: middle;">
