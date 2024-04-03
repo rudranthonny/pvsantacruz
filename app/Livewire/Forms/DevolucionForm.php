@@ -13,6 +13,7 @@ class DevolucionForm extends Form
 {
     public ?Devolucion $devolucion;
     public ?Posventa $posventa;
+    public ComprasForm $comproform;
     public $fecha;
     public $posventa_id;
     public $almacen_id;
@@ -130,6 +131,7 @@ class DevolucionForm extends Form
             $n_det_dev->producto_importe = $this->detalles_devolucion[$key]['producto_importe'];
             $n_det_dev->producto_tipo = $this->detalles_devolucion[$key]['producto_tipo'];
             $n_det_dev->save();
+            $this->comproform->quitar_stock_almacen($n_det_dev->producto_id,$n_det_dev->producto_cantidad,$n_devolucion->almacen_id);
         }
     }
 
