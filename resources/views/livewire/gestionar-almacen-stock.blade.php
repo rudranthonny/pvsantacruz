@@ -79,8 +79,16 @@
                                                 <td>{{ $palmacen->almacen->nombre }}</td>
                                                 <td>{{ $palmacen->stock }}</td>
                                                 <td>{{ $palmacen->producto->alerta_stock }}</td>
-                                                <td>{{ $palmacen->producto->marca->name }}</td>
-                                                <td>{{ $palmacen->producto->categoria->name }}</td>
+                                                <td>
+                                                    @isset($palmacen->producto->marca)
+                                                    {{ $palmacen->producto->marca->name }}
+                                                    @endisset
+                                                </td>
+                                                <td>
+                                                    @isset($palmacen->producto->categoria)
+                                                    {{ $palmacen->producto->categoria->name }}
+                                                    @endisset
+                                                </td>
                                                 <td>
                                                     @if ($palmacen->stock == 0)
                                                         <span class="badge text-bg-danger">Insuficiente</span>
