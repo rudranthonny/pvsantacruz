@@ -473,10 +473,21 @@ class Pos extends Component
             #pdf descargar
             $paper_examen = 0;
             $paper_heigth = 460;
+            $items_adicional = 18.2;
+            if ($posventa->descuento > 0) {
+                $items_adicional = $items_adicional+2;
+            }
+            if ($posventa->envio > 0) {
+                $items_adicional = $items_adicional+2;
+            }
+            if ($posventa->impuesto_monto > 0) {
+                $items_adicional = $items_adicional+2;
+            }
+
             $paper_heigth = $paper_examen + $paper_heigth;
             $configuracion = Configuracion::find(1);
             $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
-            $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + 32.2 * 2 * count($this->items)]);
+            $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + $items_adicional * 2 * count($this->items)]);
             $this->dispatch('cerrar_modal_postventa');
             $this->reiniciar();
             $pdfContent = $consultapdf->output();
