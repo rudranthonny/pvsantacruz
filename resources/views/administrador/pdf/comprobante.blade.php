@@ -34,9 +34,6 @@
                 <td><b>Dirección : </b> {{$configuracion->direccion}}</td>
             </tr>
             <tr>
-                <td><b>Teléfono  :</b> {{$configuracion->telefono_empresa }}</td>
-            </tr>
-            <tr>
                 <td>
                    <b> Cliente :</b> {{$posventa->cliente_name }}
                 </td>
