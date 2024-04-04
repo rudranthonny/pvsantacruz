@@ -92,7 +92,7 @@
                                             <td>{{$comprasform->detalle_compra[$key]['costo_unitario']}}</td>
                                             <td>{{$comprasform->detalle_compra[$key]['stock_actual']}}</td>
                                             @php $valor_cantidad = 'comprasform.detalle_compra.'.$key.'.cantidad';@endphp
-                                            <td><input type="number" id="input_cantidad_{{$key}}" class="form-control"  min="1" wire:model.live='{{$valor_cantidad}}' wire:click='actualizar_item_compra({{$key}})'></td>
+                                            <td><input type="number" id="input_cantidad_{{$key}}" class="form-control"  min="1" wire:model.live='{{$valor_cantidad}}' wire:click="actualizar_item_compra('{{$key}}')"></td>
                                             <td>{{$comprasform->detalle_compra[$key]['descuento']}}</td>
                                             <td>{{$comprasform->detalle_compra[$key]['impuesto']}}</td>
                                             <td>{{number_format($comprasform->detalle_compra[$key]['total_parcial'],2)}}</td>
