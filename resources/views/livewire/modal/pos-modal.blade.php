@@ -21,14 +21,14 @@
                                     <label for="cantidad_recibida" class="form-label">Cantidad
                                         Recibida</label>
                                     <input type="number" class="form-control form-control-sm"
-                                        id="cantidad_recibida" wire:model.live="cantidad_recibida" min="{{ $min_cantidad_recibida }}">
+                                        id="cantidad_recibida" wire:model.live="cantidad_recibida">
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="mb-3">
                                     <label for="monto_pago" class="form-label">Monto de pago</label>
                                     <input type="number" class="form-control form-control-sm"
-                                        id="monto_pago" value="{{ $monto_pago }}" disabled>
+                                        id="monto_pago" wire:model.live="monto_pago">
                                 </div>
                             </div>
                             <div>

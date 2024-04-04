@@ -48,6 +48,7 @@ class Pos extends Component
     public $items;
     public $impuesto_porcentaje;
     public $impuesto_monto;
+    public $monto_pendiente;
     public $descuento;
     public $envio;
     public $total_pagar;
@@ -194,6 +195,7 @@ class Pos extends Component
     public function actualizar_Cambio()
     {
         $this->cambio = $this->cantidad_recibida - $this->monto_pago;
+        $this->monto_pendiente = $this->total_pagar - $this->monto_pago;
     }
 
     public function actualizar_montos()
@@ -446,6 +448,7 @@ class Pos extends Component
             $posventa->total_pagar = $this->total_pagar;
             $posventa->cantidad_recibida = $this->cantidad_recibida;
             $posventa->monto_pago = $this->monto_pago;
+            $posventa->monto_pendiente = $this->monto_pendiente;
             $posventa->cambio = $this->cambio;
             $posventa->nota_venta = $this->nota_venta ?? '';
             $posventa->nota_pago = $this->nota_pago ?? '';
