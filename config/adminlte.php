@@ -431,6 +431,11 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Cambiar Contraseña',
+            'route'  => 'admin.usuario.cambiar',
+            'icon' => 'fas fa-fw fa-lock',
+        ],
     ],
 
     /*

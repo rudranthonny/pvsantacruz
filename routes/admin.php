@@ -38,5 +38,5 @@ Route::view("gastos/index", "administrador.gastos.index")->middleware('can:admin
 #ventas
 Route::get("pos", Pos::class)->middleware('can:admin.ventas.pos')->name("admin.ventas.pos");
 Route::view("ventas", "administrador.ventas.index")->middleware('can:admin.ventas.index')->name("admin.ventas.index");
-
+Route::view('usuarios/cambiar_password', 'administrador.personas.cambiar_password')->name('admin.usuario.cambiar');
 
