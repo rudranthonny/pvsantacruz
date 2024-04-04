@@ -21,6 +21,6 @@ class Gasto extends Model
     }
 
     public function m_caja(){
-        return $this->morphOne('App\Models\Mcaja', 'm_cajable');
+        return $this->morphOne('App\Models\MCaja', 'm_cajable');
     }
 }
