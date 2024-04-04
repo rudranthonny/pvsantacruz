@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Configuracion;
 use App\Models\Devolucion;
 use App\Models\DevolucionDetalle;
 use App\Models\Posventa;
@@ -9,6 +10,7 @@ use App\Models\PosventaDetalle;
 use App\Models\ProductoAlmacen;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class DevolucionForm extends Form
 {
@@ -157,4 +159,20 @@ class DevolucionForm extends Form
         unset($this->detalles_devolucion[$item_id]);
         $this->actualizar_datos();
     }
+
+    public function descargar_pdf(Devolucion $devolucion)
+    {
+            $paper_examen = 0;
+            $paper_heigth = 430;
+            $paper_heigth = $paper_examen + $paper_heigth;
+            $configuracion = Configuracion::find(1);
+            $nombre_archivo = 'devolucion-' . date("F j, Y, g:i a") . '.pdf';
+            $consultapdf = FacadePdf::loadView('administrador.pdf.devolucion', compact('devolucion', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + 18.2 * 2 * $devolucion->devoluciondetalles->count()]);
+            $pdfContent = $consultapdf->output();
+            return response()->streamDownload(
+                fn () => print($pdfContent),
+                $nombre_archivo
+            );
+    }
+
 }

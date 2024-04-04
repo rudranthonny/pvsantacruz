@@ -360,6 +360,10 @@ return [
                     'text' => 'Gestionar Ventas',
                     'route'  => 'admin.ventas.index',
                 ],
+                [
+                    'text' => 'Gestionar Devoluciones',
+                    'route'  => 'admin.devolucions.index',
+                ],
             ],
         ],
         [
