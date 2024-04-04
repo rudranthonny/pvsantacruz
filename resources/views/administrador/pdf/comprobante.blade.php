@@ -66,18 +66,24 @@
                     <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{$configuracion->moneda->simbolo}} {{number_format($detalle->producto_importe,2)}}</b></td>
                 </tr>
             @endforeach
+                @if ($posventa->impuesto_monto > 0)
                 <tr>
                     <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Impuesto (-)</b></td>
                     <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{$configuracion->moneda->simbolo}} {{number_format($posventa->impuesto_monto,2)}}</b></td>
                 </tr>
+                @endif
+                @if ($posventa->descuento > 0)
                 <tr>
                     <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Descuento (-)</b></td>
                     <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{$configuracion->moneda->simbolo}} {{number_format($posventa->descuento,2)}}</b></td>
                 </tr>
+                @endif
+                @if ($posventa->envio > 0)
                 <tr>
                     <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Envio(-)</b></td>
                     <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{$configuracion->moneda->simbolo}} {{number_format($posventa->envio,2)}}</b></td>
                 </tr>
+                @endif
         </tbody>
     </table>
     <br>
