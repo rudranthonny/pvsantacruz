@@ -62,10 +62,22 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Total</b></td>
+                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Total (+)</b></td>
                     <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{$configuracion->moneda->simbolo}} {{number_format($detalle->producto_importe,2)}}</b></td>
                 </tr>
             @endforeach
+                <tr>
+                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Impuesto (-)</b></td>
+                    <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{$configuracion->moneda->simbolo}} {{number_format($posventa->impuesto_monto,2)}}</b></td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Descuento (-)</b></td>
+                    <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{$configuracion->moneda->simbolo}} {{number_format($posventa->descuento,2)}}</b></td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Envio(-)</b></td>
+                    <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{$configuracion->moneda->simbolo}} {{number_format($posventa->envio,2)}}</b></td>
+                </tr>
         </tbody>
     </table>
     <br>
