@@ -28,7 +28,7 @@ class GestionarDevoluciones extends Component
         $devolucions->when($this->salmacen <> '',function ($q) { return $q->where('almacen_id',$this->salmacen);});
         $devolucions->when($this->finicio != null && $this->ffinal != null  ,function ($q) {return $q->where('created_at','>=',$this->finicio)->where('created_at','<=',$this->ffinal);});
         $devolucions = $devolucions->get();
-        return Excel::download(new ReporteDevolucionExport($devolucions), 'ReporteVentas.xlsx');
+        return Excel::download(new ReporteDevolucionExport($devolucions), 'ReporteDevolución.xlsx');
     }
 
 
