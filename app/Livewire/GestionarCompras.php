@@ -161,6 +161,7 @@ class GestionarCompras extends Component
 
     public function eliminar_item_compra($item_id){
         $this->comprasform->eliminar_item_compra($item_id);
+        $this->comprasform->obtener_datos_compra();
     }
 
     public function modal(Compra $compra = null)
@@ -172,7 +173,7 @@ class GestionarCompras extends Component
         if ($compra->id == true) {
             $this->titlemodal = 'Editar';
             $this->comprasform->set($compra);
-            $this->buscar_producto_oculto = $this->comprasform->compra->proveedor_id;
+            $this->buscar_proveedor_oculto = $this->comprasform->compra->proveedor_id;
             $this->buscar_proveedor = Proveedor::find($this->comprasform->compra->proveedor_id)->name;
             $this->comprasform->fecha = $compra->fecha;
         }

@@ -113,7 +113,7 @@ class ComprasForm extends Form
         foreach ($this->compra->dcompras as $key => $dcompra)
         {
             #verificar si el detalle existe en el array
-            if ($this->detalle_compra[$dcompra->codigo] == true) {
+            if (isset($this->detalle_compra[$dcompra->codigo]) == true) {
                 $cantidad_anterior = $dcompra->cantidad;
                 $dcompra->metodo_descuento = $this->detalle_compra[$dcompra->codigo]['metodo_descuento'];
                 $dcompra->metodo_impuesto = $this->detalle_compra[$dcompra->codigo]['metodo_impuesto'];
@@ -185,6 +185,7 @@ class ComprasForm extends Form
         $this->eliminar_dcompra_compra($this->compra);
         $this->compra->delete();
     }
+
     public function store()
     {
         $this->validate(
@@ -236,8 +237,6 @@ class ComprasForm extends Form
             }
         }
     }
-
-
 
     public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id){
         $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();

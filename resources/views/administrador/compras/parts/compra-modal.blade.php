@@ -97,8 +97,8 @@
                                             <td>{{$comprasform->detalle_compra[$key]['impuesto']}}</td>
                                             <td>{{number_format($comprasform->detalle_compra[$key]['total_parcial'],2)}}</td>
                                             <td>
-                                                <button class="btn btn-outline-success" id="editar_item_compra_{{$key}}"  wire:loading.attr="disabled" wire:target="editar_item_compra({{$key}})"  wire:click='editar_item_compra({{$key}})'><i class="fas fa-edit" ></i></button>
-                                                <button class="btn btn-outline-danger" id="eliminar_item_compra_{{$key}}" wire:click='eliminar_item_compra({{$key}})'><i class="fas fa-trash"></i></button>
+                                                <button class="btn btn-outline-success" id="editar_item_compra_{{$key}}"  wire:loading.attr="disabled" wire:target="editar_item_compra('{{$key}}')"  wire:click="editar_item_compra('{{$key}}')"><i class="fas fa-edit" ></i></button>
+                                                <button class="btn btn-outline-danger" id="eliminar_item_compra_{{$key}}" wire:click="eliminar_item_compra('{{$key}}')"><i class="fas fa-trash"></i></button>
                                             </td>
                                         </tr>
                                         @endforeach
