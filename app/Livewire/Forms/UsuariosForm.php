@@ -44,7 +44,14 @@ class UsuariosForm extends Form
             'email' => 'unique:users,email,'.$this->user->id,
             ]
         );
-        $this->user->update(['name','lastname','username','telefono','email','suspended']);
+       // $this->user->update(['name','lastname','username','telefono','email','suspended']);
+        $this->user->name = $this->name;
+        $this->user->lastname = $this->lastname;
+        $this->user->username = $this->username;
+        $this->user->telefono = $this->telefono;
+        $this->user->email = $this->email;
+        $this->user->suspended = $this->suspended;
+        $this->user->save();
         if ($imagen) {$this->eliminar_imagen_perfil();$this->subir_imagen_perfil($imagen);}
         $this->eliminar_roles();
         $this->agregar_roles();
