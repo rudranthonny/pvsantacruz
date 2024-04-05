@@ -312,18 +312,11 @@ class ComprasForm extends Form
         $this->detalle_compra[$producto->codigo]['total_parcial'] = $this->detalle_compra[$producto->codigo]['costo_unitario']*$this->detalle_compra[$producto->codigo]['cantidad']+$this->detalle_compra[$producto->codigo]['impuesto'];
     }
 
-    public function actualizar_item(
-        $item_id,
-        $item_costo_producto,
-        $item_metodo_impuesto,
-        $item_impuesto_orden,
-        $item_metodo_descuento,
-        $item_descuento,
-        $item_compra_unidad,
-        $item_cantidad,
-        $item_nombre_producto,
-        $item_producto_id,
-        )
+    public function actualizar_item
+    (
+        $item_id,$item_costo_producto,$item_metodo_impuesto,$item_impuesto_orden,$item_metodo_descuento,$item_descuento,$item_compra_unidad,
+        $item_cantidad,$item_nombre_producto,$item_producto_id
+    )
     {
         $this->detalle_compra[$item_id]['producto_id']        = $item_producto_id;
         $this->detalle_compra[$item_id]['metodo_descuento']   = $item_metodo_descuento;
