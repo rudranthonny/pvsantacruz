@@ -15,6 +15,7 @@ use App\Models\CompuestoProducto;
 use App\Models\Configuracion;
 use App\Models\Gasto;
 use App\Models\Marca;
+use App\Models\PagoDeuda;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
 use App\Models\Producto;
@@ -64,14 +65,16 @@ class Pos extends Component
     public $posventa_id_eliminar;
     public $buscar_producto;
 
-    public function descargar_venta_pdf(Posventa $posventa){
+    public function descargar_venta_pdf(Posventa $posventa)
+    {
         $this->posventaform->reset();
         return $this->posventaform->descargar_pdf($posventa);
     }
     /*caja*/
 
-    public function updatedBuscarProducto(){
-        $bproducto = Producto::where('codigo',$this->buscar_producto)->first();
+    public function updatedBuscarProducto()
+    {
+        $bproducto = Producto::where('codigo', $this->buscar_producto)->first();
         $balmacen = Almacen::find($this->almacen_id);
         if ($bproducto && $balmacen) {
             $this->agregaritem($bproducto);
@@ -150,7 +153,7 @@ class Pos extends Component
     public function updatedAlmacenId()
     {
         $balmacen = Almacen::find($this->almacen_id);
-        $this->seleccionar_almacen = $balmacen == true ? $balmacen->id :null ;
+        $this->seleccionar_almacen = $balmacen == true ? $balmacen->id : null;
         $this->reset(['categoria_id', 'marca_id']);
     }
 
@@ -344,7 +347,7 @@ class Pos extends Component
         $this->nota_pago = $this->posventa_id_eliminar->nota_pago;
         $this->items = [];
         foreach ($this->posventa_id_eliminar->posventadetalles as $posventadetalle) {
-            $this->productoform->actualizar_stock_producto($posventadetalle->producto_id,$this->posventa_id_eliminar->almacen_id,'+',$posventadetalle->producto_cantidad);
+            $this->productoform->actualizar_stock_producto($posventadetalle->producto_id, $this->posventa_id_eliminar->almacen_id, '+', $posventadetalle->producto_cantidad);
             $this->items[$posventadetalle->producto_codigo] =
                 ['id' => $posventadetalle->id, 'codigo' => $posventadetalle->producto_codigo, 'designacion' => $posventadetalle->producto_nombre, 'precio' => $posventadetalle->producto_precio, 'cantidad' => $posventadetalle->producto_cantidad, 'importe' => $posventadetalle->producto_importe, 'tipo' => $posventadetalle->producto_tipo];
         }
@@ -453,10 +456,22 @@ class Pos extends Component
             $posventa->nota_venta = $this->nota_venta ?? '';
             $posventa->nota_pago = $this->nota_pago ?? '';
             $posventa->productos_totales = collect($this->items)->count();
+            $posventa->estado_posventa = $this->monto_pendiente > 0 ? "Parcial" : "Completo";
             $posventa->save();
             $posventa->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => $this->cajaform->caja->id, 'signo' => '+', 'monto' => $this->total_pagar]);
             $this->cajaform->caja->monto += $this->total_pagar;
             $this->cajaform->caja->save();
+
+            $cliente->deuda_total += $this->monto_pendiente;
+            $cliente->save();
+
+            $pago_deuda = new PagoDeuda();
+            $pago_deuda->cliente_id = $cliente->id;
+            $pago_deuda->monto = $this->monto_pendiente;
+            $pago_deuda->detalle = "Pago Pendiente";
+            $pago_deuda->fecha = now();
+            $pago_deuda->save();
+
 
             foreach ($this->items as $item) {
                 // $producto->stock -= $item['cantidad'];
@@ -478,13 +493,13 @@ class Pos extends Component
             $paper_heigth = 460;
             $items_adicional = 18.2;
             if ($posventa->descuento > 0) {
-                $items_adicional = $items_adicional+2;
+                $items_adicional = $items_adicional + 2;
             }
             if ($posventa->envio > 0) {
-                $items_adicional = $items_adicional+2;
+                $items_adicional = $items_adicional + 2;
             }
             if ($posventa->impuesto_monto > 0) {
-                $items_adicional = $items_adicional+2;
+                $items_adicional = $items_adicional + 2;
             }
 
             $paper_heigth = $paper_examen + $paper_heigth;
@@ -559,32 +574,32 @@ class Pos extends Component
         $tgastos = Tgasto::all();
 
         $productos = ProductoAlmacen::query()
-        ->with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')
-        ->whereExists(function ($query)  {
-            $query->select()
-                  ->from(DB::raw('productos'))
-                  ->whereColumn('producto_almacens.producto_id', 'productos.id')
-                  ->where('producto_almacens.almacen_id',$this->seleccionar_almacen)
-                  ->where('productos.designacion','like','%'.$this->buscar_producto.'%');
-        });
-
-        $productos->when($this->categoria_id <> '',function ($q) {
-            return $q->whereExists(function ($query)  {
+            ->with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')
+            ->whereExists(function ($query) {
                 $query->select()
-                      ->from(DB::raw('productos'))
-                      ->whereColumn('producto_almacens.producto_id', 'productos.id')
-                      ->where('producto_almacens.almacen_id',$this->seleccionar_almacen)
-                      ->where('productos.categoria_id',$this->categoria_id);
+                    ->from(DB::raw('productos'))
+                    ->whereColumn('producto_almacens.producto_id', 'productos.id')
+                    ->where('producto_almacens.almacen_id', $this->seleccionar_almacen)
+                    ->where('productos.designacion', 'like', '%' . $this->buscar_producto . '%');
+            });
+
+        $productos->when($this->categoria_id <> '', function ($q) {
+            return $q->whereExists(function ($query) {
+                $query->select()
+                    ->from(DB::raw('productos'))
+                    ->whereColumn('producto_almacens.producto_id', 'productos.id')
+                    ->where('producto_almacens.almacen_id', $this->seleccionar_almacen)
+                    ->where('productos.categoria_id', $this->categoria_id);
             });
         });
 
-        $productos->when($this->marca_id <> '',function ($q) {
-            return $q->whereExists(function ($query)  {
+        $productos->when($this->marca_id <> '', function ($q) {
+            return $q->whereExists(function ($query) {
                 $query->select()
-                      ->from(DB::raw('productos'))
-                      ->whereColumn('producto_almacens.producto_id', 'productos.id')
-                      ->where('producto_almacens.almacen_id',$this->seleccionar_almacen)
-                      ->where('productos.marca_id',$this->marca_id);
+                    ->from(DB::raw('productos'))
+                    ->whereColumn('producto_almacens.producto_id', 'productos.id')
+                    ->where('producto_almacens.almacen_id', $this->seleccionar_almacen)
+                    ->where('productos.marca_id', $this->marca_id);
             });
         });
 
@@ -592,6 +607,6 @@ class Pos extends Component
         $categorias = $productos ? $productos->pluck('producto.categoria')->unique() : Categoria::all();
         $marcas =  $productos ? $productos->pluck('producto.marca')->unique() : Marca::all();
 
-        return view('livewire.pos', compact('clientes', 'almacens', 'tgastos','productos','categorias','marcas'))->layout('administrador.ventas.pos');
+        return view('livewire.pos', compact('clientes', 'almacens', 'tgastos', 'productos', 'categorias', 'marcas'))->layout('administrador.ventas.pos');
     }
 }

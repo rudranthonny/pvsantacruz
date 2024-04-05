@@ -28,7 +28,7 @@
                                 <div class="mb-3">
                                     <label for="monto_pago" class="form-label">Monto de pago</label>
                                     <input type="number" class="form-control form-control-sm"
-                                        id="monto_pago" wire:model.live="monto_pago">
+                                        id="monto_pago" wire:model.live="monto_pago" max="{{ $total_pagar }}">
                                 </div>
                             </div>
                             <div>
