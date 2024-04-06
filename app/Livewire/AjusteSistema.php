@@ -36,7 +36,7 @@ class AjusteSistema extends Component
             $this->ajustesistemaform->store($this->imagen_logo);
         }
         $this->mount();
-        dd('hgola');
+
     }
 
     public function render(){
