@@ -264,13 +264,15 @@ class ProductoForm extends Form
         {
             foreach ($bproducto->pcompuestos as $key => $pcom) {
                 $producto_almacen = ProductoAlmacen::where('producto_id',$pcom->producto_asignado_id)->where('almacen_id',$almacen_id)->first();
+
+
                 if ($producto_almacen)
                 {
                     if ($signo == '+') {
-                        $producto_almacen->stock = $producto_almacen->stock+$cantidad;
+                        $producto_almacen->stock = $producto_almacen->stock+($pcom->cantidad*$cantidad);
                     }
                     if ($signo == '-') {
-                        $producto_almacen->stock = $producto_almacen->stock-$cantidad;
+                        $producto_almacen->stock = $producto_almacen->stock-($pcom->cantidad*$cantidad);
                     }
                     $producto_almacen->save();
                 }
