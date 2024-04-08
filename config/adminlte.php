@@ -361,6 +361,10 @@ return [
                     'route'  => 'admin.ventas.index',
                 ],
                 [
+                    'text' => 'Gestionar Cajas',
+                    'route'  => 'admin.cajas.index',
+                ],
+                [
                     'text' => 'Gestionar Devoluciones',
                     'route'  => 'admin.devolucions.index',
                 ],

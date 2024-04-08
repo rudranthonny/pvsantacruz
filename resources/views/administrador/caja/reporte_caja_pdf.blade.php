@@ -22,7 +22,7 @@
         .table-info{background-color: #cff4fc;}
 
         .table-gris{background-color: #0000000d;}
-
+        .table-warning{background-color: #ffe484;}
         .table-dark{
             background-color: black;
             color: white;
@@ -37,51 +37,68 @@
     </style>
 </head>
 <body>
-    <div class="modal-header">
-        <h1 class="modal-title fs-5" id="modalReporteCajaLabel">Reporte de Caja</h1>
-    </div>
     <div class="modal-body">
+        <div class="row mb-3" style="display: flex;">
+            <div class="col-12">
+                <table width='100%'>
+                    <tr>
+                        <td>
+                            <h1 class="modal-title fs-5" id="modalReporteCajaLabel">Reporte de Caja</h1>
+                            <b>Nombre Cajero :</b> {{ $caja->user->name . ' ' . $caja->user->lastname }}<br>
+                            <b>Caja Aperturada : </b> {{$caja->fecha_apertura}}<br>
+                            <b>Caja Cierre : </b> {{$caja->fecha_cierre}}<br>
+                            <b>Monto Inicial :</b> {{$configuracion->moneda->simbolo}}.{{ $caja->mcajas->first()->monto }}<br>
+                            <b>Monto Actual :</b> {{$configuracion->moneda->simbolo}}.{{ $caja->monto }}<br></td>
+                        <td><img src="{{asset($configuracion->logo)}}" alt="" width="128px" height="128px"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <div class="row mb-3">
-                <div class="col-12 my-1">
-                    <b>Nombre Cajero :</b> {{ $caja->user->name . ' ' . $caja->user->lastname }}<br>
-                    <b> Caja Aperturada : </b> {{$caja->fecha_apertura}}<br>
-                    <b> Caja Cierre : </b> {{$caja->fecha_cierre}}<br>
-                    <b>Monto Inicial :</b> {{$configuracion->moneda->simbolo}}.{{ $caja->mcajas->first()->monto }}<br>
-                    <b>Monto Actual :</b> {{$configuracion->moneda->simbolo}}.{{ $caja->monto }}<br>
-                </div>
                 <div class="col-12">
                     <table class="table table-striped">
                         <thead class="table-dark">
                             <tr>
                                 <th class="text-center">Tipo de movimiento</th>
+                                <th class="text-center">Cliente</th>
                                 <th class="text-center">Signo</th>
                                 <th class="text-center">Ingreso</th>
                                 <th class="text-center">Egreso</th>
-                                <th class="text-center"></th>
+                                <th class="text-center">Total</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php $total = 0; @endphp
                             @foreach ($caja->mcajas as $mcaja)
                                 <tr>
                                     <td class="text-center table-gris">{{$mcaja->tmovmientocaja->name}}</td>
+                                    <td class="text-center table-gris"> @if ($mcaja->tmovimiento_caja_id == 3) {{$mcaja->m_cajable->cliente_name}} @else - @endif</td>
                                     <td class="text-center table-gris">{{$mcaja->signo}}</td>
                                     <td class="text-center table-gris">
                                         @if ($mcaja->signo == '+')
-                                        {{$configuracion->moneda->simbolo.$mcaja->monto}}
+                                        {{$configuracion->moneda->simbolo.".".$mcaja->monto}}
                                         @else
+                                        Q.0
                                         @endif
                                     </td>
                                     <td class="text-center table-gris">
                                         @if ($mcaja->signo == '-')
-                                            {{$configuracion->moneda->simbolo.$mcaja->monto}}
+                                            {{$configuracion->moneda->simbolo.".".$mcaja->monto}}
                                         @else
+                                        Q.0
                                         @endif
                                     </td>
-                                    <td class="text-center table-dark"></td>
+                                    <td class="text-center table-warning">
+                                        @php
+                                            if ($mcaja->signo == '+') {$total = $total + $mcaja->monto;}
+                                            elseif($mcaja->signo == '-') {$total = $total - $mcaja->monto;}
+                                        @endphp
+                                            {{$configuracion->moneda->simbolo.".".$total}}
+                                    </td>
                                 </tr>
                             @endforeach
                                 <tr>
-                                    <td colspan="2" class="table-dark text-center">Total</td>
+                                    <td colspan="3" class="table-dark text-center">Total</td>
                                     <td class="table-success text-center">{{$configuracion->moneda->simbolo.$caja->mcajas->where('signo','+')->sum('monto')}}</td>
                                     <td class="table-danger text-center">{{$configuracion->moneda->simbolo.$caja->mcajas->where('signo','-')->sum('monto')}}</td>
                                     <td class="table-info text-center">{{$configuracion->moneda->simbolo.($caja->mcajas->where('signo','+')->sum('monto')-$caja->mcajas->where('signo','-')->sum('monto'))}}</td>

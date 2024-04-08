@@ -36,6 +36,7 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th class="text-center">Tipo de movimiento</th>
+                                        <th class="text-center">Cliente</th>
                                         <th class="text-center">Signo</th>
                                         <th class="text-center">Ingreso</th>
                                         <th class="text-center">Egreso</th>
@@ -46,6 +47,7 @@
                                     @foreach ($cajero->cajas->where('fecha_cierre', false)->first()->mcajas as $mcaja)
                                         <tr>
                                             <td class="text-center">{{ $mcaja->tmovmientocaja->name }}</td>
+                                            <td class="text-center">@if ($mcaja->tmovimiento_caja_id == 3) {{$mcaja->m_cajable->cliente_name}} @else - @endif</td>
                                             <td class="text-center">{{ $mcaja->signo }}</td>
                                             <td class="text-center">
                                                 @if ($mcaja->signo == '+')
@@ -70,7 +72,7 @@
                                         </tr>
                                     @endforeach
                                     <tr>
-                                        <td colspan="2" class="table-dark text-center">Total</td>
+                                        <td colspan="3" class="table-dark text-center">Total</td>
                                         <td class="table-success text-center">
                                             {{ $configuracion->moneda->simbolo . $cajero->cajas->where('fecha_cierre', false)->first()->mcajas->where('signo', '+')->sum('monto') }}
                                         </td>
