@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-sm-8 text-right">
-                                <!--<button class="btn btn-outline-success"><i class="fas fa-file"></i> PDF</button>-->
+                                <button class="btn btn-outline-success" wire:loading.attr="disabled" wire:target='descargar_reporte_productos_pdf' wire:click='descargar_reporte_productos_pdf'><i class="fas fa-file"></i> PDF</button>
                                 <button class="btn btn-outline-danger"  wire:loading.attr="disabled" wire:target='descargar_reporte_productos_excel' wire:click='descargar_reporte_productos_excel'><i class="fas fa-file"></i> EXCEL</button>
                                 <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#modalProducto" wire:click='modal'><i class="fas fa-plus-circle"></i> Añadir</button>
                             </div>

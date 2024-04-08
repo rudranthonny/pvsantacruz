@@ -207,7 +207,6 @@
                                         <option value="">Sin Marcas</option>
                                     @endforelse
                                 </select>
-
                             </div>
                             <div class="col-12 my-2">
                                 <label class="visually-hidden" for="buscar_producto">Buscar Producto</label>

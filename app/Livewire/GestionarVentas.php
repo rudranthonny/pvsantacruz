@@ -24,8 +24,7 @@ class GestionarVentas extends Component
     public $search,$finicio,$ffinal,$salmacen;
     public function mount(){  $this->configuracion = Configuracion::find(1); }
 
-    public function updatedDevolucionform(){
-        $this->devolucionform->actualizar_datos();
+    public function updatedDevolucionform(){$this->devolucionform->actualizar_datos();
     }
 
     public function eliminar_item_devolucion($item_id){
@@ -44,11 +43,22 @@ class GestionarVentas extends Component
         });
 
         $posventas = $posventas->get();
-        return Excel::download(new ReporteVentasExport($posventas), 'ReporteVentas.xlsx');
+        return $this->posventaform->descargar_reporte_ventas_excel($posventas);
     }
 
     public function descargar_reporte_ventas_pdf(){
-        dd('gg');
+        $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
+
+        $posventas->when($this->salmacen <> '',function ($q) {
+            return $q->where('almacen_id',$this->salmacen);
+        });
+
+        $posventas->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
+            return $q->where('created_at','>=',$this->finicio)->where('created_at','<=',$this->ffinal);
+        });
+
+        $posventas = $posventas->get();
+        return $this->posventaform->descargar_reporte_ventas_pdf($posventas);
     }
 
     public function descargar_venta_pdf(Posventa $posventa){

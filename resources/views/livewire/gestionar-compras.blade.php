@@ -50,7 +50,8 @@
                         </div>
                         <div class="row mb-4">
                             <div class="col-12">
-                                <button class="btn btn-outline-success" wire:loading.attr="disabled" wire:target="descargar_reporte_compras_excel" wire:click="descargar_reporte_compras_excel"><i class="fas fa-download"></i> Descargar Reporte</button>
+                                <button class="btn btn-outline-success" wire:loading.attr="disabled" wire:target='descargar_reporte_compras_pdf' wire:click='descargar_reporte_compras_pdf'><i class="fas fa-file"></i> PDF</button>
+                                <button class="btn btn-outline-danger" wire:loading.attr="disabled" wire:target="descargar_reporte_compras_excel" wire:click="descargar_reporte_compras_excel"><i class="fas fa-download"></i> EXCEL</button>
                             </div>
                         </div>
                         <div class="row mb-4">

@@ -2,13 +2,17 @@
 
 namespace App\Livewire\Forms;
 
+use App\Exports\ReporteProductosExport;
 use App\Models\CompuestoProducto;
+use App\Models\Configuracion;
 use App\Models\Producto;
 use App\Models\ProductoAlmacen;
 use App\Traits\ImagenTrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class ProductoForm extends Form
 {
@@ -47,6 +51,21 @@ class ProductoForm extends Form
         'precio' => 'required',
         'metodo_impuesto' => 'required',
     ];
+
+    public function descargar_reporte_productos_excel($lista_productos){
+        return Excel::download(new ReporteProductosExport($lista_productos), 'ReporteProductos.xlsx');
+    }
+
+    public function descargar_reporte_productos_pdf($lista_productos){
+        $configuracion = Configuracion::find(1);
+        $nombre_archivo = 'ReporteDeProductos-' . date("F j, Y, g:i a") . '.pdf';
+        $consultapdf = FacadePdf::loadView('administrador.productos.reporte_productos_pdf', compact('lista_productos', 'configuracion'))->setPaper('a4', 'landscape');
+        $pdfContent = $consultapdf->output();
+        return response()->streamDownload(
+            fn () => print($pdfContent),
+            $nombre_archivo
+        );
+    }
 
     public function set(Producto $producto)
     {

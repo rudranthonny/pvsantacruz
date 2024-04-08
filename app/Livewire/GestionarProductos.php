@@ -134,10 +134,13 @@ class GestionarProductos extends Component
 
     public function descargar_reporte_productos_excel()
     {
-        $lista_productos = Producto::orwhere('designacion','like','%'.$this->search.'%')
-        ->orwhere('codigo','like','%'.$this->search.'%')->get();
-        $configuracion = Configuracion::find(1);
-        return Excel::download(new ReporteProductosExport($lista_productos), 'ReporteProductos.xlsx');
+        $lista_productos = Producto::orwhere('designacion','like','%'.$this->search.'%')->orwhere('codigo','like','%'.$this->search.'%')->get();
+        return $this->productoForm->descargar_reporte_productos_excel($lista_productos);
+    }
+
+    public function descargar_reporte_productos_pdf(){
+        $lista_productos = Producto::orwhere('designacion','like','%'.$this->search.'%')->orwhere('codigo','like','%'.$this->search.'%')->get();
+        return $this->productoForm->descargar_reporte_productos_pdf($lista_productos);
     }
 
     public function render()

@@ -218,7 +218,7 @@ class GestionarCompras extends Component
     }
 
     public function descargar_reporte_compras_excel(){
-        $compras = Compra::query()->orwhere('id','like',"%".$this->search."%")->orwhereExists(function ($query)  {
+        $compras = Compra::query()->orwhere('id','like',"%".$this->search."%")->whereExists(function ($query)  {
             $query->select()
                   ->from(DB::raw('proveedors'))
                   ->whereColumn('compras.proveedor_id', 'proveedors.id')
@@ -234,13 +234,32 @@ class GestionarCompras extends Component
         });
 
         $compras = $compras->get();
+        return $this->comprasform->descargar_reporte_compras_excel($compras);
+    }
 
-        return Excel::download(new ReporteComprasExport($compras), 'ReporteCompras.xlsx');
+    public function descargar_reporte_compras_pdf(){
+        $compras = Compra::query()->orwhere('id','like',"%".$this->search."%")->whereExists(function ($query)  {
+            $query->select()
+                  ->from(DB::raw('proveedors'))
+                  ->whereColumn('compras.proveedor_id', 'proveedors.id')
+                  ->where('proveedors.name','like','%'.$this->search.'%');
+        })->orderByDesc('id');
+
+        $compras->when($this->salmacen <> '',function ($q) {
+            return $q->where('almacen_id',$this->salmacen);
+        });
+
+        $compras->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
+            return $q->where('fecha','>=',$this->finicio)->where('fecha','<=',$this->ffinal);
+        });
+
+        $compras = $compras->get();
+        return $this->comprasform->descargar_reporte_compras_pdf($compras);
     }
 
     public function render()
     {
-        $compras = Compra::query()->orwhere('id','like',"%".$this->search."%")->orwhereExists(function ($query)  {
+        $compras = Compra::query()->orwhere('id','like',"%".$this->search."%")->whereExists(function ($query)  {
             $query->select()
                   ->from(DB::raw('proveedors'))
                   ->whereColumn('compras.proveedor_id', 'proveedors.id')

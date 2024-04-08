@@ -2,15 +2,33 @@
 
 namespace App\Livewire\Forms;
 
+use App\Exports\ReporteVentasExport;
 use App\Models\Configuracion;
 use App\Models\Posventa;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PosVentaForm extends Form
 {
     public ?Posventa $posventa;
+
+    public function descargar_reporte_ventas_excel($posventas){
+        return Excel::download(new ReporteVentasExport($posventas), 'ReporteVentas.xlsx');
+    }
+
+    public function descargar_reporte_ventas_pdf($posventas){
+        $configuracion = Configuracion::find(1);
+        $nombre_archivo = 'ReporteDeVentas-' . date("F j, Y, g:i a") . '.pdf';
+        $consultapdf = FacadePdf::loadView('administrador.ventas.reporte_ventas_pdf', compact('posventas', 'configuracion'))->setPaper('a4', 'landscape');
+        $pdfContent = $consultapdf->output();
+        return response()->streamDownload(
+            fn () => print($pdfContent),
+            $nombre_archivo
+        );
+    }
+
     public function descargar_pdf(Posventa $posventa)
     {
             $paper_examen = 0;

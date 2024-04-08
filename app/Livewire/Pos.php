@@ -65,6 +65,7 @@ class Pos extends Component
     public $posventa_id_eliminar;
     public $buscar_producto;
 
+
     public function descargar_venta_pdf(Posventa $posventa)
     {
         $this->posventaform->reset();
@@ -80,6 +81,7 @@ class Pos extends Component
             $this->agregaritem($bproducto);
         }
     }
+
     public function descargar_reporte_caja()
     {
         $caja = Caja::where('user_id', Auth::user()->id)->whereNull('fecha_cierre')->first();
@@ -192,6 +194,9 @@ class Pos extends Component
 
     public function updatedMontoPago()
     {
+        if($this->monto_pago == false){
+            $this->monto_pago =0;
+        }
         $this->actualizar_Cambio();
     }
 

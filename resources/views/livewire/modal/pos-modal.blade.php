@@ -28,7 +28,7 @@
                                 <div class="mb-3">
                                     <label for="monto_pago" class="form-label">Monto de pago</label>
                                     <input type="number" class="form-control form-control-sm"
-                                        id="monto_pago" wire:model.live="monto_pago" max="{{ $total_pagar }}">
+                                        id="monto_pago" wire:model.live.debounce.500ms="monto_pago" max="{{ $total_pagar }}">
                                 </div>
                             </div>
                             <div>
@@ -102,6 +102,24 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="col-auto">Monto Pagar</div>
+                                                        <div class="col-auto">{{$configuracion->moneda->simbolo.number_format($monto_pago, 2) }}</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @if (($total_pagar-$monto_pago) > 0)
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="col-auto">Deuda</div>
+                                                        <div class="col-auto">{{$configuracion->moneda->simbolo.number_format($total_pagar-$monto_pago, 2) }}</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

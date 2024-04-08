@@ -2,13 +2,17 @@
 
 namespace App\Livewire\Forms;
 
+use App\Exports\ReporteComprasExport;
 use App\Models\Compra;
+use App\Models\Configuracion;
 use App\Models\Dcompra;
 use App\Models\Producto;
 use App\Models\ProductoAlmacen;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class ComprasForm extends Form
 {
@@ -28,6 +32,21 @@ class ComprasForm extends Form
     public $nota;
     public $detalle_compra = [];
     public $item_compra_id;
+
+    public function descargar_reporte_compras_excel($compras){
+        return Excel::download(new ReporteComprasExport($compras), 'ReporteCompras.xlsx');
+    }
+
+    public function descargar_reporte_compras_pdf($compras){
+        $configuracion = Configuracion::find(1);
+        $nombre_archivo = 'ReporteDeCompras-' . date("F j, Y, g:i a") . '.pdf';
+        $consultapdf = FacadePdf::loadView('administrador.compras.reporte_compras_pdf', compact('compras', 'configuracion'))->setPaper('a4', 'landscape');
+        $pdfContent = $consultapdf->output();
+        return response()->streamDownload(
+            fn () => print($pdfContent),
+            $nombre_archivo
+        );
+    }
 
     public function set(Compra $compra){
         $this->compra = $compra;
