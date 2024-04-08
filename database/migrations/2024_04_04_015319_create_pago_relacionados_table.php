@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('pago_deuda_id');
             $table->unsignedBigInteger('posventa_id');
-            $table->double('monto');
+            $table->double('monto_pendiente');
+            $table->double('monto_pagado');
+            $table->double('monto_restante');
+            $table->string('estado');
             $table->foreign('pago_deuda_id')->references('id')->on('pago_deudas');
             $table->foreign('posventa_id')->references('id')->on('posventas');
             $table->timestamps();

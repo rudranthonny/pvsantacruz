@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('cliente_id');
             $table->double('monto');
-            $table->longText('detalle');
+            $table->longText('detalle')->nullable();
+            $table->string('opcion');
             $table->date('fecha');
             $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->timestamps();

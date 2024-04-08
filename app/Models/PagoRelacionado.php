@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PagoRelacionado extends Model
 {
     use HasFactory;
+
+    public function posventa()
+    {
+        return $this->belongsTo(Posventa::class);
+    }
 }

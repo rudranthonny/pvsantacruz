@@ -43,7 +43,7 @@
                                             <th>Nombre</th>
                                             <th>Teléfono</th>
                                             <th>Email</th>
-                                            <th>Número de Impuesto</th>
+                                            <th>Deuda</th>
                                             <th>Accion</th>
                                         </tr>
                                     </thead>
@@ -54,8 +54,18 @@
                                                 <td>{{ $cliente->name }}</td>
                                                 <td>{{ $cliente->telefono }}</td>
                                                 <td>{{ $cliente->email }}</td>
-                                                <td>{{ $cliente->numero_impuesto }}</td>
                                                 <td>
+                                                    @if ($cliente->deuda_total > 0)
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalPagoDeuda"
+                                                    wire:click="modal_pagar_deuda('{{ $cliente->id }}')">{{ $configuracion->moneda->simbolo."".$cliente->deuda_total }}</a>
+                                                    @else
+                                                    {{ $configuracion->moneda->simbolo."0" }}
+                                                    @endif
+
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-info"  data-bs-toggle="modal" data-bs-target="#modalReporteDeudas"
+                                                    wire:click="modal_reporte_deudas('{{ $cliente->id }}')"><i class="fas fa-list"></i></button>
                                                     <button type="button" class="btn btn-primary"
                                                         data-bs-toggle="modal" data-bs-target="#modalCliente"
                                                         wire:click="modal('{{ $cliente->id }}')"><i
@@ -89,6 +99,8 @@
                         </div>
                     </div>
                     @include('administrador.personas.parts.cliente-modal')
+                    @include('administrador.personas.parts.cliente-pagar-deuda')
+                    @include('administrador.personas.parts.cliente-reporte-deudas')
                 </div>
             </div>
         </div>

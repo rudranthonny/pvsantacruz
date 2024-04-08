@@ -18,8 +18,36 @@ class GestionarCliente extends Component
     public $search = '';
     public $titlemodal = 'Añadir';
     public $pagina = 5;
+    public $pd_monto,$pd_detalle,$pd_opcion;
 
-    public function mount(){ $this->configuracion = Configuracion::find(1);  }
+    public function modal_pagar_deuda(Cliente $cliente){
+        $this->reset('pd_monto','pd_detalle','pd_opcion');
+        $this->clientesForm->reset();
+        $this->clientesForm->set($cliente);
+    }
+
+    public function modal_reporte_deudas(Cliente $cliente){
+        $this->clientesForm->reset();
+        $this->clientesForm->set($cliente);
+    }
+
+    public function generar_pago_deuda(){
+        $this->validate([
+            'pd_monto'=>'required|numeric|min:1',
+            'pd_opcion'=>'required',
+        ]);
+        $this->clientesForm->generar_pago_deuda($this->pd_monto,$this->pd_opcion,$this->pd_detalle);
+        $this->dispatch('cerrar_modal_cliente_pagar_deuda');
+    }
+
+    public function updatedPdMonto(){
+        $this->pd_monto = ($this->pd_monto == false) ? 0 :$this->pd_monto;
+        $this->pd_monto = ($this->pd_monto <= $this->clientesForm->cliente->deuda_total) ? $this->pd_monto : 0;
+    }
+
+    public function mount(){
+        $this->configuracion = Configuracion::find(1);
+    }
 
     public function updatedSearch(){
         $this->resetPage();

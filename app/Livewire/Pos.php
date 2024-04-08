@@ -470,14 +470,6 @@ class Pos extends Component
             $cliente->deuda_total += $this->monto_pendiente;
             $cliente->save();
 
-            $pago_deuda = new PagoDeuda();
-            $pago_deuda->cliente_id = $cliente->id;
-            $pago_deuda->monto = $this->monto_pendiente;
-            $pago_deuda->detalle = "Pago Pendiente";
-            $pago_deuda->fecha = now();
-            $pago_deuda->save();
-
-
             foreach ($this->items as $item) {
                 // $producto->stock -= $item['cantidad'];
                 $posventa_detalle = new PosventaDetalle();

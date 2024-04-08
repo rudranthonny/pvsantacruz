@@ -16,4 +16,9 @@ class Cliente extends Model
         'numero_impuesto',
         'direccion'];
     use HasFactory;
+
+    public function pagodeudas()
+    {
+        return $this->hasMany(PagoDeuda::class);
+    }
 }
