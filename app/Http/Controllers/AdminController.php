@@ -150,7 +150,7 @@ class AdminController extends Controller
         $obtener_roles = $busuario->getRoleNames();
 
         if ($obtener_roles->first() == 'Administrador') {
-            return redirect()->route('admin.compras');
+            return redirect()->route('admin.tablero');
         } elseif ($obtener_roles->first() == 'Cajero') {
             return redirect()->route('admin.ventas.pos');
         }

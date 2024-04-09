@@ -6,6 +6,7 @@ use App\Livewire\Pos;
 use Illuminate\Support\Facades\Route;
 
 Route::get('', [AdminController::class,'direccionarusuario'])->middleware('can:admin.index')->name('admin.index');
+Route::view("index", "administrador.index")->middleware('can:admin.index')->name("admin.tablero");
 Route::view('configuracion/ajustes_sistema', 'administrador.configuracion.ajustesistema')->middleware('can:admin.configuracion.ajustesistema')->name('admin.configuracion.ajustesistema');
 Route::view("moneda", "administrador.ajustes.moneda")->middleware('can:admin.moneda')->name("admin.moneda");
 Route::view("almacen", "administrador.ajustes.almacen")->middleware('can:admin.almacen')->name("admin.almacen");
