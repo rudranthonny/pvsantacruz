@@ -88,7 +88,7 @@ class GestionarVentas extends Component
         });
 
         $posventas->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
-            return $q->where('created_at','>=',$this->finicio)->where('created_at','<=',$this->ffinal);
+            return $q->where('created_at','>=',$this->finicio." 00:00:00")->where('created_at','<=',$this->ffinal." 23:59:59");
         });
 
 
