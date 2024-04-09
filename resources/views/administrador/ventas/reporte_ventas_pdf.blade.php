@@ -15,8 +15,8 @@
                     <td>
                         <h1 class="modal-title fs-5" id="modalReporteCajaLabel">Reporte de Ventas</h1><br>
                         <b>Compras en total : {{$posventas->count()}}</b><br>
-                        <b>Fecha Inicio :</b> {{$posventas->first()->fecha}}<br>
-                        <b>Fecha Final :</b>  {{$posventas->sortByDesc('fecha')->first()->fecha}}
+                        <b>Fecha Inicio :</b> {{$posventas->created_at()->fecha}}<br>
+                        <b>Fecha Final :</b>  {{$posventas->sortByDesc('fecha')->created_at()->fecha}}
                     </td>
                     <td><img src="{{asset($configuracion->logo)}}" alt="" width="128px"></td>
                 </tr>
