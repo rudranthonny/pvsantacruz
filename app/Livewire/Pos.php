@@ -449,6 +449,7 @@ class Pos extends Component
             $posventa->almacen_name = $almacen->nombre;
             $posventa->cliente_id = $this->bclienteoculto;
             $posventa->cliente_name = $cliente->name;
+            $posventa->cliente_nit = $cliente->nit;
             $posventa->impuesto_porcentaje = $this->impuesto_porcentaje;
             $posventa->impuesto_monto = $this->impuesto_monto;
             $posventa->descuento = $this->descuento ?? 0;

@@ -41,6 +41,7 @@
                                         <tr class="text-center">
                                             <th>Código</th>
                                             <th>Nombre</th>
+                                            <th>Nit</th>
                                             <th>Teléfono</th>
                                             <th>Email</th>
                                             <th>Deuda</th>
@@ -52,6 +53,7 @@
                                             <tr class="text-center">
                                                 <td>{{ $cliente->id }}</td>
                                                 <td>{{ $cliente->name }}</td>
+                                                <td>{{ $cliente->nit }}</td>
                                                 <td>{{ $cliente->telefono }}</td>
                                                 <td>{{ $cliente->email }}</td>
                                                 <td>

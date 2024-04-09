@@ -40,6 +40,11 @@
             </tr>
             <tr>
                 <td>
+                    <b> Nit :</b> {{ $posventa->cliente_nit }}
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <b> Almacen :</b> {{ $posventa->almacen_name }}
                 </td>
             </tr>

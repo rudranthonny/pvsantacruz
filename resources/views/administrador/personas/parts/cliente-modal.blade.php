@@ -24,6 +24,10 @@
                             @enderror
                         </div>
                         <div class="col-sm-12">
+                            <label for="email" class="form-label">Nit</label>
+                            <input type="text" class="form-control" id="nit" placeholder="Ingrese Nit" wire:model="clientesForm.nit">
+                        </div>
+                        <div class="col-sm-12">
                             <label for="email" class="form-label">Email</label>
                             <input type="text" class="form-control" id="email" placeholder="Ingrese Email" wire:model="clientesForm.email">
                         </div>

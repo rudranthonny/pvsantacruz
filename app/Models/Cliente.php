@@ -12,6 +12,7 @@ class Cliente extends Model
         'email',
         'telefono',
         'pais',
+        'nit',
         'ciudad',
         'numero_impuesto',
         'direccion'];

@@ -17,6 +17,7 @@ class ClientesForm extends Form
     public $name;
     public $email;
     public $telefono;
+    public $nit;
     public $pais;
     public $ciudad;
     public $numero_impuesto;
@@ -26,6 +27,7 @@ class ClientesForm extends Form
         $this->cliente = $cliente;
         $this->name = $cliente->name;
         $this->email = $cliente->email;
+        $this->nit = $cliente->nit;
         $this->telefono = $cliente->telefono;
         $this->pais = $cliente->pais;
         $this->ciudad = $cliente->ciudad;
