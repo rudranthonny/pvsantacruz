@@ -417,6 +417,16 @@ return [
             ],
         ],
         [
+            'text' => 'Reportes',
+            'icon' => 'fas fa-list',
+            'submenu' => [
+                [
+                    'text' => 'Ganancias y Perdidas',
+                    'route'  => 'admin.reportes.ingresos_perdidas',
+                ],
+            ],
+        ],
+        [
             'text'    => 'Configuraciones',
             'icon'    => 'fas fa-cogs',
             'submenu' => [

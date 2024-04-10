@@ -42,4 +42,5 @@ Route::view("ventas", "administrador.ventas.index")->middleware('can:admin.venta
 Route::view("cajas", "administrador.caja.index")->middleware('can:admin.ventas.index')->name("admin.cajas.index");
 Route::view("devolucions", "administrador.devolucions.index")->middleware('can:admin.ventas.index')->name("admin.devolucions.index");
 Route::view('usuarios/cambiar_password', 'administrador.personas.cambiar_password')->name('admin.usuario.cambiar');
-
+#reportes
+Route::view("reporte/ingresos_perdidas", "administrador.reportes.ingresos_perdidas")->middleware('can:admin.ventas.index')->name("admin.reportes.ingresos_perdidas");

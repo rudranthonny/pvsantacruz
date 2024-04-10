@@ -63,4 +63,97 @@
             </div>
         </div>
     </div>
+    <div class="row my-2">
+        <div class="col-12 col-sm-8">
+            <div class="card">
+                <div class="card-body">
+                    <b>Alerta de stock:</b> {{$productos_almacen->total()}}
+                    <hr>
+                    <div class="col-12 table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr class="text-center">
+                                <th>Producto</th>
+                                <th>Almacen</th>
+                                <th>Stock</th>
+                                <th>Stock Limite</th>
+                                <th>Marca</th>
+                                <th>Categoría</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($productos_almacen as $palmacen)
+                                <tr class="text-center">
+                                    <td>{{ $palmacen->producto->designacion }}</td>
+                                    <td>{{ $palmacen->almacen->nombre }}</td>
+                                    <td>{{ $palmacen->stock }}</td>
+                                    <td>{{ $palmacen->producto->alerta_stock }}</td>
+                                    <td>
+                                        @isset($palmacen->producto->marca)
+                                        {{ $palmacen->producto->marca->name }}
+                                        @endisset
+                                    </td>
+                                    <td>
+                                        @isset($palmacen->producto->categoria)
+                                        {{ $palmacen->producto->categoria->name }}
+                                        @endisset
+                                    </td>
+                                    <td>
+                                        @if ($palmacen->stock == 0)
+                                            <span class="badge text-bg-danger">Insuficiente</span>
+                                        @elseif (
+                                        $palmacen->stock > 0
+                                                &&
+                                        $palmacen->stock <=2
+                                        )
+                                            <span class="badge text-bg-warning">Por Acabar</span>
+                                        @elseif ($palmacen->stock >= 3 && $palmacen->stock <= $palmacen->producto->alerta_stock)
+                                            <span class="badge text-bg-success">Suficiente</span>
+                                        @elseif ($palmacen->stock > $palmacen->producto->alerta_stock )
+                                        <span class="badge text-bg-info">Exceso</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                            @endforelse
+                        </tbody>
+                    </table>
+                    <br>
+                    {{ $productos_almacen->links() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    Productos más vendidos <b>({{date('M')}})</b>
+                    <hr>
+                    <div class="col-12 table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr class="text-center">
+                                    <th>Nombre del producto	</th>
+                                    <th>Venta Totales</th>
+                                    <th>Monto Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($productos_vendidos as $dey => $pvendido)
+                                    @if ($dey <= 4)
+                                    <tr class="text-center">
+                                        <td>{{$productos_vendidos[$dey]['producto_nombre']}}</td>
+                                        <td>{{$productos_vendidos[$dey]['venta_totales']}}</td>
+                                        <td>{{$productos_vendidos[$dey]['monto']}}</td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

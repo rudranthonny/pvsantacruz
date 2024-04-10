@@ -5,6 +5,7 @@ namespace App\Livewire\Forms;
 use App\Exports\ReporteVentasExport;
 use App\Models\Configuracion;
 use App\Models\Posventa;
+use App\Models\PosventaDetalle;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -27,6 +28,23 @@ class PosVentaForm extends Form
             fn () => print($pdfContent),
             $nombre_archivo
         );
+    }
+
+    public function obtener_productos_mas_vendidos($finicio,$ffinal){
+        $lista_productos = [];
+        $dventas = PosventaDetalle::select('producto_id','producto_nombre')->where('created_at','>=',$finicio)->where('created_at','<=',$ffinal)->distinct('producto_id')->get()->unique('producto_id');
+        foreach ($dventas as $key => $dventa)
+        {
+            $monto_total = PosventaDetalle::where('producto_id',$dventa->producto_id)->where('created_at','>=',$finicio)->where('created_at','<=',$ffinal)->sum('producto_importe');
+            $lista_productos[$key]['producto_id']=$dventa->producto_id;
+            $lista_productos[$key]['monto'] = PosventaDetalle::where('producto_id',$dventa->producto_id)->where('created_at','>=',$finicio)->where('created_at','<=',$ffinal)->sum('producto_importe');
+            $lista_productos[$key]['producto_nombre'] = $dventa->producto_nombre;
+            $lista_productos[$key]['venta_totales'] = PosventaDetalle::where('producto_id',$dventa->producto_id)->where('created_at','>=',$finicio)->where('created_at','<=',$ffinal)->sum('producto_cantidad');
+        }
+
+
+        usort($lista_productos, function ($a, $b) { return $b['monto'] - $a['monto']; });
+        return $lista_productos;
     }
 
     public function descargar_pdf(Posventa $posventa)
