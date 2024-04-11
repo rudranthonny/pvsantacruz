@@ -92,6 +92,8 @@
                                         <th>Nombre del Producto</th>
                                         <th>Precio</th>
                                         <th>Cantidad</th>
+                                        <th>Imp</th>
+                                        <th>Des</th>
                                         <th>Total Parcial</th>
                                         <th></th>
                                     </tr>
@@ -111,6 +113,16 @@
                                                 <center><input type="number" id="item-{{$key}}-cantidad" step="0.01" class="form-control text-center"
                                                         style="width: 80px;" min=1
                                                         wire:model.live.debounce.500ms='{{ $valor_cantidad }}'>
+                                                </center>
+                                            </td>
+                                            <td>
+                                                {{ $configuracion->moneda->simbolo . $item['importe_previo'] }}
+                                            </td>
+                                            <td>
+                                                @php $valor_producto_descuento = 'items.'.$key.'.descuento';@endphp
+                                                <center><input type="number" id="item-{{$key}}-descuento" step="0.01" class="form-control text-center"
+                                                        style="width: 80px;" min=1
+                                                        wire:model.live.debounce.500ms='{{ $valor_producto_descuento }}'>
                                                 </center>
                                             </td>
                                             <td>{{ $configuracion->moneda->simbolo . $item['importe'] }}</td>

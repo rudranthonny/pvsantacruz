@@ -61,13 +61,53 @@
                 <tr>
                     <td style="text-align: left;border-bottom: dashed 1px black;">
                         {{ number_format($detalle->producto_cantidad, 2) }} x
-                        {{ number_format($detalle->producto_precio, 2) }}
+                        {{ number_format($detalle->producto_precio, 2) }} - D {{ number_format($detalle->producto_descuento, 2) }}
                     </td>
                     <td style="text-align: right;border-bottom: dashed 1px black;">
                         {{ number_format($detalle->producto_importe, 2) }}
                     </td>
                 </tr>
             @endforeach
+            <tr>
+                <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Total Previo (+)</b></td>
+                <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{ $configuracion->moneda->simbolo }}
+                        {{ number_format($posventa->total_pagar_previo, 2) }}</b></td>
+            </tr>
+            @if ($posventa->impuesto_monto > 0)
+                <tr>
+                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Impuesto (+)</b>
+                    </td>
+                    <td style="text-align: right;border-bottom: dashed 1px black;">
+                        <b>{{ $configuracion->moneda->simbolo }} {{ number_format($posventa->impuesto_monto, 2) }}</b>
+                    </td>
+                </tr>
+            @endif
+            @if ($posventa->descuento_items > 0)
+            <tr>
+                <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Descuento Items (-)</b>
+                </td>
+                <td style="text-align: right;border-bottom: dashed 1px black;">
+                    <b>{{ $configuracion->moneda->simbolo }} {{ number_format($posventa->descuento_items, 2) }}</b>
+                </td>
+            </tr>
+            @endif
+            @if ($posventa->descuento > 0)
+                <tr>
+                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Descuento (-)</b>
+                    </td>
+                    <td style="text-align: right;border-bottom: dashed 1px black;">
+                        <b>{{ $configuracion->moneda->simbolo }} {{ number_format($posventa->descuento, 2) }}</b>
+                    </td>
+                </tr>
+            @endif
+            @if ($posventa->envio > 0)
+                <tr>
+                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Envio(+)</b></td>
+                    <td style="text-align: right;border-bottom: dashed 1px black;">
+                        <b>{{ $configuracion->moneda->simbolo }} {{ number_format($posventa->envio, 2) }}</b>
+                    </td>
+                </tr>
+            @endif
             <tr>
                 <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Total (+)</b></td>
                 <td style="text-align: right;border-bottom: dashed 1px black;"><b>{{ $configuracion->moneda->simbolo }}
@@ -85,32 +125,7 @@
                         {{ number_format($posventa->monto_pendiente, 2) }}</b></td>
             </tr>
             @endif
-            @if ($posventa->impuesto_monto > 0)
-                <tr>
-                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Impuesto (-)</b>
-                    </td>
-                    <td style="text-align: right;border-bottom: dashed 1px black;">
-                        <b>{{ $configuracion->moneda->simbolo }} {{ number_format($posventa->impuesto_monto, 2) }}</b>
-                    </td>
-                </tr>
-            @endif
-            @if ($posventa->descuento > 0)
-                <tr>
-                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Descuento (-)</b>
-                    </td>
-                    <td style="text-align: right;border-bottom: dashed 1px black;">
-                        <b>{{ $configuracion->moneda->simbolo }} {{ number_format($posventa->descuento, 2) }}</b>
-                    </td>
-                </tr>
-            @endif
-            @if ($posventa->envio > 0)
-                <tr>
-                    <td style="text-align: left;border-bottom: dashed 1px black;" scope="col"><b>Envio(-)</b></td>
-                    <td style="text-align: right;border-bottom: dashed 1px black;">
-                        <b>{{ $configuracion->moneda->simbolo }} {{ number_format($posventa->envio, 2) }}</b>
-                    </td>
-                </tr>
-            @endif
+
         </tbody>
     </table>
     <br>

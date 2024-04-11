@@ -52,7 +52,8 @@ class Pos extends Component
     public $monto_pendiente;
     public $descuento;
     public $envio;
-    public $total_pagar;
+    public $total_pagar,$total_previo_pagar;
+    public $total_descuentos_items;
     public $cantidad_recibida;
     public $min_cantidad_recibida;
     public $monto_pago;
@@ -213,9 +214,13 @@ class Pos extends Component
         $this->envio = empty($this->envio) ? 0 : $this->envio;
 
         $total_pagar = 0;
+        $total_previo_pagar = 0;
+        $total_descuentos_items = 0;
 
         foreach ($this->items as $item) {
             $total_pagar += $item['importe'];
+            $total_descuentos_items += $item['descuento'];
+            $total_previo_pagar += $item['importe_previo'];
         }
         $total_pagar = $total_pagar - $this->descuento;
         $this->impuesto_monto = ($total_pagar * ($this->impuesto_porcentaje / 100));
@@ -223,6 +228,8 @@ class Pos extends Component
         $total_pagar = $total_pagar + $this->envio;
 
         $this->total_pagar = $total_pagar;
+        $this->total_descuentos_items = $total_descuentos_items;
+        $this->total_previo_pagar = $total_previo_pagar;
         $this->cantidad_recibida = $total_pagar;
         $this->min_cantidad_recibida = $total_pagar;
         $this->monto_pago = $total_pagar;
@@ -304,7 +311,9 @@ class Pos extends Component
             $item->designacion = $producto->designacion;
             $item->precio = $producto->precio;
             $item->cantidad = $cantidad;
-            $item->importe = $importe;
+            $item->importe_previo =  $item->precio*$item->cantidad;
+            $item->descuento = 0;
+            $item->importe =  $item->importe_previo-$item->descuento;
             $item->tipo = $producto->tipo;
             $this->items[$item->codigo] = $item->toArray();
             $this->actualizar_montos();
@@ -415,7 +424,9 @@ class Pos extends Component
                     $this->items[$key]['cantidad'] = $cantidad_stock_disponible;
                 }
                 $this->items[$key]['cantidad'] = empty($this->items[$key]['cantidad']) ? 1 : $this->items[$key]['cantidad'];
-                $this->items[$key]['importe'] = $this->items[$key]['precio'] * $this->items[$key]['cantidad'];
+                $this->items[$key]['descuento'] = empty($this->items[$key]['descuento']) ? 0 : $this->items[$key]['descuento'];
+                $this->items[$key]['importe_previo'] = $this->items[$key]['precio'] * $this->items[$key]['cantidad'];
+                $this->items[$key]['importe'] =  $this->items[$key]['importe_previo'] - $this->items[$key]['descuento'];
             }
             $this->actualizar_montos();
             $this->dispatch('dirigir_cursor');
@@ -454,6 +465,8 @@ class Pos extends Component
             $posventa->impuesto_monto = $this->impuesto_monto;
             $posventa->descuento = $this->descuento ?? 0;
             $posventa->envio = $this->envio ?? 0;
+            $posventa->descuento_items = $this->total_descuentos_items;
+            $posventa->total_pagar_previo = $this->total_previo_pagar;
             $posventa->total_pagar = $this->total_pagar;
             $posventa->cantidad_recibida = $this->cantidad_recibida;
             $posventa->monto_pago = $this->monto_pago;
@@ -479,6 +492,9 @@ class Pos extends Component
                 $posventa_detalle->producto_nombre = $item['designacion'];
                 $posventa_detalle->producto_precio = $item['precio'];
                 $posventa_detalle->producto_cantidad = $item['cantidad'];
+                $posventa_detalle->producto_importe_previo = $item['importe_previo'];
+                $posventa_detalle->producto_descuento = $item['descuento'];
+                $posventa_detalle->producto_precio = $item['precio'];
                 $posventa_detalle->producto_importe = $item['importe'];
                 $posventa_detalle->producto_tipo = $item['tipo'];
                 $posventa_detalle->posventa_id = $posventa->id;

@@ -69,16 +69,25 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex justify-content-between">
-                                                        <div class="col-auto">Impuesto de orden
+                                                        <div class="col-auto">Monto Previo (+)
                                                         </div>
-                                                        <div class="col-auto">{{$configuracion->moneda->simbolo.number_format($impuesto_monto, 2).' ('.$impuesto_porcentaje.' %)' }}</div>
+                                                        <div class="col-auto">{{$configuracion->moneda->simbolo.number_format($total_previo_pagar, 2) }}</div>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <div class="d-flex justify-content-between">
-                                                        <div class="col-auto">Descuento
+                                                        <div class="col-auto">Descuento por Items (-)
+                                                        </div>
+                                                        <div class="col-auto">{{$configuracion->moneda->simbolo.number_format($total_descuentos_items, 2) }}</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="col-auto">Descuento General (-)
                                                         </div>
                                                         <div class="col-auto">{{$configuracion->moneda->simbolo.number_format($descuento, 2) }}</div>
                                                     </div>
@@ -87,7 +96,16 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex justify-content-between">
-                                                        <div class="col-auto">Envío
+                                                        <div class="col-auto">Impuesto de orden (+)
+                                                        </div>
+                                                        <div class="col-auto">{{$configuracion->moneda->simbolo.number_format($impuesto_monto, 2).' ('.$impuesto_porcentaje.' %)' }}</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="col-auto">Envío (+)
                                                         </div>
                                                         <div class="col-auto">{{$configuracion->moneda->simbolo.number_format($envio, 2) }}</div>
                                                     </div>

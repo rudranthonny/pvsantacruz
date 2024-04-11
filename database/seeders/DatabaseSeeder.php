@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Posventa;
+use App\Models\PosventaDetalle;
 use App\Models\Proveedor;
 use App\Models\Tgasto;
 use App\Models\User;
@@ -20,6 +22,7 @@ class DatabaseSeeder extends Seeder
 
 
         // llamar al sembrador de datos en Moneda
+        /*
         $this->call(RoleSeeder::class);
         $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
@@ -45,6 +48,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('Administrador');
+        */
+        $detalles = PosventaDetalle::all();
+        foreach ($detalles as $key => $det) {
+            $det->producto_importe_previo = $det->producto_importe;
+            $det->save();
+        }
 
+        $ventas = Posventa::all();
+        foreach ($ventas as $key => $vent) {
+            $vent->total_pagar_previo = $vent->total_pagar+$vent->descuento;
+            $vent->save();
+        }
     }
 }
