@@ -28,6 +28,7 @@ class GestionarProductos extends Component
     public $pagina = 5;
     public $imagen_producto;
     public $iteration = 1;
+    public $stproducto;
     public $bproducto;
     public $buscar_marca = '';
     public $buscar_categoria = '';
@@ -134,22 +135,35 @@ class GestionarProductos extends Component
 
     public function descargar_reporte_productos_excel()
     {
-        $lista_productos = Producto::orwhere('designacion','like','%'.$this->search.'%')->orwhere('codigo','like','%'.$this->search.'%')->get();
+        $lista_productos = Producto::query()->Where(function($query) {$query->orwhere('designacion','like','%'.$this->search.'%')->orwhere('codigo','like','%'.$this->search.'%');;});
+        $lista_productos->when($this->stproducto <> '',function ($q) {return $q->where('tipo',$this->stproducto);});
+        $lista_productos = $lista_productos->get();
         return $this->productoForm->descargar_reporte_productos_excel($lista_productos);
     }
 
     public function descargar_reporte_productos_pdf(){
-        $lista_productos = Producto::orwhere('designacion','like','%'.$this->search.'%')->orwhere('codigo','like','%'.$this->search.'%')->get();
+        $lista_productos = Producto::query()->Where(function($query) {
+            $query->orwhere('designacion','like','%'.$this->search.'%')->orwhere('codigo','like','%'.$this->search.'%');;
+        });
+
+        $lista_productos->when($this->stproducto <> '',function ($q) {
+            return $q->where('tipo',$this->stproducto);
+        });
+
+        $lista_productos = $lista_productos->get();
         return $this->productoForm->descargar_reporte_productos_pdf($lista_productos);
     }
 
     public function render()
     {
+
         $categorias = Categoria::all();
         $marcas = Marca::all();
         $unidades = Unidad::all();
-        $lista_productos = Producto::orwhere('designacion','like','%'.$this->search.'%')
-        ->orwhere('codigo','like','%'.$this->search.'%')->paginate($this->pagina);
+        $lista_productos = Producto::query()->Where(function($query) {$query->orwhere('designacion','like','%'.$this->search.'%')->orwhere('codigo','like','%'.$this->search.'%');});
+        $lista_productos->when($this->stproducto <> '',function ($q) {return $q->where('tipo',$this->stproducto);});
+        $lista_productos = $lista_productos->paginate($this->pagina);
+
         return view('livewire.gestionar-productos', compact('lista_productos', 'categorias', 'marcas', 'unidades'));
     }
 }

@@ -68,6 +68,7 @@
                                         <th>nombre del producto</th>
                                         <th>Costo unitario neto</th>
                                         <th>Stock actual</th>
+                                        <th>F.Vencimiento</th>
                                         <th>Cantidad</th>
                                         <th>Descuento</th>
                                         <th>Impuesto</th>
@@ -78,7 +79,7 @@
                                 @if (count($comprasform->detalle_compra) == 0)
                                 <tbody>
                                     <tr class="text-center">
-                                        <td colspan="10">Datos no disponibles</td>
+                                        <td colspan="11">Datos no disponibles</td>
                                     </tr>
                                 </tbody>
                                 @else
@@ -91,6 +92,8 @@
                                             <td>{{$comprasform->detalle_compra[$key]['nombre_producto']}}</td>
                                             <td>{{$comprasform->detalle_compra[$key]['costo_unitario']}}</td>
                                             <td>{{$comprasform->detalle_compra[$key]['stock_actual']}}</td>
+                                            @php $valor_fecha = 'comprasform.detalle_compra.'.$key.'.fecha_vencimiento_producto';@endphp
+                                            <td><input type="date" id="fecha_vencimiento_producto_{{$key}}" class="form-control"  wire:model.live='{{$valor_fecha}}' wire:click="actualizar_item_compra('{{$key}}')"></td>
                                             @php $valor_cantidad = 'comprasform.detalle_compra.'.$key.'.cantidad';@endphp
                                             <td><input type="number" id="input_cantidad_{{$key}}" class="form-control"  min="1" wire:model.live='{{$valor_cantidad}}' wire:click="actualizar_item_compra('{{$key}}')"></td>
                                             <td>{{$comprasform->detalle_compra[$key]['descuento']}}</td>

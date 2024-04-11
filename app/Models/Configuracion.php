@@ -17,6 +17,7 @@ class Configuracion extends Model
         'desarrollador',
         'pie_pagina',
         'direccion',
+        'farmacia',
         'pagina_factura',
         'pie_pagina_factura',
         'cotizacion_stock',

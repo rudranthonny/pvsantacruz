@@ -64,6 +64,7 @@
                                         <tr class="text-center">
                                             <th>Producto</th>
                                             <th>Almacen</th>
+                                            <th>Fecha Vencimiento</th>
                                             <th>Stock</th>
                                             <th>Stock Limite</th>
                                             <th>Marca</th>
@@ -77,6 +78,7 @@
                                             <tr class="text-center">
                                                 <td>{{ $palmacen->producto->designacion }}</td>
                                                 <td>{{ $palmacen->almacen->nombre }}</td>
+                                                <td>{{ $palmacen->fecha_vencimiento_producto }}</td>
                                                 <td>{{ $palmacen->stock }}</td>
                                                 <td>{{ $palmacen->producto->alerta_stock }}</td>
                                                 <td>

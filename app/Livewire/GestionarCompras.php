@@ -83,7 +83,12 @@ class GestionarCompras extends Component
         $this->editar_item = false;
     }
 
-    public function updatedComprasform(){
+    public function updatedComprasform()
+    {
+        foreach ($this->comprasform->detalle_compra as $kadc => $dcompra)
+        {
+            $this->actualizar_item_compra($kadc);
+        }
         $this->comprasform->obtener_datos_compra();
     }
 
@@ -217,7 +222,8 @@ class GestionarCompras extends Component
         $this->pagocompraform->actualizar_compra($compra_id);
     }
 
-    public function descargar_reporte_compras_excel(){
+    public function descargar_reporte_compras_excel()
+    {
         $compras = Compra::query()->orwhere('id','like',"%".$this->search."%")->whereExists(function ($query)  {
             $query->select()
                   ->from(DB::raw('proveedors'))

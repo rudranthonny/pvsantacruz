@@ -21,6 +21,7 @@ class AjusteSistemaForm extends Form
     public $pagina_factura;
     public $pie_pagina_factura;
     public $cotizacion_stock;
+    public $farmacia;
     public $almacen_id;
 
     public $rule_ajuste = [
@@ -40,6 +41,7 @@ class AjusteSistemaForm extends Form
         $this->desarrollador = $configuracion->desarrollador;
         $this->pie_pagina = $configuracion->pie_pagina;
         $this->direccion = $configuracion->direccion;
+        $this->farmacia = $configuracion->farmacia;
         $this->pagina_factura = $configuracion->pagina_factura;
         $this->pie_pagina_factura = $configuracion->pie_pagina_factura;
         $this->cotizacion_stock = $configuracion->cotizacion_stock;

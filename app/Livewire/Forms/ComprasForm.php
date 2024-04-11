@@ -6,6 +6,7 @@ use App\Exports\ReporteComprasExport;
 use App\Models\Compra;
 use App\Models\Configuracion;
 use App\Models\Dcompra;
+use App\Models\Dcompracompuesto;
 use App\Models\Producto;
 use App\Models\ProductoAlmacen;
 use Livewire\Attributes\Rule;
@@ -69,8 +70,9 @@ class ComprasForm extends Form
             $this->detalle_compra[$dcompra->codigo]['metodo_impuesto']  = $dcompra->metodo_impuesto;
             $this->detalle_compra[$dcompra->codigo]['impuesto_orden']   = $dcompra->impuesto_orden;
             $this->detalle_compra[$dcompra->codigo]['costo'] = $dcompra->costo;
-            $consultar_stock = ProductoAlmacen::where('producto_id',$dcompra->producto_id)->where('almacen_id',$compra->almacen_id)->first();
-            $this->detalle_compra[$dcompra->codigo]['stock_actual'] = $consultar_stock == true ? $consultar_stock->stock : 0;
+            $this->detalle_compra[$dcompra->codigo]['fecha_vencimiento_producto'] = $dcompra->fecha_vencimiento_producto;
+            $bproducto = Producto::find($dcompra->producto_id);
+            $this->detalle_compra[$dcompra->codigo]['stock_actual'] = $this->obtener_stock_producto($bproducto);
             $this->detalle_compra[$dcompra->codigo]['compra_unidad'] = $dcompra->compra_unidad;
             $this->detalle_compra[$dcompra->codigo]['descuento_unitario'] = $dcompra->descuento_unitario;
             $this->detalle_compra[$dcompra->codigo]['nombre_producto'] = $dcompra->nombre_producto;
@@ -141,6 +143,8 @@ class ComprasForm extends Form
                 $dcompra->compra_unidad = $this->detalle_compra[$dcompra->codigo]['compra_unidad'];
                 $dcompra->descuento_unitario = $this->detalle_compra[$dcompra->codigo]['descuento_unitario'];
                 $dcompra->nombre_producto = $this->detalle_compra[$dcompra->codigo]['nombre_producto'];
+                $dcompra->fecha_vencimiento_producto = $this->detalle_compra[$dcompra->codigo]['fecha_vencimiento_producto'];
+                $dcompra->tipo_producto = Producto::find($this->detalle_compra[$dcompra->codigo]['producto_id'])->tipo;
                 $dcompra->cantidad = $this->detalle_compra[$dcompra->codigo]['cantidad'];
                 $dcompra->costo_unitario = $this->detalle_compra[$dcompra->codigo]['costo_unitario'];
                 $dcompra->stock_actual = $this->detalle_compra[$dcompra->codigo]['stock_actual'];
@@ -149,9 +153,13 @@ class ComprasForm extends Form
                 $dcompra->total_parcial = $this->detalle_compra[$dcompra->codigo]['total_parcial'];
                 $dcompra->producto_id = $this->detalle_compra[$dcompra->codigo]['producto_id'];
                 $dcompra->save();
+                $this->eliminar_dcompra_dcompracompuesto($dcompra);
+                #si el producto es compuesto crear su historial para modificar
+                $cproducto = Producto::find($dcompra->producto_id);
+                $this->agregar_dcompra_dcompracompuesto($dcompra,$cproducto);
             }
             else {
-                $dcompra->delete();
+                $this->eliminar_dcompra($dcompra);
             }
         }
     }
@@ -167,6 +175,8 @@ class ComprasForm extends Form
             $n_dcompra->compra_unidad = $this->detalle_compra[$key]['compra_unidad'];
             $n_dcompra->descuento_unitario = $this->detalle_compra[$key]['descuento_unitario'];
             $n_dcompra->nombre_producto = $this->detalle_compra[$key]['nombre_producto'];
+            $n_dcompra->fecha_vencimiento_producto = $this->detalle_compra[$key]['fecha_vencimiento_producto'];
+            $n_dcompra->tipo_producto = Producto::find($this->detalle_compra[$key]['producto_id'])->tipo;
             $n_dcompra->cantidad = $this->detalle_compra[$key]['cantidad'];
             $n_dcompra->costo_unitario = $this->detalle_compra[$key]['costo_unitario'];
             $n_dcompra->stock_actual = $this->detalle_compra[$key]['stock_actual'];
@@ -177,26 +187,72 @@ class ComprasForm extends Form
             $n_dcompra->producto_id = $this->detalle_compra[$key]['producto_id'];
             $n_dcompra->compra_id = $compra_id;
             $n_dcompra->save();
+            if ($n_dcompra->tipo_producto == 'compuesta')
+            {
+                $bproducto = Producto::find($this->detalle_compra[$key]['producto_id']);
+                $this->agregar_dcompra_dcompracompuesto($n_dcompra,$bproducto);
+            }
         }
     }
 
     public function agregar_stock_compra(Compra $compra){
         foreach ($compra->dcompras as $key => $dcompra) {
-            $this->agregar_stock_almacen($dcompra->producto_id,$dcompra->cantidad,$compra->almacen_id);
+            $this->agregar_stock_almacen($dcompra->producto_id,$dcompra->cantidad,$compra->almacen_id,$dcompra->fecha_vencimiento_producto);
         }
     }
 
     public function eliminar_stock_compra(Compra $compra){
         foreach ($compra->dcompras as $key => $dcompra) {
-            $this->quitar_stock_almacen($dcompra->producto_id,$dcompra->cantidad,$compra->almacen_id);
+            if ($dcompra->tipo_producto == 'estandar')
+            {
+                $this->quitar_stock_almacen($dcompra->producto_id,$dcompra->cantidad,$compra->almacen_id);
+            }
+            elseif($dcompra->tipo_producto == 'compuesto')
+            {
+                foreach ($dcompra->dcompracompuestos as $key => $dcomcom) {
+                    $this->quitar_stock_almacen($dcomcom->producto_asignado_id,$dcompra->cantidad*$dcomcom->cantidad,$compra->almacen_id);
+                }
+            }
         }
     }
 
     public function eliminar_dcompra_compra(Compra $compra)
     {
-        foreach ($compra->dcompras as $key => $dcompra) {
+        foreach ($compra->dcompras as $key => $dcompra)
+        {
+            if ($dcompra->tipo_producto == 'compuesto')
+                {
+                    foreach ($dcompra->dcompracompuestos as $key => $dcomp) {$dcomp->delete();}
+                }
             $dcompra->delete();
         }
+    }
+
+    public function eliminar_dcompra(Dcompra $dcompra)
+    {
+        if ($dcompra->tipo_producto == 'compuesto')
+        {foreach ($dcompra->dcompracompuestos as $key => $dcomp) {$dcomp->delete();}}
+        $dcompra->delete();
+    }
+
+    public function agregar_dcompra_dcompracompuesto(Dcompra $dcompra,Producto $producto)
+    {
+        if ($producto->tipo == 'compuesto') {
+            foreach ($producto->pcompuestos as $rey => $pcom)
+            {
+                $n_dcompra_compuesto = new Dcompracompuesto();
+                $n_dcompra_compuesto->dcompra_id = $dcompra->id;
+                $n_dcompra_compuesto->producto_asignado_id = $pcom->producto_asignado_id;
+                $n_dcompra_compuesto->cantidad = $pcom->cantidad;
+                $n_dcompra_compuesto->save();
+            }
+        }
+    }
+
+    public function eliminar_dcompra_dcompracompuesto(Dcompra $dcompra)
+    {
+        if ($dcompra->tipo_producto == 'compuesto')
+        {foreach ($dcompra->dcompracompuestos as $key => $dcomp) {$dcomp->delete();}}
     }
 
     public function eliminar_compra()
@@ -241,6 +297,7 @@ class ComprasForm extends Form
             $n_dcompra->compra_unidad = $this->detalle_compra[$key]['compra_unidad'];
             $n_dcompra->descuento_unitario = $this->detalle_compra[$key]['descuento_unitario'];
             $n_dcompra->nombre_producto = $this->detalle_compra[$key]['nombre_producto'];
+            $n_dcompra->fecha_vencimiento_producto = $this->detalle_compra[$key]['fecha_vencimiento_producto'];
             $n_dcompra->cantidad = $this->detalle_compra[$key]['cantidad'];
             $n_dcompra->costo_unitario = $this->detalle_compra[$key]['costo_unitario'];
             $n_dcompra->stock_actual = $this->detalle_compra[$key]['stock_actual'];
@@ -251,34 +308,116 @@ class ComprasForm extends Form
             $n_dcompra->producto_id = $this->detalle_compra[$key]['producto_id'];
             $n_dcompra->compra_id = $n_compra->id;
             $n_dcompra->save();
+            #si el producto es compuesto crear su historial para modificar
+            $cproducto = Producto::find($n_dcompra->producto_id);
+            $this->agregar_dcompra_dcompracompuesto($n_dcompra,$cproducto);
+
+
             if ($n_compra->estado == 1) {
-                $this->agregar_stock_almacen($this->detalle_compra[$key]['producto_id'],$n_dcompra->cantidad,$n_compra->almacen_id);
+                $this->agregar_stock_almacen($this->detalle_compra[$key]['producto_id'],$n_dcompra->cantidad,$n_compra->almacen_id,$n_dcompra->fecha_vencimiento_producto);
             }
         }
     }
 
-    public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id){
-        $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
-        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock+$cantidad;}
-        else{
-            $b_almacen_producto = new ProductoAlmacen();
-            $b_almacen_producto->almacen_id = $almacen_id;
-            $b_almacen_producto->producto_id = $producto_id;
-            $b_almacen_producto->stock = $cantidad;
-        }
-        $b_almacen_producto->save();
-    }
+    public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id,$fecha_vencimiento = null){
+        $bproducto = Producto::find($producto_id);
+        if ($bproducto->tipo == 'estandar')
+        {
+            $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+            if ($b_almacen_producto)
+            {
+                $b_almacen_producto->stock = $b_almacen_producto->stock+$cantidad;
 
-    public function actualizar_stock_almacen($producto_id,$cantidad_anterior,$cantidad_actual,$almacen_id){
-        $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
-        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-$cantidad_anterior+$cantidad_actual;}
-        $b_almacen_producto->save();
+                if ($b_almacen_producto->fecha_vencimiento_producto == true)
+                {
+                    if (strtotime($fecha_vencimiento) > strtotime($b_almacen_producto->fecha_vencimiento_producto) )
+                    {
+                        $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                    }
+                }
+                else
+                {
+                    $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                }
+            }
+            else
+            {
+                $b_almacen_producto = new ProductoAlmacen();
+                $b_almacen_producto->almacen_id = $almacen_id;
+                $b_almacen_producto->producto_id = $producto_id;
+                $b_almacen_producto->stock = $cantidad;
+                $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+            }
+            $b_almacen_producto->save();
+            }
+        elseif($bproducto->tipo == 'compuesto')
+        {
+            foreach ($bproducto->pcompuestos as $ley => $tcomp) {
+                $b_almacen_producto = ProductoAlmacen::where('producto_id',$tcomp->producto_asignado_id)->where('almacen_id',$almacen_id)->first();
+                if ($b_almacen_producto){
+                    $b_almacen_producto->stock = $b_almacen_producto->stock+($cantidad*$tcomp->cantidad);
+                    if ($b_almacen_producto->fecha_vencimiento_producto == true)
+                    {
+                        if (strtotime($fecha_vencimiento) > strtotime($b_almacen_producto->fecha_vencimiento_producto) )
+                        {
+                            $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                        }
+                    }
+                    else {
+                        $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                    }
+                }
+                else
+                {
+                    $b_almacen_producto = new ProductoAlmacen();
+                    $b_almacen_producto->almacen_id = $almacen_id;
+                    $b_almacen_producto->producto_id = $tcomp->producto_asignado_id;
+                    $b_almacen_producto->stock = $cantidad*$tcomp->cantidad;
+                    $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                }
+                $b_almacen_producto->save();
+            }
+        }
     }
 
     public function quitar_stock_almacen($producto_id,$cantidad,$almacen_id){
-        $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
-        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-$cantidad;}
-        $b_almacen_producto->save();
+        $bproducto = Producto::find($producto_id);
+        if ($bproducto->tipo == 'estandar')
+        {
+            $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+            if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-$cantidad;}
+            $b_almacen_producto->save();
+        }
+
+        elseif($bproducto->tipo == 'compuesto')
+        {
+            foreach ($bproducto->pcompuestos as $ley => $tcomp)
+            {
+                $b_almacen_producto = ProductoAlmacen::where('producto_id',$tcomp->producto_asignado_id)->where('almacen_id',$almacen_id)->first();
+                if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-($cantidad*$tcomp->cantidad);}
+                $b_almacen_producto->save();
+            }
+        }
+    }
+
+    public function actualizar_stock_almacen($producto_id,$cantidad_anterior,$cantidad_actual,$almacen_id)
+    {
+        $bproducto = Producto::find($producto_id);
+        if ($bproducto->tipo == 'estandar')
+        {
+            $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+            if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-$cantidad_anterior+$cantidad_actual;}
+            $b_almacen_producto->save();
+        }
+        elseif($bproducto->tipo == 'compuesto')
+        {
+            foreach ($bproducto->pcompuestos as $ley => $tcomp)
+            {
+                $b_almacen_producto = ProductoAlmacen::where('producto_id',$tcomp->producto_asignado_id)->where('almacen_id',$almacen_id)->first();
+                if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock-($cantidad_anterior*$tcomp->cantidad)+($cantidad_actual*$tcomp->cantidad);}
+                $b_almacen_producto->save();
+            }
+        }
     }
 
     public function obtener_datos_compra(){
@@ -307,6 +446,22 @@ class ComprasForm extends Form
         unset($this->detalle_compra[$item_id]);
     }
 
+    public function obtener_stock_producto(Producto $producto)
+    {
+        if ($producto->tipo == 'compuesto') {
+            $stock_productos = [];
+            foreach ($producto->pcompuestos as $key => $pcompuesto) {
+                $consultar_stock = ProductoAlmacen::where('producto_id',$pcompuesto->producto_asignado_id)->where('almacen_id',$this->almacen)->first();
+                $stock_productos[$pcompuesto->producto_id] = $consultar_stock == true ? $consultar_stock->stock/$pcompuesto->cantidad : 0;
+            }
+            return max($stock_productos);
+        }
+        elseif($producto->tipo == 'estandar') {
+            $consultar_stock = ProductoAlmacen::where('producto_id',$producto->id)->where('almacen_id',$this->almacen)->first();
+            return $consultar_stock == true ? $consultar_stock->stock : 0;
+        }
+    }
+
     public function agregar_item(Producto $producto)
     {
         $this->detalle_compra[$producto->codigo]['producto_id'] = $producto->id;
@@ -323,8 +478,10 @@ class ComprasForm extends Form
         elseif($this->detalle_compra[$producto->codigo]['metodo_impuesto'] == 'inclusivo') {
             $this->detalle_compra[$producto->codigo]['costo_unitario'] = number_format(($this->detalle_compra[$producto->codigo]['costo']-$this->detalle_compra[$producto->codigo]['descuento_unitario'])/(($this->detalle_compra[$producto->codigo]['impuesto_orden']+100)/100),3);
         }
-        $consultar_stock = ProductoAlmacen::where('producto_id',$producto->id)->where('almacen_id',$this->almacen)->first();
-        $this->detalle_compra[$producto->codigo]['stock_actual'] =  $consultar_stock == true ? $consultar_stock->stock : 0;
+
+        $this->detalle_compra[$producto->codigo]['stock_actual'] =  $this->obtener_stock_producto($producto);
+        $this->detalle_compra[$producto->codigo]['fecha_vencimiento_producto'] = date('Y-m-d');
+
         $this->detalle_compra[$producto->codigo]['cantidad'] = 1;
         $this->detalle_compra[$producto->codigo]['descuento'] = $this->detalle_compra[$producto->codigo]['cantidad']*$this->detalle_compra[$producto->codigo]['descuento_unitario'];
         $this->detalle_compra[$producto->codigo]['impuesto'] =  number_format(((($this->detalle_compra[$producto->codigo]['costo_unitario']-$this->detalle_compra[$producto->codigo]['descuento_unitario'])*$this->detalle_compra[$producto->codigo]['cantidad'])*$producto->impuesto_orden/100),2);
@@ -345,10 +502,11 @@ class ComprasForm extends Form
         $this->detalle_compra[$item_id]['compra_unidad']      = $item_compra_unidad;
         $this->detalle_compra[$item_id]['descuento_unitario'] = $item_descuento ? $item_descuento : 0;
         $this->detalle_compra[$item_id]['nombre_producto'] = $item_nombre_producto;
-        $consultar_stock = ProductoAlmacen::where('producto_id',$item_producto_id)->where('almacen_id',$this->almacen)->first();
-        $this->detalle_compra[$item_id]['stock_actual'] = $consultar_stock == true ? $consultar_stock->stock : 0;
 
-        $this->detalle_compra[$item_id]['cantidad'] = $item_cantidad;
+        $bproducto = Producto::find($item_producto_id);
+        $this->detalle_compra[$item_id]['stock_actual'] =  $this->obtener_stock_producto($bproducto);
+
+        $this->detalle_compra[$item_id]['cantidad'] = $item_cantidad == false ? 1 : $item_cantidad;
 
         if ($this->detalle_compra[$item_id]['metodo_impuesto'] == 'exclusivo') {
             $this->detalle_compra[$item_id]['costo_unitario'] = number_format(($this->detalle_compra[$item_id]['costo']-$this->detalle_compra[$item_id]['descuento_unitario']),3);

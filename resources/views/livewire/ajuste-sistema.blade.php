@@ -91,7 +91,9 @@
                             </div>
                             <div class="col-sm-12 col-md-4 col-lg-4">
                                 <input type="checkbox" id="cotizacion_stock" wire:model='ajustesistemaform.cotizacion_stock'>
-                                <label class="form-check-label" for="cotizacion_stock">Crear Cotización con stock</label>
+                                <label class="form-check-label" for="cotizacion_stock">Crear Cotización con stock</label><br>
+                                <input type="checkbox" id="farmacia_checkbox" wire:model='ajustesistemaform.farmacia'>
+                                <label class="form-check-label" for="farmacia_checkbox">Farmacia</label>
                             </div>
                         </div>
                         <div class="row mb-3">

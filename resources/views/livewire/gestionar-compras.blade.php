@@ -106,7 +106,7 @@
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#modalpagocompra"
                                                         id="agregar-pago-compra-{{ $compra->id }}"
-                                                         wire:click="modal_pago_compra({{$compra->id}})"
+
                                                          >Parcial</button>
                                                     @endif
                                                 </td>

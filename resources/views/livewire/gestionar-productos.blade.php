@@ -22,16 +22,24 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="row mb-4">
+                        <div class="row mb-4 align-items-center">
                             <div class="col-12 col-sm-4">
-                                <label class="visually-hidden" for="buscar_producto">Producto</label>
+                                <label for="buscar_producto">Buscar Producto</label>
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
                                     <input type="text" class="form-control" id="buscar_producto"
                                         placeholder="Buscar Producto" wire:model.live='search'>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-8 text-right">
+                            <div class="col-12 col-sm-4">
+                                <label for="">Tipo de Producto</label>
+                                <select class="form-select" id="s_tproducto" wire:model.live="stproducto">
+                                    <option value="">Todos</option>
+                                    <option value="estandar">Estandar</option>
+                                    <option value="compuesto">Compuesto</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-4 text-right">
                                 <button class="btn btn-outline-success" wire:loading.attr="disabled" wire:target='descargar_reporte_productos_pdf' wire:click='descargar_reporte_productos_pdf'><i class="fas fa-file"></i> PDF</button>
                                 <button class="btn btn-outline-danger"  wire:loading.attr="disabled" wire:target='descargar_reporte_productos_excel' wire:click='descargar_reporte_productos_excel'><i class="fas fa-file"></i> EXCEL</button>
                                 <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#modalProducto" wire:click='modal'><i class="fas fa-plus-circle"></i> Añadir</button>
