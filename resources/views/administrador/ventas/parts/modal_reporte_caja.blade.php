@@ -11,7 +11,7 @@
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="modalReporteCajaLabel">Reporte de Caja</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    id="cerrar_modal_caja_x"></button>
+                    id="cerrar_modal_reporte_caja_x"></button>
             </div>
             <div class="modal-body">
                 @if ($cajero->cajas->where('fecha_cierre', false)->count() > 0)
@@ -96,4 +96,11 @@
             </div>
         </div>
     </div>
+    @script
+    <script>
+        $wire.on('cerrar_modal_reporte_caja', reservacion => {
+            ventana = document.getElementById('cerrar_modal_reporte_caja_x').click();
+        });
+    </script>
+    @endscript
 </div>
