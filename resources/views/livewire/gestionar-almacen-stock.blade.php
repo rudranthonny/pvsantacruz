@@ -64,7 +64,9 @@
                                         <tr class="text-center">
                                             <th>Producto</th>
                                             <th>Almacen</th>
+                                            @if ($configuracion->farmacia == 1)
                                             <th>Fecha Vencimiento</th>
+                                            @endif
                                             <th>Stock</th>
                                             <th>Stock Limite</th>
                                             <th>Marca</th>
@@ -78,7 +80,9 @@
                                             <tr class="text-center">
                                                 <td>{{ $palmacen->producto->designacion }}</td>
                                                 <td>{{ $palmacen->almacen->nombre }}</td>
+                                                @if ($configuracion->farmacia == 1)
                                                 <td>{{ $palmacen->fecha_vencimiento_producto }}</td>
+                                                @endif
                                                 <td>{{ $palmacen->stock }}</td>
                                                 <td>{{ $palmacen->producto->alerta_stock }}</td>
                                                 <td>

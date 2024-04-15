@@ -68,7 +68,6 @@
                 });
         });
 
-
         window.Livewire.on('activar_buscador_proveedor', proveedor_id =>
         {
             $('#buscar_proveedor').autocomplete({
@@ -96,7 +95,6 @@
                 }
                 });
         });
-
 
         window.Livewire.on('advertencia_almacen', () =>
         {

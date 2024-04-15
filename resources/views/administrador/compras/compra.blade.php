@@ -28,8 +28,6 @@
             padding: 0.75rem .75rem;
         }
         ul.ui-autocomplete { z-index: 1100;}
-
-
     </style>
 @stop
 
@@ -68,7 +66,6 @@
                 });
         });
 
-
         window.Livewire.on('activar_buscador_proveedor', proveedor_id =>
         {
             $('#buscar_proveedor').autocomplete({
@@ -96,7 +93,6 @@
                 }
                 });
         });
-
 
         window.Livewire.on('advertencia_almacen', () =>
         {

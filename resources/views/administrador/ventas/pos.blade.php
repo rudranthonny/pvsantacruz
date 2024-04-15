@@ -55,6 +55,25 @@
         {{ $slot }}
     </div>
     @livewireScripts
+    <script type="text/javascript">
+        window.Livewire.on('enviar_to_imprimir', datos_impresion => {
+            imprimir_comprobant_pdf_js(datos_impresion[0][0],datos_impresion[0][1])
+        });
+
+        function imprimir_comprobant_pdf_js(nombreImpresora,urlPdf)
+        {
+            const url = `http://localhost:8080/url?urlPdf=${urlPdf}&impresora=${nombreImpresora}`;
+            fetch(url)
+                .then(respuesta => {
+                    // Si la respuesta es OK, entonces todo fue bien
+                    if (respuesta.status === 200) {
+                        /////
+                    } else {
+                        ///////
+                    }
+                });
+        }
+    </script>
 </body>
 
 </html>

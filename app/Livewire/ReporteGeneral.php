@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\ComprasForm;
 use App\Livewire\Forms\PosVentaForm;
 use App\Models\Almacen;
 use App\Models\Cliente;
@@ -21,13 +22,20 @@ class ReporteGeneral extends Component
 {
     public $salmacen;
     public PosVentaForm $posventaform;
+    public ComprasForm $comprasform;
     public $search;
     public $pagina = 5;
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
+    public $nombre_tabla,$datos_servicios;
+
+    public function updated(){
+
+    }
 
     public function render()
     {
+
         $monto_ventas = Posventa::query();
         $monto_compras = PagoCompra::query();
         $monto_gastos = Gasto::query();
@@ -72,6 +80,26 @@ class ReporteGeneral extends Component
 
         $almacens = Almacen::all();
         $configuracion = Configuracion::find(1);
+        #graficos
+        $puntos = [];
+        $nombre_tab ='Reporte de Ventas';
+        #fecha inicio
+        $date = strtotime(date("Y-m-d"));
+        $first =date('w') <> '1' ? date('Y-m-d',strtotime('last Monday')) :date('Y-m-d');
+        $last = date('w') <> '0' ? date('Y-m-d',strtotime('next Sunday')) : date('Y-m-d');
+        $nombre_tabla = 'Reporte de Ventas y Compras del :'.$first.' hasta '.$last;
+        $ventas_semana = $this->posventaform->obtener_productos_vendidos_dias($first,$last,$this->salmacen);
+        $compras_semana = $this->comprasform->obtener_productos_compras_dias($first,$last,$this->salmacen);
+        $general = [];
+        $general[0] =  $nombre_tabla;
+        $general[1] =  $ventas_semana;
+        $general[2] =  $compras_semana;
+        $general[3] =  "Productos que generaron mas Ingresos ".date('Y');
+        $date2 = new DateTime('now');
+        $date2->modify('last day of this month');
+        $general[4] =  $this->posventaform->obtener_productos_mas_vendidos_graficos(date('Y-01-1 00:00:00'), $date2->format('Y-m-d')." 23:59:59",5);
+        $this->dispatch('ejecutar_consulta_barra',$general);
         return view('livewire.reporte-general',compact('almacens','configuracion','monto_ventas','monto_compras','monto_gastos','monto_deuda','productos_almacen','productos_vendidos'));
     }
+
 }

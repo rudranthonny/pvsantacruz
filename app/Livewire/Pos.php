@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\File;
 
 class Pos extends Component
 {
@@ -64,7 +65,7 @@ class Pos extends Component
     public $configuracion;
     public $bclienteoculto = '', $bcliente = '';
     public $posventa_id_eliminar;
-    public $buscar_producto;
+    public $buscar_producto,$simpresora;
 
 
     public function descargar_venta_pdf(Posventa $posventa)
@@ -529,15 +530,32 @@ class Pos extends Component
 
             $paper_heigth = $paper_examen + $paper_heigth;
             $configuracion = Configuracion::find(1);
-            $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
+            $nombre_archivo = 'comprobante-' . date("Y-m-d") . '.pdf';
             $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + $items_adicional * 2 * count($this->items)]);
             $this->dispatch('cerrar_modal_postventa');
             $this->reiniciar();
             $pdfContent = $consultapdf->output();
-            return response()->streamDownload(
-                fn () => print($pdfContent),
-                $nombre_archivo
-            );
+            if (! File::exists(storage_path('app/public/') . 'ticketpdf/')) {
+                File::makeDirectory(storage_path('app/public/') . 'ticketpdf/');
+            }
+            $nombreticketpdf ='ticketpdf/'.$nombre_archivo;
+            $consultapdf->save(storage_path('app/public/') . $nombreticketpdf);
+            $posventa->pdf = $nombreticketpdf;
+            $posventa->save();
+            $pdf_enviar = asset('storage/'.$posventa->pdf);
+            $datos_impresion = [];
+            $datos_impresion[] = $this->simpresora;
+            $datos_impresion[] = $pdf_enviar;
+            if ($this->simpresora <> '')
+            {
+                $this->dispatch('enviar_to_imprimir',$datos_impresion);
+            }
+            else {
+                return response()->streamDownload(
+                    fn () => print($pdfContent),
+                    $nombre_archivo
+                );
+            }
         } else {
             $this->dispatch('advertencia_almacen');
         }

@@ -68,7 +68,9 @@
                                         <th>nombre del producto</th>
                                         <th>Costo unitario neto</th>
                                         <th>Stock actual</th>
+                                        @if ($configuracion->farmacia == 1)
                                         <th>F.Vencimiento</th>
+                                        @endif
                                         <th>Cantidad</th>
                                         <th>Descuento</th>
                                         <th>Impuesto</th>
@@ -92,8 +94,10 @@
                                             <td>{{$comprasform->detalle_compra[$key]['nombre_producto']}}</td>
                                             <td>{{$comprasform->detalle_compra[$key]['costo_unitario']}}</td>
                                             <td>{{$comprasform->detalle_compra[$key]['stock_actual']}}</td>
+                                            @if ($configuracion->farmacia == 1)
                                             @php $valor_fecha = 'comprasform.detalle_compra.'.$key.'.fecha_vencimiento_producto';@endphp
                                             <td><input type="date" id="fecha_vencimiento_producto_{{$key}}" class="form-control"  wire:model.live='{{$valor_fecha}}' wire:click="actualizar_item_compra('{{$key}}')"></td>
+                                            @endif
                                             @php $valor_cantidad = 'comprasform.detalle_compra.'.$key.'.cantidad';@endphp
                                             <td><input type="number" id="input_cantidad_{{$key}}" class="form-control"  min="1" wire:model.live='{{$valor_cantidad}}' wire:click="actualizar_item_compra('{{$key}}')"></td>
                                             <td>{{$comprasform->detalle_compra[$key]['descuento']}}</td>

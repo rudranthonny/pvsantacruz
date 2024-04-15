@@ -82,17 +82,23 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12 col-md-4 col-lg-4">
-                                <input type="checkbox" id="pagina_factura" wire:model='ajustesistemaform.pagina_factura'>
+                                <input type="checkbox" id="pagina_factura" @if ($ajustesistemaform->pagina_factura == 1) checked
+                                @endif wire:model='ajustesistemaform.pagina_factura'>
                                 <label class="form-check-label" for="pagina_factura">Pie de página de la Factura</label>
                             </div>
                             <div class="col-sm-12 col-md-4 col-lg-4">
                                 <label for="pie_pagina_factura" class="form-label">Pie de página de la Factura <span style="color:red;">*</span></label>
-                                <textarea rows="2" class="form-control" id="pie_pagina_factura" wire:model='ajustesistemaform.pie_pagina_factura'></textarea>
+                                <textarea rows="2" class="form-control" id="pie_pagina_factura"
+                                    wire:model='ajustesistemaform.pie_pagina_factura'></textarea>
                             </div>
                             <div class="col-sm-12 col-md-4 col-lg-4">
-                                <input type="checkbox" id="cotizacion_stock" wire:model='ajustesistemaform.cotizacion_stock'>
+
+                                <input type="checkbox" @if ($ajustesistemaform->cotizacion_stock == 1) checked
+                                @endif id="cotizacion_stock" wire:model='ajustesistemaform.cotizacion_stock'>
                                 <label class="form-check-label" for="cotizacion_stock">Crear Cotización con stock</label><br>
-                                <input type="checkbox" id="farmacia_checkbox" wire:model='ajustesistemaform.farmacia'>
+                                <input type="checkbox" id="farmacia_checkbox" @if ($ajustesistemaform->farmacia == 1)
+                                 checked
+                                @endif wire:model='ajustesistemaform.farmacia'>
                                 <label class="form-check-label" for="farmacia_checkbox">Farmacia</label>
                             </div>
                         </div>

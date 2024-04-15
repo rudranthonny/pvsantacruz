@@ -7,6 +7,7 @@ use App\Models\Compra;
 use App\Models\Configuracion;
 use App\Models\Dcompra;
 use App\Models\Dcompracompuesto;
+use App\Models\PagoCompra;
 use App\Models\Producto;
 use App\Models\ProductoAlmacen;
 use Livewire\Attributes\Rule;
@@ -14,6 +15,8 @@ use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use DateTime;
+use Illuminate\Support\Facades\DB;
 
 class ComprasForm extends Form
 {
@@ -520,5 +523,32 @@ class ComprasForm extends Form
         $this->detalle_compra[$item_id]['impuesto'] =  number_format(((( $this->detalle_compra[$item_id]['costo_unitario']-$this->detalle_compra[$item_id]['descuento_unitario'])*$this->detalle_compra[$item_id]['cantidad'])*$this->detalle_compra[$item_id]['impuesto_orden']/100),2);
         $this->detalle_compra[$item_id]['total_parcial'] = $this->detalle_compra[$item_id]['costo_unitario']*$this->detalle_compra[$item_id]['cantidad']+$this->detalle_compra[$item_id]['impuesto'];
         $this->obtener_datos_compra();
+    }
+
+    public function obtener_productos_compras_dias($fecha_inicia,$fecha_final,$almacen = null){
+        $compras = [];
+        $fecha1= new DateTime($fecha_inicia);
+        $fecha2= new DateTime($fecha_final);
+        $diff = $fecha1->diff($fecha2);
+        $dias = $diff->days;
+
+        $dia_actual = $fecha_inicia;
+        for ($i=0; $i <= $dias; $i++)
+        {
+            if ($almacen <> null) {
+                $compras[] =  PagoCompra::where('fecha_pago','>=',$dia_actual)->where('fecha_pago','<=',$dia_actual)->whereExists(function ($query) use ($almacen)  {
+                    $query->select()
+                          ->from(DB::raw('compras'))
+                          ->whereColumn('pago_compras.compra_id', 'compras.id')
+                          ->where('compras.almacen_id',$almacen);
+                })->sum('monto_pago');
+            }
+            else {
+                $compras[] =  PagoCompra::where('fecha_pago','>=',$dia_actual)->where('fecha_pago','<=',$dia_actual)->sum('monto_pago');
+            }
+            $dia_actual = strtotime('+1 day', strtotime($dia_actual));
+            $dia_actual = date('Y-m-d', $dia_actual);
+        }
+        return $compras;
     }
 }

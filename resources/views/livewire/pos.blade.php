@@ -1,6 +1,6 @@
 <div>
     <div class="row">
-        <div class="col-5">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-5">
             <div class="card text-center">
                 <div class="card-header">
                     <div class="row justify-content-between" style="text-align: right;">
@@ -78,6 +78,15 @@
                                 @endforelse
                             </select>
                         </div>
+                        <div class="col-12 my-1">
+                            <div class="input-group">
+                                <input type="text" class="form-control"  autocomplete="off"
+                                    placeholder="Escribir Impresora" wire:model.live="simpresora">
+                                <div class="input-group-text" >
+                                    <i class="bi bi-printer"></i> <span class="text-danger">*</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-12 my-1">
@@ -85,7 +94,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 my-1">
+                        <div class="col-12 my-1 table-responsive">
                             <table class="table table-striped">
                                 <thead>
                                     <tr class="table-success">
@@ -189,7 +198,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-7">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-7">
             <div class="card">
                 <div class="card-body">
                     @if ($seleccionar_almacen)
@@ -232,7 +241,7 @@
                         <!--lista de producto-->
                         <div class="row my-2">
                             @forelse ($productos as $product)
-                                <div class="col-2" role="button" wire:key="{{ $product->producto->id }}"
+                                <div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 my-2" role="button" wire:key="{{ $product->producto->id }}"
                                     wire:click="agregaritem('{{ $product->producto->id }}')">
                                     <div class="card">
                                         <img src="{{ asset($product->producto->imagen) }}" style="object-fit: cover;"
@@ -259,7 +268,7 @@
                         </div>
                         <!--paginacion-->
                         <div class="row my-2">
-                            <div class="col-12 text-center">
+                            <div class="col-12 text-center table-responsive">
                                 {{$productos->links()}}
                             </div>
                         </div>

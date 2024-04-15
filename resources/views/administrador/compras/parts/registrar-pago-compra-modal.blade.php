@@ -63,7 +63,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" wire:click='guardar_pago' class="btn btn-primary">{{ $titlemodal }}</button>
+                <button type="button" wire:loading.attr="disabled" wire:target="guardar_pago" wire:click='guardar_pago' class="btn btn-primary">{{ $titlemodal }}</button>
             </div>
         </div>
     </div>

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-6 col-12 mb-3">
             <label for="">Elegir Almacen</label>
-            <select name="almacen" id="" class="form-select" wire:model='salmacen'>
+            <select name="almacen" id="" class="form-select" wire:model.live='salmacen'>
                     <option value="">Elegir</option>
                     @foreach ($almacens as $almacen)
                     <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
@@ -124,11 +124,25 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-12">
+                                <div wire:ignore id="model-grafico">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
         <div class="col-12 col-sm-4">
             <div class="card">
                 <div class="card-body">
-                    Productos más vendidos <b>({{date('M')}})</b>
+                    Productos que generaron mas Ingresos <b>({{date('M')}})</b>
                     <hr>
                     <div class="col-12 table-responsive">
                         <table class="table table-hover">
@@ -151,7 +165,12 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div id="model-grafico2"></div>
                 </div>
             </div>
         </div>

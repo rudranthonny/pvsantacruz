@@ -26,8 +26,10 @@ class GestionarAlmacenStock extends Component
     public $configuracion;
     public $productos_almacen_export;
 
-    public function mount(){
+    public function mount()
+    {
         $this->salmacen = Almacen::find(1) ? Almacen::find(1)->id : null;
+        $this->configuracion = Configuracion::find(1);
     }
 
     public function updatedSearch(){
@@ -92,6 +94,7 @@ class GestionarAlmacenStock extends Component
 
         $productos_almacen = $productos_almacen->paginate($this->pagina);
         $almacens = Almacen::all();
+        $this->configuracion = Configuracion::find(1);
         return view('livewire.gestionar-almacen-stock', compact('productos_almacen','almacens'));
     }
 
