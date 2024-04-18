@@ -5,11 +5,11 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Posventa;
-use App\Models\Producto;
 use App\Models\PosventaDetalle;
 use App\Models\Proveedor;
 use App\Models\Tgasto;
 use App\Models\User;
+use App\Models\Producto;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -55,9 +55,11 @@ class DatabaseSeeder extends Seeder
         $detalles = PosventaDetalle::all();
         foreach ($detalles as $key => $det)
         {   $bproducto = Producto::where('codigo',$det->producto_codigo)->first();
+            if ($bproducto) {
             $det->producto_compra = $bproducto->costo;
             $det->producto_costo_compra = $bproducto->costo*$det->producto_cantidad;
             $det->save();
+            }
         }
     }
 }
