@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Posventa;
+use App\Models\Producto;
 use App\Models\PosventaDetalle;
 use App\Models\Proveedor;
 use App\Models\Tgasto;
