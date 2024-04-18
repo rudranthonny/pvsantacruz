@@ -142,6 +142,7 @@ class ProductoForm extends Form
         }
 
         $this->marca_id = ($this->marca_id == false) ? null : $this->marca_id;
+        $this->impuesto_orden = ($this->impuesto_orden == false) ? 0 : $this->impuesto_orden;
         (isset($this->producto)) ? $this->updat() : $this->producto = Producto::create($this->all());
 
         if ($imagen)
@@ -180,12 +181,14 @@ class ProductoForm extends Form
         $this->verificar_productos();
     }
 
-    public function reiniciar_productos_compuesto() {
+    public function reiniciar_productos_compuesto()
+     {
         $this->reset('productos_compuesto');
         $this->productos_compuesto_total = 0;
     }
 
-    public function eliminar_item_producto_compuesto($item_id){
+    public function eliminar_item_producto_compuesto($item_id)
+    {
         unset($this->productos_compuesto[$item_id]);
     }
 
