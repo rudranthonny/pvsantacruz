@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
 
         // llamar al sembrador de datos en Moneda
-        /*
+
         $this->call(RoleSeeder::class);
         $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
@@ -49,9 +49,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('Administrador');
-        */
 
 
+        /*
         $detalles = PosventaDetalle::all();
         foreach ($detalles as $key => $det)
         {   $bproducto = Producto::where('codigo',$det->producto_codigo)->first();
@@ -61,5 +61,6 @@ class DatabaseSeeder extends Seeder
             $det->save();
             }
         }
+        */
     }
 }
