@@ -31,7 +31,7 @@
                                 <b>Monto Inicial :</b> {{ $configuracion->moneda->simbolo }}.0
                             @endif
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 table-responsive">
                             <table class="table table-striped">
                                 <thead class="table-dark">
                                     <tr>
