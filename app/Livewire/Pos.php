@@ -594,7 +594,7 @@ class Pos extends Component
 
             $paper_heigth = $paper_examen + $paper_heigth;
             $configuracion = Configuracion::find(1);
-            $nombre_archivo = 'comprobante-' . date("Y-m-d") . '.pdf';
+            $nombre_archivo = 'comprobante-' . date("Y-m-d H:i:s") . '.pdf';
             $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + $items_adicional * 2 * count($this->items)]);
             $this->dispatch('cerrar_modal_postventa');
             $this->reiniciar();
