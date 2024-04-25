@@ -594,7 +594,7 @@ class Pos extends Component
 
             $paper_heigth = $paper_examen + $paper_heigth;
             $configuracion = Configuracion::find(1);
-            $nombre_archivo = 'comprobante-' . strtotime("Y-m-d H:i:s") . '.pdf';
+            $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
             $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + $items_adicional * 2 * count($this->items)]);
             $this->dispatch('cerrar_modal_postventa');
             $this->reiniciar();
@@ -709,6 +709,7 @@ class Pos extends Component
                     ->where('productos.marca_id', $this->marca_id);
             });
         });
+
 
         $productos =  $productos->paginate(10);
         $categorias = $productos ? $productos->pluck('producto.categoria')->unique() : Categoria::all();
