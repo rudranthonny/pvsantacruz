@@ -551,8 +551,8 @@ class Pos extends Component
             $posventa->productos_totales = collect($this->items)->count();
             $posventa->estado_posventa = $this->monto_pendiente > 0 ? "Parcial" : "Completo";
             $posventa->save();
-            $posventa->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => $this->cajaform->caja->id, 'signo' => '+', 'monto' => $this->total_pagar]);
-            $this->cajaform->caja->monto += $this->total_pagar;
+            $posventa->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => $this->cajaform->caja->id, 'signo' => '+', 'monto' => $this->monto_pago]);
+            $this->cajaform->caja->monto += $this->monto_pago;
             $this->cajaform->caja->save();
 
             $cliente->deuda_total += $this->monto_pendiente;
@@ -594,7 +594,7 @@ class Pos extends Component
 
             $paper_heigth = $paper_examen + $paper_heigth;
             $configuracion = Configuracion::find(1);
-            $nombre_archivo = 'comprobante-' . date("Y-m-d H:i:s") . '.pdf';
+            $nombre_archivo = 'comprobante-' . strtotime("Y-m-d H:i:s") . '.pdf';
             $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + $items_adicional * 2 * count($this->items)]);
             $this->dispatch('cerrar_modal_postventa');
             $this->reiniciar();

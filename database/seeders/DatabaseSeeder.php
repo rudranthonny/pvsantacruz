@@ -9,6 +9,8 @@ use App\Models\PosventaDetalle;
 use App\Models\Proveedor;
 use App\Models\Tgasto;
 use App\Models\User;
+use App\Models\ProductoAlmacen;
+use App\Models\Almacen;
 use App\Models\Producto;
 use Illuminate\Database\Seeder;
 
@@ -24,7 +26,8 @@ class DatabaseSeeder extends Seeder
 
         // llamar al sembrador de datos en Moneda
 
-        $this->call(RoleSeeder::class);
+       /*
+       $this->call(RoleSeeder::class);
         $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
         $this->call(MarcaSeeder::class);
@@ -50,6 +53,7 @@ class DatabaseSeeder extends Seeder
 
         $user->assignRole('Administrador');
 
+        */
 
         /*
         $detalles = PosventaDetalle::all();
@@ -62,5 +66,23 @@ class DatabaseSeeder extends Seeder
             }
         }
         */
+
+
+        $productos = Producto::where('tipo','compuesto')->get();
+        foreach ($productos as $key => $pro)
+        {
+            $almacenes = Almacen::all();
+            foreach ($almacenes as $tey => $alm) {
+                $bproducto_almacen = ProductoAlmacen::where('producto_id',$pro->id)->where('almacen_id',$alm->id)->first();
+                if($bproducto_almacen == false)
+                {
+                    $ne_pro_alm = new ProductoAlmacen();
+                    $ne_pro_alm->almacen_id  = $alm->id;
+                    $ne_pro_alm->producto_id = $pro->id;
+                    $ne_pro_alm->stock = 0;
+                    $ne_pro_alm->save();
+                }
+            }
+        }
     }
 }

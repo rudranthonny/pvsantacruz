@@ -63,7 +63,7 @@
                                         wire:click="cerrar_caja('{{ $cajero->cajas->where('fecha_cierre', false)->first()->id }}')"
                                         wire:confirm="¿Esta Seguro que Desea Cerrar Caja?">Cerrar Caja</button>
                                 @else
-                                    Monto Inicial : <b>s/.0</b>
+                                    Monto Inicial : <b>{{$configuracion->moneda->simbolo}} 0</b>
                                 @endif
                             </div>
                         @endif
