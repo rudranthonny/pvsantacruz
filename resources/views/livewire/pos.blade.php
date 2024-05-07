@@ -8,7 +8,7 @@
                             <a href="{{ route('admin.index') }}">
                                 <img src="{{ asset($configuracion->logo) }}" alt="" width="64px;">
                             </a>
-                        </div>aaa
+                        </div>
                         <div class="row col-auto align-items-center">
                             <div class="col-auto" style="vertical-align: middle;">
                                 @if ($cajero->modo == 1)
