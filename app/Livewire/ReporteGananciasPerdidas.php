@@ -49,7 +49,7 @@ class ReporteGananciasPerdidas extends Component
     {
         $nombre_titulo = null;
         if ($this->salmacen <> null) {
-            $balmacen = Almacen::find($this->salmacen->id);
+            $balmacen = Almacen::find($this->salmacen);
             $nombre_titulo = $balmacen->nombre;
         }
 
@@ -80,7 +80,7 @@ class ReporteGananciasPerdidas extends Component
         $lista_gastos = $this->lista_gastos;
         $nombre_titulo = null;
         if ($this->salmacen <> null) {
-            $balmacen = Almacen::find($this->salmacen->id);
+            $balmacen = Almacen::find($this->salmacen);
             $nombre_titulo = $balmacen->nombre;
         }
 
