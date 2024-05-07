@@ -72,11 +72,10 @@ class Pos extends Component
     public function mount()
     {
         $this->cajero = User::find(Auth::user()->id);
-
         $this->almacen_id = Almacen::first() ? Almacen::first()->id : null;
-        if (isset($this->cajero->almacensuser->first()->id))
+        if (isset($this->cajero->almacensuser->first()->almacen_id))
         {
-            $this->almacen_id = $this->cajero->almacensuser->first()->id;
+            $this->almacen_id = $this->cajero->almacensuser->first()->almacen_id;
         }
         else {$this->almacen_id = Almacen::first() ? Almacen::first()->id : null;}
         $this->configuracion = Configuracion::find(1);
