@@ -7,6 +7,7 @@ use App\Models\CompuestoProducto;
 use App\Models\Configuracion;
 use App\Models\Producto;
 use App\Models\ProductoAlmacen;
+use App\Models\Almacen;
 use App\Traits\ImagenTrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -100,6 +101,16 @@ class ProductoForm extends Form
         }
     }
 
+    public function actualizar_costo_producto(Producto $producto,$costo_producto){
+            $producto->costo = $costo_producto;
+            $producto->save();
+    }
+
+    public function actualizar_precio_producto(Producto $producto,$precio_producto){
+        $producto->precio = $precio_producto;
+        $producto->save();
+}
+
     public function updat()
     {
 
@@ -142,6 +153,7 @@ class ProductoForm extends Form
         }
 
         $this->marca_id = ($this->marca_id == false) ? null : $this->marca_id;
+        $this->impuesto_orden = ($this->impuesto_orden == false) ? 0 : $this->impuesto_orden;
         (isset($this->producto)) ? $this->updat() : $this->producto = Producto::create($this->all());
 
         if ($imagen)
@@ -161,7 +173,18 @@ class ProductoForm extends Form
                 $new_com_pro->cantidad = $this->productos_compuesto[$key]['cantidad'];
                 $new_com_pro->save();
             }
+
+            #agregar a los almacenes
+            $almacenes = Almacen::all();
+            foreach ($almacenes as $tey => $alm) {
+                    $ne_pro_alm = new ProductoAlmacen();
+                    $ne_pro_alm->almacen_id  = $alm->id;
+                    $ne_pro_alm->producto_id = $this->producto->id;
+                    $ne_pro_alm->stock = 0;
+                    $ne_pro_alm->save();
+            }
         }
+
     }
 
     public function agregar_producto_compuesto($codigo){
@@ -180,12 +203,14 @@ class ProductoForm extends Form
         $this->verificar_productos();
     }
 
-    public function reiniciar_productos_compuesto() {
+    public function reiniciar_productos_compuesto()
+     {
         $this->reset('productos_compuesto');
         $this->productos_compuesto_total = 0;
     }
 
-    public function eliminar_item_producto_compuesto($item_id){
+    public function eliminar_item_producto_compuesto($item_id)
+    {
         unset($this->productos_compuesto[$item_id]);
     }
 

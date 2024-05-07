@@ -181,7 +181,7 @@ class ComprasForm extends Form
             $n_dcompra->fecha_vencimiento_producto = $this->detalle_compra[$key]['fecha_vencimiento_producto'];
             $n_dcompra->tipo_producto = Producto::find($this->detalle_compra[$key]['producto_id'])->tipo;
             $n_dcompra->cantidad = $this->detalle_compra[$key]['cantidad'];
-            $n_dcompra->costo_unitario = $this->detalle_compra[$key]['costo_unitario'];
+            $n_dcompra->costo_unitario = str_replace(',','',$this->detalle_compra[$key]['costo_unitario']);
             $n_dcompra->stock_actual = $this->detalle_compra[$key]['stock_actual'];
             $n_dcompra->descuento = $this->detalle_compra[$key]['descuento'];
             $n_dcompra->impuesto = $this->detalle_compra[$key]['impuesto'];
@@ -290,7 +290,6 @@ class ComprasForm extends Form
         $n_compra->nota =  $this->nota;
         $n_compra->debido = $this->total;
         $n_compra->save();
-
         foreach ($this->detalle_compra as $key => $dcompra) {
             $n_dcompra = new Dcompra();
             $n_dcompra->metodo_descuento = $this->detalle_compra[$key]['metodo_descuento'];
@@ -302,7 +301,7 @@ class ComprasForm extends Form
             $n_dcompra->nombre_producto = $this->detalle_compra[$key]['nombre_producto'];
             $n_dcompra->fecha_vencimiento_producto = $this->detalle_compra[$key]['fecha_vencimiento_producto'];
             $n_dcompra->cantidad = $this->detalle_compra[$key]['cantidad'];
-            $n_dcompra->costo_unitario = $this->detalle_compra[$key]['costo_unitario'];
+            $n_dcompra->costo_unitario = str_replace(',','',$this->detalle_compra[$key]['costo_unitario']);
             $n_dcompra->stock_actual = $this->detalle_compra[$key]['stock_actual'];
             $n_dcompra->descuento = $this->detalle_compra[$key]['descuento'];
             $n_dcompra->impuesto = $this->detalle_compra[$key]['impuesto'];
@@ -472,6 +471,7 @@ class ComprasForm extends Form
         $this->detalle_compra[$producto->codigo]['metodo_impuesto'] = 'exclusivo';
         $this->detalle_compra[$producto->codigo]['impuesto_orden'] = $producto->impuesto_orden;
         $this->detalle_compra[$producto->codigo]['costo'] = $producto->costo;
+        $this->detalle_compra[$producto->codigo]['precio'] = $producto->precio;
         $this->detalle_compra[$producto->codigo]['compra_unidad'] = 'unidad';
         $this->detalle_compra[$producto->codigo]['descuento_unitario'] = 0;
         $this->detalle_compra[$producto->codigo]['nombre_producto'] = $producto->designacion;
@@ -487,14 +487,14 @@ class ComprasForm extends Form
 
         $this->detalle_compra[$producto->codigo]['cantidad'] = 1;
         $this->detalle_compra[$producto->codigo]['descuento'] = $this->detalle_compra[$producto->codigo]['cantidad']*$this->detalle_compra[$producto->codigo]['descuento_unitario'];
-        $this->detalle_compra[$producto->codigo]['impuesto'] =  number_format(((($this->detalle_compra[$producto->codigo]['costo_unitario']-$this->detalle_compra[$producto->codigo]['descuento_unitario'])*$this->detalle_compra[$producto->codigo]['cantidad'])*$producto->impuesto_orden/100),2);
-        $this->detalle_compra[$producto->codigo]['total_parcial'] = $this->detalle_compra[$producto->codigo]['costo_unitario']*$this->detalle_compra[$producto->codigo]['cantidad']+$this->detalle_compra[$producto->codigo]['impuesto'];
+        $this->detalle_compra[$producto->codigo]['impuesto'] =  number_format((((str_replace(',','',$this->detalle_compra[$producto->codigo]['costo_unitario'])-str_replace(',','',$this->detalle_compra[$producto->codigo]['descuento_unitario']))*str_replace(',','',$this->detalle_compra[$producto->codigo]['cantidad']))*str_replace(',','',$producto->impuesto_orden)/100),2);
+        $this->detalle_compra[$producto->codigo]['total_parcial'] = str_replace(',','',$this->detalle_compra[$producto->codigo]['costo_unitario'])*$this->detalle_compra[$producto->codigo]['cantidad']+$this->detalle_compra[$producto->codigo]['impuesto'];
     }
 
     public function actualizar_item
     (
         $item_id,$item_costo_producto,$item_metodo_impuesto,$item_impuesto_orden,$item_metodo_descuento,$item_descuento,$item_compra_unidad,
-        $item_cantidad,$item_nombre_producto,$item_producto_id
+        $item_cantidad,$item_nombre_producto,$item_producto_id,$item_precio_producto
     )
     {
         $this->detalle_compra[$item_id]['producto_id']        = $item_producto_id;
@@ -502,6 +502,7 @@ class ComprasForm extends Form
         $this->detalle_compra[$item_id]['metodo_impuesto']    = $item_metodo_impuesto;
         $this->detalle_compra[$item_id]['impuesto_orden']     = $item_impuesto_orden ? $item_impuesto_orden : 0;
         $this->detalle_compra[$item_id]['costo']              = $item_costo_producto ? $item_costo_producto : 1;
+        $this->detalle_compra[$item_id]['precio']              = $item_precio_producto ? $item_precio_producto : 1;
         $this->detalle_compra[$item_id]['compra_unidad']      = $item_compra_unidad;
         $this->detalle_compra[$item_id]['descuento_unitario'] = $item_descuento ? $item_descuento : 0;
         $this->detalle_compra[$item_id]['nombre_producto'] = $item_nombre_producto;
@@ -520,8 +521,8 @@ class ComprasForm extends Form
         }
 
         $this->detalle_compra[$item_id]['descuento'] = $this->detalle_compra[$item_id]['cantidad']*$this->detalle_compra[$item_id]['descuento_unitario'];
-        $this->detalle_compra[$item_id]['impuesto'] =  number_format(((( $this->detalle_compra[$item_id]['costo_unitario']-$this->detalle_compra[$item_id]['descuento_unitario'])*$this->detalle_compra[$item_id]['cantidad'])*$this->detalle_compra[$item_id]['impuesto_orden']/100),2);
-        $this->detalle_compra[$item_id]['total_parcial'] = $this->detalle_compra[$item_id]['costo_unitario']*$this->detalle_compra[$item_id]['cantidad']+$this->detalle_compra[$item_id]['impuesto'];
+        $this->detalle_compra[$item_id]['impuesto'] =  number_format(((( str_replace(',','',$this->detalle_compra[$item_id]['costo_unitario'])-$this->detalle_compra[$item_id]['descuento_unitario'])*$this->detalle_compra[$item_id]['cantidad'])*$this->detalle_compra[$item_id]['impuesto_orden']/100),2);
+        $this->detalle_compra[$item_id]['total_parcial'] = str_replace(',','',$this->detalle_compra[$item_id]['costo_unitario'])*$this->detalle_compra[$item_id]['cantidad']+$this->detalle_compra[$item_id]['impuesto'];
         $this->obtener_datos_compra();
     }
 

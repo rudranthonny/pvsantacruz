@@ -1,6 +1,6 @@
 <div>
     <div class="row">
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-5">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-5">
             <div class="card text-center">
                 <div class="card-header">
                     <div class="row justify-content-between" style="text-align: right;">
@@ -10,6 +10,17 @@
                             </a>
                         </div>
                         <div class="row col-auto align-items-center">
+                            <div class="col-auto" style="vertical-align: middle;">
+                                @if ($cajero->modo == 1)
+                                <button role="button" class="btn btn-secondary" wire:loading.attr="disabled" wire:target="cambiar_modo_usuario" wire:click='cambiar_modo_usuario'>
+                                    <i class="bi bi-laptop" id="modo_laptop" ></i>
+                                </button>
+                                @elseif($cajero->modo == 2)
+                                <button role="button" class="btn btn-secondary" wire:loading.attr="disabled" wire:target="cambiar_modo_usuario"  wire:click='cambiar_modo_usuario'>
+                                    <i class="bi bi-tablet" id="modo_tablet"></i>
+                                </button>
+                                @endif
+                            </div>
                             <div class="col-auto" style="vertical-align: middle;">
                                 <button role="button" class="btn btn-info" data-bs-toggle="modal"
                                     data-bs-target="#modalReporteCaja"><i class="bi bi-book-fill"></i></button>
@@ -52,7 +63,7 @@
                                         wire:click="cerrar_caja('{{ $cajero->cajas->where('fecha_cierre', false)->first()->id }}')"
                                         wire:confirm="¿Esta Seguro que Desea Cerrar Caja?">Cerrar Caja</button>
                                 @else
-                                    Monto Inicial : <b>s/.0</b>
+                                    Monto Inicial : <b>{{$configuracion->moneda->simbolo}} 0</b>
                                 @endif
                             </div>
                         @endif
@@ -198,7 +209,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-7">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-7">
             <div class="card">
                 <div class="card-body">
                     @if ($seleccionar_almacen)
@@ -244,7 +255,7 @@
                                 <div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-3 my-2" role="button" wire:key="{{ $product->producto->id }}"
                                     wire:click="agregaritem('{{ $product->producto->id }}')">
                                     <div class="card">
-                                        <img src="{{ asset($product->producto->imagen) }}" style="object-fit: cover;"
+                                        <img src="{{ asset($product->producto->imagen) }}" style="object-fit: contain;"
                                             height="80px;" class="card-img-top" alt="...">
                                         <div class="card-body">
                                             <div class="row">
@@ -369,6 +380,33 @@
             })()
         })
 
+        $wire.on('advertencia_eliminar_gasto', () => {
+
+            (async () => {
+                const {
+                    value: password
+                } = await Swal.fire({
+                    title: "Enter your password",
+                    input: "password",
+                    inputAttributes: {
+                        autocapitalize: "off"
+                    },
+                    inputLabel: "Password",
+                    inputPlaceholder: "Enter your password",
+                    inputAttributes: {
+                        maxlength: "10",
+                        autocapitalize: "off",
+                        autocorrect: "off"
+                    }
+                });
+                if (password) {
+                    @this.dispatch('eliminar_gasto_venta', {
+                        password_id: password
+                    });
+                }
+            })()
+            })
+
         $wire.on('mensaje_error_autorización', () => {
                 Swal.fire({
                 position: 'center',
@@ -378,6 +416,7 @@
                 timer: 2400
                 })
             })
+
 
         $wire.on('advertencia_almacen', () => {
             Swal.fire({

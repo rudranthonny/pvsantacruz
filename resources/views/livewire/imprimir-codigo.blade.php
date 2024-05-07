@@ -82,7 +82,9 @@
             <div class="col-12">
                 <button class="btn btn-primary"><i class="fas fa-edit"></i> Actualizar</button>
                 <button class="btn btn-danger" wire:click='reiniciar_lista_productos'><i class="fas fa-sync"></i> Reiniciar</button>
-                <a href="#" class="btn btn-secondary" wire:loading.attr="disabled" wire:target="descargar_codigo_barrar_imprimir" wire:click='descargar_codigo_barrar_imprimir'><i class="fas fa-print"></i> Impresión</a>
+                <button class="btn btn-secondary" wire:loading.attr="disabled" wire:target="descargar_codigo_barrar_imprimir" wire:click='descargar_codigo_barrar_imprimir'>
+                    <i class="fas fa-print"></i> Impresión
+                </button>
             </div>
         </div>
         @if ($stipo_papel <> '' && count($lista_productos) > 0)
@@ -94,10 +96,13 @@
                             <div class="{{$barcode_style}}">
                                 <div class="head_barcode text-left" style="padding-left: 10px; font-weight: bold;">
                                     <span class="barcode-name">{{$lista_productos[$tey]['nombre']}}</span>
-                                    <span class="barcode-price">S/ {{$lista_productos[$tey]['precio']}}</span>
+                                    <span class="barcode-price">{{ $configuracion->moneda->simbolo }} {{$lista_productos[$tey]['precio']}}</span>
                                 </div>
                                 <div textmargin="0" fontoptions="bold" class="barcode">
                                    <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],1,37) !!}</center>
+                                </div>
+                                <div style="font-weight: bold;text-align: center;">
+                                    <span class="barcode-name">{{ $tey }}</span>
                                 </div>
                             </div>
                         @endfor
