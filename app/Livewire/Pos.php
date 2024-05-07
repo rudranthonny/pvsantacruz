@@ -69,6 +69,21 @@ class Pos extends Component
     public $buscar_producto;
     public $simpresora='';
 
+    public function mount()
+    {
+        $this->cajero = User::find(Auth::user()->id);
+
+        $this->almacen_id = Almacen::first() ? Almacen::first()->id : null;
+        if (isset($this->cajero->almacensuser->first()->id)) {$this->almacen_id = $this->cajero->almacensuser->first()->id;}
+        else {$this->almacen_id = Almacen::first() ? Almacen::first()->id : null;}
+        $this->configuracion = Configuracion::find(1);
+        $this->items = [];
+        $this->updatedAlmacenId();
+        $this->impuesto_porcentaje = 0;
+        $this->cliente_por_defecto();
+        $this->cajaform->caja = $this->cajero->cajas->where('fecha_cierre', false)->first();
+    }
+
     public function cambiar_modo_usuario()
     {
         $user = User::find($this->cajero->id);
@@ -91,7 +106,6 @@ class Pos extends Component
         return $this->posventaform->descargar_pdf($posventa);
     }
     /*caja*/
-
     public function updatedBuscarProducto()
     {
         $bproducto = Producto::where('codigo', $this->buscar_producto)->first();
@@ -148,18 +162,6 @@ class Pos extends Component
             $this->titlemodal = 'Editar';
             $this->gastoform->set($gasto);
         }
-    }
-
-    public function mount()
-    {
-        $this->almacen_id = Almacen::first() ? Almacen::first()->id : null;
-        $this->configuracion = Configuracion::find(1);
-        $this->items = [];
-        $this->updatedAlmacenId();
-        $this->impuesto_porcentaje = 0;
-        $this->cajero = User::find(Auth::user()->id);
-        $this->cliente_por_defecto();
-        $this->cajaform->caja = $this->cajero->cajas->where('fecha_cierre', false)->first();
     }
 
     public function cliente_por_defecto()
