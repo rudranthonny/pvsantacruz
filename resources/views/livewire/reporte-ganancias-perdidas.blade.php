@@ -3,7 +3,7 @@
     <div class="row align-items-end">
         <div class="col-sm-3 col-12 mb-3">
             <label for="">Elegir Almacen</label>
-            <select name="almacen" id="" class="form-select" wire:model='salmacen'>
+            <select name="almacen" id="" class="form-select" wire:model.live='salmacen'>
                     <option value="">Elegir</option>
                     @foreach ($almacens as $almacen)
                     <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>

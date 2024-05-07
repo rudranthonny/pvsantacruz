@@ -47,6 +47,12 @@ class ReporteGananciasPerdidas extends Component
 
     public function descargar_reporte_general_excel()
     {
+        $nombre_titulo = null;
+        if ($this->salmacen <> null) {
+            $balmacen = Almacen::find($this->salmacen->id);
+            $nombre_titulo = $balmacen->nombre;
+        }
+
         return Excel::download(new ReporteGeneralExcel(
         $this->monto_ventas,
         $this->monto_compras,
@@ -55,11 +61,12 @@ class ReporteGananciasPerdidas extends Component
         $this->monto_gastos,
         $this->monto_com_by_vent,
         $this->configuracion,
-        $this->lista_ventas,$this->lista_compras,$this->lista_devoluciones,$this->lista_gastos),
+        $this->lista_ventas,$this->lista_compras,$this->lista_devoluciones,$this->lista_gastos,$nombre_titulo),
          'ReporteGeneralExcel.xlsx');
     }
 
-    public function descargar_reporte_general_pdf(){
+    public function descargar_reporte_general_pdf()
+    {
         $monto_ventas = $this->monto_ventas;
         $monto_compras = $this->monto_compras;
         $monto_deuda = $this->monto_deuda;
@@ -71,6 +78,11 @@ class ReporteGananciasPerdidas extends Component
         $lista_compras = $this->lista_compras;
         $lista_devoluciones = $this->lista_devoluciones;
         $lista_gastos = $this->lista_gastos;
+        $nombre_titulo = null;
+        if ($this->salmacen <> null) {
+            $balmacen = Almacen::find($this->salmacen->id);
+            $nombre_titulo = $balmacen->nombre;
+        }
 
         $nombre_archivo = 'ReporteGeneral-' . date("Y-m-d H:i:s") . '.pdf';
         $consultapdf = FacadePdf::loadView('administrador.reportes.reporte_general_pdf', compact(
@@ -84,7 +96,7 @@ class ReporteGananciasPerdidas extends Component
             'lista_ventas',
             'lista_compras',
             'lista_devoluciones',
-            'lista_gastos',))->setPaper('a4', 'landscape');
+            'lista_gastos','nombre_titulo'))->setPaper('a4', 'landscape');
         $pdfContent = $consultapdf->output();
         return response()->streamDownload(
             fn () => print($pdfContent),
@@ -99,6 +111,7 @@ class ReporteGananciasPerdidas extends Component
         $this->lista_compras = Compra::query();
         $this->monto_devoluciones = Devolucion::query();
         $this->monto_gastos = Gasto::query();
+
         $this->monto_com_by_vent = PosventaDetalle::query()->whereExists(function ($query)  {
             $query->select()
                   ->from(DB::raw('posventas'))
