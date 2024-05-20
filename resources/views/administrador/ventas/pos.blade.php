@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/css_bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('js/jquery-ui-1.13.1/jquery-ui.min.css') }}">
+    <link href="{{ asset('css/bootstrap-icons.min.css') }}" rel="stylesheet">
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui-1.13.1/jquery-ui.min.js') }}"></script>

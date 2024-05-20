@@ -32,6 +32,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 
 class Pos extends Component
 {
@@ -622,7 +623,7 @@ class Pos extends Component
 
             $paper_heigth = $paper_examen + $paper_heigth;
             $configuracion = Configuracion::find(1);
-            $nombre_archivo = 'comprobante-' . date("F j, Y, g:i a") . '.pdf';
+            $nombre_archivo = 'comprobante-'.strtotime("now").'.pdf';
             $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + $items_adicional * 2 * count($this->items)]);
             $this->dispatch('cerrar_modal_postventa');
             $this->reiniciar();
@@ -640,7 +641,13 @@ class Pos extends Component
             $datos_impresion[] = $pdf_enviar;
             if ($this->simpresora <> '')
             {
-                $this->dispatch('enviar_to_imprimir',$datos_impresion);
+                //$this->dispatch('enviar_to_imprimir',$datos_impresion);
+                $response = Http::post('http://localhost:3000/print', [
+                    'url' => $pdf_enviar,
+                ]);
+
+                if ($response->successful()) {dd('Documento enviado a la impresora con éxito.');}
+                else {dd('Error al enviar el documento a la impresora.');}
             }
             else {
                 return response()->streamDownload(
