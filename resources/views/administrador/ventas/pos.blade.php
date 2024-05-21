@@ -58,21 +58,19 @@
     @livewireScripts
     <script type="text/javascript">
         window.Livewire.on('enviar_to_imprimir', datos_impresion => {
-            imprimir_comprobant_pdf_js(datos_impresion[0][0],datos_impresion[0][1])
+            imprimir_comprobant_pdf_js(datos_impresion[0][1])
         });
 
-        function imprimir_comprobant_pdf_js(nombreImpresora,urlPdf)
+        function imprimir_comprobant_pdf_js(urlPdf)
         {
-            const url = `http://localhost:8888?printer=${nombreImpresora}&url=${urlPdf}&count=1`;
-            alert(url);
-            fetch(url)
-                .then(respuesta => {
-                    // Si la respuesta es OK, entonces todo fue bien
-                    if (respuesta.status === 200) {
-                        alert('correcto');
-                    } else {
-                        ///////
-                    }
+            const pdfUrl = 'https://siga.bricenovirtual.com/storage/ticketpdf/RE03-0000554.pdf';
+            fetch(`http://localhost:3000/print?url=${encodeURIComponent(pdfUrl)}`)
+                .then(response => response.text())
+                .then(result => {
+                    alert(result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                 });
         }
     </script>

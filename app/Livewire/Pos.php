@@ -641,13 +641,7 @@ class Pos extends Component
             $datos_impresion[] = $pdf_enviar;
             if ($this->simpresora <> '')
             {
-                //$this->dispatch('enviar_to_imprimir',$datos_impresion);
-                $response = Http::post('http://localhost:3000/print', [
-                    'url' => $pdf_enviar,
-                ]);
-
-                if ($response->successful()) {dd('Documento enviado a la impresora con éxito.');}
-                else {dd('Error al enviar el documento a la impresora.');}
+                $this->dispatch('enviar_to_imprimir',$datos_impresion);
             }
             else {
                 return response()->streamDownload(
