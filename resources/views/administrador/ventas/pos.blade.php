@@ -63,7 +63,7 @@
 
         function imprimir_comprobant_pdf_js(urlPdf)
         {
-            const pdfUrl = 'https://siga.bricenovirtual.com/storage/ticketpdf/RE03-0000554.pdf';
+            const pdfUrl = urlPdf;
             fetch(`http://localhost:3000/print?url=${encodeURIComponent(pdfUrl)}`)
                 .then(response => response.text())
                 .then(result => {
