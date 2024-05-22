@@ -70,7 +70,7 @@ class Pos extends Component
     public $posventa_id_eliminar;
     public $gasto_id_eliminar;
     public $buscar_producto;
-    public $simpresora='';
+    public $simpresora='Descargar';
     private AlmacenForm $almacenform;
     private MovimientoForm $movimientoform;
 
@@ -639,7 +639,7 @@ class Pos extends Component
             $datos_impresion = [];
             $datos_impresion[] = $this->simpresora;
             $datos_impresion[] = $pdf_enviar;
-            if ($this->simpresora <> '')
+            if ($this->simpresora == 'Imprimir')
             {
                 $this->dispatch('enviar_to_imprimir',$datos_impresion);
             }
