@@ -65,7 +65,6 @@ class Producto extends Model
     public function getObtenerCantidadAttribute(){
         $almacenes = ProductoAlmacen::where('producto_id',$this->id)->get();
         return $almacenes->sum('stock');
-
     }
 
     protected function imagen(): Attribute

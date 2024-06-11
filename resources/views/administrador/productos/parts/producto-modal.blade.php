@@ -203,6 +203,8 @@
                                         <th style="width:180px;">Codigo Producto</th>
                                         <th>Producto</th>
                                         <th style="width:120px;">Precio</th>
+                                        <th style="width:120px;">U. Compra</th>
+                                        <th style="width:120px;">U. Venta</th>
                                         <th style="width:120px;">Cantidad</th>
                                         <th class="text-center">Total</th>
                                         <th>Acciones</th>
@@ -220,6 +222,8 @@
                                         <td><input class="form-control text-center" id="producto_compuesto_codigo_{{$key}}" disabled type="text" wire:model.live='{{$nombre_codigo}}'></td>
                                         <td><input class="form-control" id="producto_compuesto_nombre_{{$key}}" disabled type="text" wire:model.live='{{$nombre_nombre}}'></td>
                                         <td class="text-center">s/.{{$productoForm->productos_compuesto[$key]['precio']}}</td>
+                                        <td class="text-center">{{$productoForm->productos_compuesto[$key]['ucompra']}}</td>
+                                        <td class="text-center">{{$productoForm->productos_compuesto[$key]['uventa']}}</td>
                                         <td><input class="form-control text-center" id="producto_compuesto_cantidad_{{$key}}" type="number" step="0.01" wire:model.live.debounce.500ms='{{$nombre_cantidad}}'></td>
                                         <td class="text-center">s/.{{$productoForm->productos_compuesto[$key]['total']}}</td>
                                         <td class="text-center">
@@ -228,7 +232,7 @@
                                     </tr>
                                     @endforeach
                                     <tr>
-                                        <td colspan="4" class="text-center table-dark">Total</td>
+                                        <td colspan="6" class="text-center table-dark">Total</td>
                                         <td  class="text-center">
                                             {{$productoForm->productos_compuesto_total}}
                                         </td>

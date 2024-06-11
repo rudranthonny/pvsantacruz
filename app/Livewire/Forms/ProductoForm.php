@@ -96,9 +96,21 @@ class ProductoForm extends Form
                 $this->productos_compuesto[$bproducto->codigo]['producto_id'] = $bproducto->id;
                 $this->productos_compuesto[$bproducto->codigo]['codigo'] = $bproducto->codigo;
                 $this->productos_compuesto[$bproducto->codigo]['nombre'] = $bproducto->designacion;
+                $this->productos_compuesto[$bproducto->codigo]['ucompra'] = $bproducto->cunidad->name_cor;
+                $this->productos_compuesto[$bproducto->codigo]['uventa'] = $bproducto->vunidad->name_cor;
                 $this->productos_compuesto[$bproducto->codigo]['precio'] = $bproducto->precio;
                 $this->productos_compuesto[$bproducto->codigo]['cantidad'] = $pcom->cantidad;
                 $this->productos_compuesto[$bproducto->codigo]['total'] = $this->productos_compuesto[$bproducto->codigo]['precio']*$this->productos_compuesto[$bproducto->codigo]['cantidad'];
+                switch ($bproducto->cunidad->operador)
+                {
+                    case '*':
+                        $this->productos_compuesto[$bproducto->codigo]['total'] = $this->productos_compuesto[$bproducto->codigo]['total']*$bproducto->cunidad->valor;
+                        break;
+                    case '/':
+                        $this->productos_compuesto[$bproducto->codigo]['total'] = $this->productos_compuesto[$bproducto->codigo]['total']/$bproducto->cunidad->valor;
+                        break;
+                    default:
+                }
             }
             $this->verificar_productos();
         }
@@ -196,17 +208,28 @@ class ProductoForm extends Form
 
     public function agregar_producto_compuesto($codigo){
         $bproducto = Producto::where('codigo',$codigo)->first();
-
         if ($bproducto)
         {
             $this->productos_compuesto[$bproducto->codigo]['producto_id'] = $bproducto->id;
             $this->productos_compuesto[$bproducto->codigo]['codigo'] = $bproducto->codigo;
             $this->productos_compuesto[$bproducto->codigo]['nombre'] = $bproducto->designacion;
             $this->productos_compuesto[$bproducto->codigo]['precio'] = $bproducto->precio;
+            $this->productos_compuesto[$bproducto->codigo]['ucompra'] = $bproducto->cunidad->name_cor;
+            $this->productos_compuesto[$bproducto->codigo]['uventa'] = $bproducto->vunidad->name_cor;
             $this->productos_compuesto[$bproducto->codigo]['cantidad'] = 1;
             $this->productos_compuesto[$bproducto->codigo]['total'] = $this->productos_compuesto[$bproducto->codigo]['precio']*$this->productos_compuesto[$bproducto->codigo]['cantidad'];
-        }
 
+            switch ($bproducto->cunidad->operador) {
+                case '*':
+                    $this->productos_compuesto[$bproducto->codigo]['total'] = $this->productos_compuesto[$bproducto->codigo]['total']*$bproducto->cunidad->valor;
+                    break;
+                case '/':
+                    $this->productos_compuesto[$bproducto->codigo]['total'] = $this->productos_compuesto[$bproducto->codigo]['total']/$bproducto->cunidad->valor;
+                    break;
+                default:
+            }
+
+        }
         $this->verificar_productos();
     }
 
@@ -226,7 +249,17 @@ class ProductoForm extends Form
             $this->productos_compuesto_total = 0;
                 foreach ($this->productos_compuesto as $key => $pcompuesto)
                 {
+                    $bproducto = Producto::find($this->productos_compuesto[$key]['producto_id']);
                     $this->productos_compuesto[$key]['total'] = $this->productos_compuesto[$key]['precio']*$this->productos_compuesto[$key]['cantidad'];
+                    switch ($bproducto->cunidad->operador) {
+                        case '*':
+                            $this->productos_compuesto[$key]['total'] = $this->productos_compuesto[$key]['total']*$bproducto->cunidad->valor;
+                            break;
+                        case '/':
+                            $this->productos_compuesto[$key]['total'] = $this->productos_compuesto[$key]['total']/$bproducto->cunidad->valor;
+                            break;
+                        default:
+                    }
                     $this->productos_compuesto_total = $this->productos_compuesto_total + $this->productos_compuesto[$key]['total'];
                 }
     }
@@ -266,18 +299,21 @@ class ProductoForm extends Form
 
     public function obtener_stock_producto($producto_id,$almacen_id)
     {
+        //dd('dd');
         $bproducto = Producto::find($producto_id);
-
         $consulta_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
-        if ($bproducto->tipo == 'estandar') {
-            if ($consulta_almacen_producto) {
-                return $consulta_almacen_producto->stock;
-            }
-            else {
-                return 0;
-            }
+        if ($consulta_almacen_producto) {
+
+            if ($bproducto->cunidad->operador == "*"){return $consulta_almacen_producto->stock*$bproducto->cunidad->valor;}
+            elseif($bproducto->cunidad->operador == "/"){return $consulta_almacen_producto->stock/$bproducto->cunidad->valor;}
+            else {return 0;}
         }
-        if ($bproducto->tipo == 'compuesto') {
+        else {
+            return 0;
+        }
+
+        /*if ($bproducto->tipo == 'compuesto')
+        {
             $cantidades = [];
             foreach ($bproducto->pcompuestos as $key => $pcom)
             {
@@ -292,6 +328,7 @@ class ProductoForm extends Form
                 return min($cantidades);
             }
         }
+        */
     }
 
     public function actualizar_stock_producto($producto_id,$almacen_id,$signo,$cantidad)
@@ -302,28 +339,62 @@ class ProductoForm extends Form
             $producto_almacen = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
             if ($producto_almacen)
             {
-                if ($signo == '+') {
-                    $producto_almacen->stock = $producto_almacen->stock+$cantidad;
+                if ($signo == '+')
+                {
+                    if ($bproducto->cunidad->signo == '*')
+                    {
+                        $producto_almacen->stock = $producto_almacen->stock+($cantidad/$bproducto->cunidad->valor);
+                    }
+                    elseif($bproducto->cunidad->signo == '/')
+                    {
+                        $producto_almacen->stock = $producto_almacen->stock+($cantidad*$bproducto->cunidad->valor);
+                    }
                 }
-                if ($signo == '-') {
-                    $producto_almacen->stock = $producto_almacen->stock-$cantidad;
+                elseif ($signo == '-')
+                {
+                    #descontar en compra
+                    if ($bproducto->cunidad->signo == '*')
+                    {
+                        $producto_almacen->stock = $producto_almacen->stock-($cantidad/$bproducto->cunidad->valor);
+                    }
+                    elseif($bproducto->cunidad->signo == '/')
+                    {
+                        $producto_almacen->stock = $producto_almacen->stock-($cantidad*$bproducto->cunidad->valor);
+                    }
                 }
                 $producto_almacen->save();
             }
         }
         elseif ($bproducto->tipo == 'compuesto')
         {
+
             foreach ($bproducto->pcompuestos as $key => $pcom) {
                 $producto_almacen = ProductoAlmacen::where('producto_id',$pcom->producto_asignado_id)->where('almacen_id',$almacen_id)->first();
-
-
+                $bproducto2 = Producto::find($pcom->producto_asignado_id);
                 if ($producto_almacen)
                 {
+
                     if ($signo == '+') {
-                        $producto_almacen->stock = $producto_almacen->stock+($pcom->cantidad*$cantidad);
+                        if ($bproducto2->cunidad->operador == '*')
+                        {
+                            $producto_almacen->stock = $producto_almacen->stock+(($cantidad*$pcom->cantidad)/$bproducto2->cunidad->valor);
+                        }
+                        elseif($bproducto2->cunidad->operador == '/')
+                        {
+                            $producto_almacen->stock = $producto_almacen->stock+(($cantidad*$pcom->cantidad)*$bproducto2->cunidad->valor);
+                        }
                     }
                     if ($signo == '-') {
-                        $producto_almacen->stock = $producto_almacen->stock-($pcom->cantidad*$cantidad);
+                        if ($bproducto2->cunidad->operador == '*')
+                        {
+
+                            $producto_almacen->stock = $producto_almacen->stock-(($cantidad*$pcom->cantidad)/$bproducto2->cunidad->valor);
+                        }
+
+                        elseif($bproducto2->cunidad->operador == '/')
+                        {
+                            $producto_almacen->stock = $producto_almacen->stock-(($cantidad*$pcom->cantidad)*$bproducto2->cunidad->valor);
+                        }
                     }
                     $producto_almacen->save();
                 }

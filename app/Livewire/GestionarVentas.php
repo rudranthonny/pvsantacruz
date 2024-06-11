@@ -31,7 +31,8 @@ class GestionarVentas extends Component
         $this->devolucionform->eliminar_item_devolucion($item_id);
     }
 
-    public function descargar_reporte_ventas_excel(){
+    public function descargar_reporte_ventas_excel()
+    {
         $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
 
         $posventas->when($this->salmacen <> '',function ($q) {
@@ -81,7 +82,7 @@ class GestionarVentas extends Component
 
     public function render()
     {
-        $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
+        $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orwhere('id','like',"%".$this->search."%")->orderByDesc('id');
 
         $posventas->when($this->salmacen <> '',function ($q) {
             return $q->where('almacen_id',$this->salmacen);

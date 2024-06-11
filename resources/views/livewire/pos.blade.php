@@ -268,7 +268,7 @@
                                                         {{ $configuracion->moneda->simbolo . number_format($product->producto->precio, 2) }}
                                                     </span>
                                                     <span class="badge text-bg-info">
-                                                        {{ $product->producto->cunidad->name_cor . ' ' . $product->stock }}
+                                                        {{ $product->producto->cunidad->name_cor . ' ' . $product->obtener_cantidad }}
                                                     </span>
                                                 </div>
                                             </div>

@@ -83,7 +83,7 @@
                                                 @if ($configuracion->farmacia == 1)
                                                 <td>{{ $palmacen->fecha_vencimiento_producto }}</td>
                                                 @endif
-                                                <td>{{ $palmacen->stock }}</td>
+                                                <td>{{ $palmacen->obtener_cantidad }}</td>
                                                 <td>{{ $palmacen->producto->alerta_stock }}</td>
                                                 <td>
                                                     @isset($palmacen->producto->marca)
@@ -96,21 +96,26 @@
                                                     @endisset
                                                 </td>
                                                 <td>
-                                                    @if ($palmacen->stock == 0)
+                                                    @if ($palmacen->obtener_cantidad == 0)
                                                         <span class="badge text-bg-danger">Insuficiente</span>
                                                     @elseif (
-                                                    $palmacen->stock > 0
+                                                    $palmacen->obtener_cantidad > 0
                                                             &&
-                                                    $palmacen->stock <=2
+                                                    $palmacen->obtener_cantidad <=2
                                                     )
                                                         <span class="badge text-bg-warning">Por Acabar</span>
-                                                    @elseif ($palmacen->stock >= 3 && $palmacen->stock <= $palmacen->producto->alerta_stock)
+                                                    @elseif ($palmacen->obtener_cantidad >= 3 && $palmacen->obtener_cantidad <= $palmacen->producto->alerta_stock)
                                                         <span class="badge text-bg-success">Suficiente</span>
-                                                    @elseif ($palmacen->stock > $palmacen->producto->alerta_stock )
+                                                    @elseif ($palmacen->obtener_cantidad > $palmacen->producto->alerta_stock )
                                                     <span class="badge text-bg-info">Exceso</span>
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @if ($palmacen->estado)
+                                                        <button class="btn btn-success" id="activo-producto_almacen-{{$palmacen->id}}" wire:loading.attr="disabled" wire:target='cambiar_estado({{$palmacen->id}})' wire:click='cambiar_estado({{$palmacen->id}})'><i class="fas fa-eye"></i></button>
+                                                    @else
+                                                        <button class="btn btn-secondary" id="desactivo-producto_almacen-{{$palmacen->id}}" wire:loading.attr="disabled" wire:target='cambiar_estado({{$palmacen->id}})' wire:click='cambiar_estado({{$palmacen->id}})'><i class="fas fa-eye-slash"></i></button>
+                                                    @endif
                                                     <button type="button" class="btn btn-primary"
                                                         data-bs-toggle="modal" data-bs-target="#modalProductoAlmacen"
                                                         wire:click="modal('{{ $palmacen->id }}')"><i

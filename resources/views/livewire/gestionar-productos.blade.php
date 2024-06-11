@@ -57,7 +57,9 @@
                                             <th>Marca</th>
                                             <th>Categoria</th>
                                             <th class="text-center">Precio</th>
-                                            <th>Unidad</th>
+                                            <th class="text-center">Unidad</th>
+                                            <th class="text-center">Compra en</th>
+                                            <th class="text-center">Venta en</th>
                                             <th class="text-center">Cantidad</th>
                                             <th class="text-center">Accion</th>
                                         </tr>
@@ -75,7 +77,9 @@
                                                 <td class="align-middle">{{ optional($produc->marca)->name }}</td>
                                                 <td class="align-middle">{{ optional($produc->categoria)->name }}</td>
                                                 <td class="align-middle text-center">{{$configuracion->moneda->simbolo}}{{ $produc->precio }}</td>
-                                                <td class="align-middle">{{ optional($produc->cunitario)->name }}</td>
+                                                <td class="align-middle text-center">{{ optional($produc->cunitario)->name }}</td>
+                                                <td class="align-middle text-center">{{ optional($produc->cunidad)->name }}</td>
+                                                <td class="align-middle text-center">{{ optional($produc->vunidad)->name }}</td>
                                                 <td class="align-middle text-center">{{ $produc->obtener_cantidad }}</td>
                                                 <td class="align-middle text-center">
                                                     <a href="{{route('admin.productos.consultar',$produc->id)}}" class="btn btn-outline-primary"><i class="fas fa-eye"></i></a>

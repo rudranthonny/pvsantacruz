@@ -58,6 +58,7 @@
                                     <thead class="table-light">
                                         <tr class="text-center">
                                             <th>Fecha</th>
+                                            <th>Recibo</th>
                                             <th>Almacen</th>
                                             <th>Cliente</th>
                                             <th>Impuesto Porcentaje</th>
@@ -72,6 +73,7 @@
                                         @forelse ($posventas as $pventa)
                                         <tr role="row" class="accordion-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#tablecollapse-{{$pventa->id}}" aria-expanded="false" aria-controls="tablecollapse-{{$pventa->id}}">
                                             <td role="cell" class="text-center"  style="vertical-align: middle;">{{ $pventa->created_at }}</td>
+                                            <td role="cell" class="text-center"  style="vertical-align: middle;">{{ "SL_".$pventa->id }}</td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $pventa->almacen_name }}</td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $pventa->cliente_name }}</td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $pventa->impuesto_porcentaje }}%</td>

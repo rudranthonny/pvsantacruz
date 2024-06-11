@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         // llamar al sembrador de datos en Moneda
-        /*
+
         $this->call(RoleSeeder::class);
         $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('Administrador');
-        */
+
         /*
             $detalles = PosventaDetalle::all();
             foreach ($detalles as $key => $det)
@@ -84,6 +84,7 @@ class DatabaseSeeder extends Seeder
                 }
             }
         */
+        /*
         $almacen = Almacen::all();
         $pagocompras = PagoCompra::all();
         $devoluciones = Devolucion::all();
@@ -172,5 +173,6 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+        */
     }
 }
