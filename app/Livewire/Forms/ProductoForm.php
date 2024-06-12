@@ -341,11 +341,11 @@ class ProductoForm extends Form
             {
                 if ($signo == '+')
                 {
-                    if ($bproducto->cunidad->signo == '*')
+                    if ($bproducto->cunidad->operador == '*')
                     {
                         $producto_almacen->stock = $producto_almacen->stock+($cantidad/$bproducto->cunidad->valor);
                     }
-                    elseif($bproducto->cunidad->signo == '/')
+                    elseif($bproducto->cunidad->operador == '/')
                     {
                         $producto_almacen->stock = $producto_almacen->stock+($cantidad*$bproducto->cunidad->valor);
                     }
@@ -353,11 +353,11 @@ class ProductoForm extends Form
                 elseif ($signo == '-')
                 {
                     #descontar en compra
-                    if ($bproducto->cunidad->signo == '*')
+                    if ($bproducto->cunidad->operador == '*')
                     {
                         $producto_almacen->stock = $producto_almacen->stock-($cantidad/$bproducto->cunidad->valor);
                     }
-                    elseif($bproducto->cunidad->signo == '/')
+                    elseif($bproducto->cunidad->operador == '/')
                     {
                         $producto_almacen->stock = $producto_almacen->stock-($cantidad*$bproducto->cunidad->valor);
                     }
