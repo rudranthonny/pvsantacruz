@@ -348,7 +348,7 @@ class Pos extends Component
             $item->importe_previo =  $item->precio*$item->cantidad;
             $item->descuento = 0;
             $item->compra = $producto->costo;
-            $item->costo_compra = $producto->costo*$cantidad;
+            $item->costo_compra = $producto->obtener_costo*$cantidad;
             $item->importe =  $item->importe_previo-$item->descuento;
             $item->tipo = $producto->tipo;
             $this->items[$item->codigo] = $item->toArray();
@@ -682,14 +682,14 @@ class Pos extends Component
         $tgastos = Tgasto::all();
 
         $productos = ProductoAlmacen::query()
-            ->with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')
-            ->whereExists(function ($query) {
-                $query->select()
-                    ->from(DB::raw('productos'))
-                    ->whereColumn('producto_almacens.producto_id', 'productos.id')
-                    ->where('producto_almacens.almacen_id', $this->seleccionar_almacen)
-                    ->where('productos.designacion', 'like', '%' . $this->buscar_producto . '%');
-            })->where('estado',true);
+        ->with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')
+        ->whereExists(function ($query) {
+            $query->select()
+                ->from(DB::raw('productos'))
+                ->whereColumn('producto_almacens.producto_id', 'productos.id')
+                ->where('producto_almacens.almacen_id', $this->seleccionar_almacen)
+                ->where('productos.designacion', 'like', '%' . $this->buscar_producto . '%');
+        })->where('estado',true);
 
         $productos->when($this->categoria_id <> '', function ($q) {
             return $q->whereExists(function ($query) {
@@ -710,7 +710,6 @@ class Pos extends Component
                     ->where('productos.marca_id', $this->marca_id);
             });
         });
-
 
         $productos =  $productos->paginate(10);
         $categorias = $productos ? $productos->pluck('producto.categoria')->unique() : Categoria::all();

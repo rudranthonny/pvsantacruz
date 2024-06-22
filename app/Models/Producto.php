@@ -67,6 +67,35 @@ class Producto extends Model
         return $almacenes->sum('stock');
     }
 
+    public function getObtenerCostoAttribute(){
+        if($this->tipo == 'estandar')
+        {
+            return $this->costo;
+        }
+        elseif($this->tipo == 'compuesto')
+        {
+            $producto = Producto::find($this->id);
+            $monto = 0;
+            foreach ($producto->pcompuestos as $key => $pcompuesto)
+            {
+                if ($pcompuesto->producto->cunidad->operador == '*')
+                {
+                    $monto = $monto + ($pcompuesto->producto->costo/$pcompuesto->producto->cunidad->valor);
+                }
+                elseif($pcompuesto->producto->cunidad->operador == '/')
+                {
+                    $monto = $monto + ($pcompuesto->producto->costo*$pcompuesto->producto->cunidad->valor);
+                }
+
+                else {$monto = $monto + 0;}
+            }
+            return $monto;
+        }
+        else {
+            return 0;
+        }
+    }
+
     protected function imagen(): Attribute
     {
         return Attribute::make(

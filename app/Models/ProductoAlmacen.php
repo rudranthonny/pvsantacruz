@@ -24,7 +24,7 @@ class ProductoAlmacen extends Model
 
     public function getObtenerCantidadAttribute(){
         $bproducto = Producto::find($this->producto_id);
-        if ($bproducto->tipo == 'estandar') {return $this->stock;}
+        if ($bproducto->tipo == 'estandar') {$numero = $this->stock;}
 
         if ($bproducto->tipo == 'compuesto')
         {
@@ -34,9 +34,22 @@ class ProductoAlmacen extends Model
             {
                 $cantidad_stock_disponibles[] = $this->obtener_stock_producto($pcom->producto_asignado_id , $this->almacen_id)/$pcom->cantidad;
             }
-            return min($cantidad_stock_disponibles);
+            $numero = min($cantidad_stock_disponibles);
         }
+
+        // Obtener la parte entera
+        $parteEntera = floor($numero);
+        $parteDecimal = $numero - $parteEntera;
+        $cpartedecimal = $parteDecimal*$bproducto->cunidad->valor;
+        if ($cpartedecimal == 0) {
+            return $parteEntera."".$bproducto->cunidad->name_cor;
+        }
+        else{
+            return $parteEntera."".$bproducto->cunidad->name_cor." ".$cpartedecimal."".$bproducto->cunidad->unidadb;
+        }
+
     }
+
 
     public function obtener_stock_producto($producto_id,$almacen_id)
     {
