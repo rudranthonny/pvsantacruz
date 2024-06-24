@@ -30,4 +30,15 @@ class Posventa extends Model
     {
         return $this->morphToMany('App\Models\Movimiento','movimientoable');
     }
+
+    public function getObtenerCostoVentaAttribute()
+    {
+        $posventa = Posventa::find($this->id);
+        $total = 0;
+        foreach ($posventa->posventadetalles as $key => $detalle) {
+            $total = $total + ($detalle->producto_cantidad*$detalle->producto_compra);
+        }
+        return $total;
+    }
+
 }

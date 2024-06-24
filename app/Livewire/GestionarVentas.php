@@ -48,6 +48,7 @@ class GestionarVentas extends Component
     }
 
     public function descargar_reporte_ventas_pdf(){
+
         $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
 
         $posventas->when($this->salmacen <> '',function ($q) {
