@@ -14,13 +14,9 @@ class ProductoAlmacen extends Model
         ];
     use HasFactory;
 
-    public function producto(){
-        return $this->belongsTo(Producto::class);
-    }
+    public function producto(){return $this->belongsTo(Producto::class);}
 
-    public function almacen(){
-        return $this->belongsTo(Almacen::class);
-    }
+    public function almacen(){return $this->belongsTo(Almacen::class);}
 
     public function getObtenerCantidadAttribute(){
         $bproducto = Producto::find($this->producto_id);
@@ -49,7 +45,6 @@ class ProductoAlmacen extends Model
         }
 
     }
-
 
     public function obtener_stock_producto($producto_id,$almacen_id)
     {

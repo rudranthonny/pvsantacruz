@@ -44,3 +44,4 @@ Route::view("devolucions", "administrador.devolucions.index")->middleware('can:a
 Route::view('usuarios/cambiar_password', 'administrador.personas.cambiar_password')->name('admin.usuario.cambiar');
 #reportes
 Route::view("reporte/ingresos_perdidas", "administrador.reportes.ingresos_perdidas")->middleware('can:admin.ventas.index')->name("admin.reportes.ingresos_perdidas");
+Route::view("reporte/ventas_productos", "administrador.reportes.reporte_ventas_productos")->middleware('can:admin.ventas.index')->name("admin.reportes.ventas_productos");

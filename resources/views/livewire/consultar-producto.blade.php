@@ -62,6 +62,26 @@
                         <td>Alerta de stock</td>
                         <td><span class="badge text-bg-warning">{{$producto->alerta_stock}}</span> </td>
                     </tr>
+                    @if ($almacenes->count()>0)
+                    <tr>
+                        <td>
+                            <div class="form-floating">
+                                <select class="form-select" id="seleccionar_almacen" wire:model.live='salmacen' aria-label="Floating label select example">
+                                  <option value=''>Elegir Almacen</option>
+                                  @foreach ($almacenes as $alm)
+                                  <option value="{{$alm->id}}">{{$alm->nombre}}</option>
+                                  @endforeach
+                                </select>
+                                <label for="seleccionar_almacen">Abrir Producto Almacen</label>
+                              </div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            @if ($salmacen != '')
+                            <button class="btn btn-success" wire:loading.attr="disabled" wire:target="habilitar_producto_almacen"  wire:click='habilitar_producto_almacen'>Habilitar Producto</button>
+                            @endif
+                        </td>
+                    </tr>
+                    @endif
                 </table>
 
                 <table class="table table-bordered" >

@@ -424,6 +424,10 @@ return [
                     'text' => 'Ganancias y Perdidas',
                     'route'  => 'admin.reportes.ingresos_perdidas',
                 ],
+                [
+                    'text' => 'Ventas Productos',
+                    'route'  => 'admin.reportes.ventas_productos',
+                ],
             ],
         ],
         [
