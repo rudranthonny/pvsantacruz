@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('eco_cliente')->nullable();
             $table->string('eco_usuario')->nullable();
             $table->string('clave')->nullable();
-            $table->string('Nitemisor')->nullable();
+            $table->string('nitemisor')->nullable();
         });
     }
 
