@@ -68,6 +68,12 @@
                             <input type="text" class="form-control" id="ciudad" placeholder="Ingrese Ciudad" wire:model="clientesForm.ciudad">
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <label for="dirección" class="form-label"><b>Dirección</b></label>
+                            <input type="text" class="form-control" id="dirección" placeholder="Ingrese Ciudad" wire:model="clientesForm.direccion">
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
