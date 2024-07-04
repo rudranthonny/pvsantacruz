@@ -25,7 +25,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('posventas', function (Blueprint $table) {
-            //
+            $table->dropForeign('posventas_invoice_id_foreign');
+            $table->dropForeign('posventas_cinvoice_id_foreign');
+            $table->dropColumn('invoice_id');
+            $table->dropColumn('cinvoice_id');
         });
     }
 };
