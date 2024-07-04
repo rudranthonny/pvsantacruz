@@ -9,7 +9,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="agregarPagoPosModalLabel">Agregar Pago</h1>
+                <h1 class="modal-title fs-5" id="agregarPagoPosModalLabel">Agregar Pago</h1> <i class="bi bi-vignette"wire:click="guardarPosVenta({{ true }})"
+                    id="generar-factura"
+                    wire:confirm="Generar Factura"></i>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="cerrar_modal_postventa_x"></button>
             </div>
             <div class="modal-body">
@@ -49,6 +51,8 @@
                                     <label for="nota_pago" class="form-label">Nota de pago
                                         *</label>
                                     <textarea id="nota_pago" cols="30" rows="4" class="form-control form-control-sm" wire:model='nota_pago'></textarea>
+                                    @error('nota_pago')<div class="p-1" style="color:red;"> {{ $message }}</div>@enderror
+
                                 </div>
                             </div>
                         </div>

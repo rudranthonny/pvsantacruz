@@ -2,19 +2,25 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Cfactura;
 use App\Models\Cliente;
 use App\Models\PagoDeuda;
 use App\Models\PagoRelacionado;
 use App\Models\Posventa;
+use App\Clases\ConsultaDpiOrCui;
+use App\Models\Tdocumento;
+use Exception;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
+use SoapClient;
 
 class ClientesForm extends Form
 {
     public ?Cliente $cliente;
-
+    use ConsultaDpiOrCui;
     public $name;
+    public $tdocumento_id;
     public $email;
     public $telefono;
     public $nit;
@@ -28,6 +34,7 @@ class ClientesForm extends Form
         $this->name = $cliente->name;
         $this->email = $cliente->email;
         $this->nit = $cliente->nit;
+        $this->tdocumento_id = $cliente->tdocumento_id;
         $this->telefono = $cliente->telefono;
         $this->pais = $cliente->pais;
         $this->ciudad = $cliente->ciudad;
@@ -97,5 +104,97 @@ class ClientesForm extends Form
     {
         $this->validate(['name'=> 'required']);
         Cliente::create($this->all());
+    }
+
+    public function consultarDatos()
+    {
+        $this->validate(['tdocumento_id'=> 'required','nit'=> 'required']);
+
+        $bdocumento = Tdocumento::find($this->tdocumento_id);
+        if ($bdocumento->nombre == 'NIT') {
+            $datos = $this->consultaDpiOrCui(null,$this->nit);
+
+            if ($datos)
+            {
+                if ($datos['name'] == 'receptor')
+                {
+                    $nombre_apellidos = explode(",,",$datos['children']['nombre'][0]['text']);
+                    if (isset($nombre_apellidos[1])) {
+                        $this->name =  $nombre_apellidos[0]." ".$nombre_apellidos[1];
+                    }
+                    else {
+                        $this->name =  $nombre_apellidos[0];
+                    }
+
+                }
+                else
+                {
+                    $this->addError('nit', 'No se encuentra los datos');
+                    return;
+                }
+            }
+        }
+        else
+        {
+            $datos = $this->consultaDpiOrCui($bdocumento->nombre,$this->nit);
+            if ($datos) {
+                if ($datos['name'] == 'receptor')
+                {
+                    $nombre_apellidos = explode(",",$datos['children']['nombre'][0]['text']);
+                    $this->name =  $nombre_apellidos[0]." ".$nombre_apellidos[1];
+                }
+                else
+                {
+                    $this->addError('nit', 'No se encuentra los datos');
+                    return;
+                }
+            }
+        }
+    }
+
+    public function verificarDatos($tdocumento_id,$nit)
+    {
+
+        $bdocumento = Tdocumento::find($tdocumento_id);
+
+        if ($bdocumento->nombre == 'NIT')
+        {
+            $datos = $this->consultaDpiOrCui(null,$nit);
+
+            if ($datos)
+            {
+                if ($datos['name'] == 'receptor')
+                {
+                   return true;
+
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        else
+        {
+            $datos = $this->consultaDpiOrCui($bdocumento->nombre,$nit);
+            if ($datos)
+            {
+                if ($datos['name'] == 'receptor')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            else {
+                return false;
+            }
+        }
     }
 }

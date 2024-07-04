@@ -4,10 +4,12 @@ namespace App\Livewire;
 
 use App\Exports\ReporteVentasExport;
 use App\Livewire\Forms\DevolucionForm;
+use App\Livewire\Forms\GenerarAnulacion;
 use App\Models\Almacen;
 use App\Models\Configuracion;
 use App\Models\Posventa;
 use App\Livewire\Forms\PosVentaForm;
+use App\Models\Invoice;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
@@ -18,11 +20,21 @@ class GestionarVentas extends Component
     use WithPagination;
     public PosVentaForm $posventaform;
     public DevolucionForm $devolucionform;
+    public GenerarAnulacion $generaranulacion;
     protected $paginationTheme = 'bootstrap';
     public $pagina = 5;
     public $configuracion;
-    public $search,$finicio,$ffinal,$salmacen;
+    public $search,$finicio,$ffinal,$salmacen,$sfacturacion;
     public function mount(){  $this->configuracion = Configuracion::find(1); }
+
+
+    public function anular_factura(Posventa $posventa){
+        $this->generaranulacion->reset();
+        $this->generaranulacion->MotivoAnulacion = "error al escribir la factura";
+        $cinvoice = $this->generaranulacion->anular_factura($posventa->invoice);
+        $posventa->cinvoice_id = $cinvoice->id;
+        $posventa->save();
+    }
 
     public function updatedDevolucionform(){$this->devolucionform->actualizar_datos();
     }
@@ -43,6 +55,15 @@ class GestionarVentas extends Component
             return $q->where('created_at','>=',$this->finicio." 00:00:00")->where('created_at','<=',$this->ffinal." 23:59:59");
         });
 
+        $posventas->when($this->sfacturacion == 'sinfactura'  ,function ($q) {
+            return $q->whereNull('invoice_id');
+        });
+
+        $posventas->when($this->sfacturacion == 'factura'  ,function ($q) {
+            return $q->whereNotNull('invoice_id');
+        });
+
+
         $posventas = $posventas->get();
         return $this->posventaform->descargar_reporte_ventas_excel($posventas);
     }
@@ -57,6 +78,14 @@ class GestionarVentas extends Component
 
         $posventas->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
             return $q->where('created_at','>=',$this->finicio." 00:00:00")->where('created_at','<=',$this->ffinal." 23:59:59");
+        });
+
+        $posventas->when($this->sfacturacion == 'sinfactura'  ,function ($q) {
+            return $q->whereNull('invoice_id');
+        });
+
+        $posventas->when($this->sfacturacion == 'factura'  ,function ($q) {
+            return $q->whereNotNull('invoice_id');
         });
 
         $posventas = $posventas->get();
@@ -81,20 +110,42 @@ class GestionarVentas extends Component
         $this->dispatch('cerrar_modal_devolucion');
     }
 
+    public function descargar_factura(Posventa $posventa){
+        return response()->download(storage_path('app/public/'.$posventa->invoice->pdf));
+    }
+    public function descargar_factura_anulada(Posventa $posventa){
+        return response()->download(storage_path('app/public/'.$posventa->cinvoice->pdf));
+    }
+
+
     public function render()
     {
-        $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orwhere('id','like',"%".$this->search."%")->orderByDesc('id');
+        $posventas = Posventa::query()->Where(function($query) {
+            $query->where('cliente_name','like',"%".$this->search."%")
+                  ->orwhere('id','like',"%".$this->search."%");
+        });
 
         $posventas->when($this->salmacen <> '',function ($q) {
             return $q->where('almacen_id',$this->salmacen);
+        });
+
+        $posventas->when($this->salmacen <> '',function ($q) {
+            return $q->where('almacen_id',$this->salmacen);
+        });
+
+        $posventas->when($this->sfacturacion == 'sinfactura'  ,function ($q) {
+            return $q->whereNull('invoice_id');
+        });
+
+        $posventas->when($this->sfacturacion == 'factura'  ,function ($q) {
+            return $q->whereNotNull('invoice_id');
         });
 
         $posventas->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
             return $q->where('created_at','>=',$this->finicio." 00:00:00")->where('created_at','<=',$this->ffinal." 23:59:59");
         });
 
-
-        $posventas = $posventas->paginate($this->pagina);
+        $posventas = $posventas->orderByDesc('id')->paginate($this->pagina);
 
         $almacens = Almacen::all();
         return view('livewire.gestionar-ventas', compact('posventas','almacens'));

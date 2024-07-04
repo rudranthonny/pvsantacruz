@@ -6,6 +6,7 @@ use App\Livewire\Forms\AlmacenForm;
 use App\Livewire\Forms\CajaForm;
 use App\Livewire\Forms\ClientesForm;
 use App\Livewire\Forms\GastosForm;
+use App\Livewire\Forms\GenerarFactura;
 use App\Livewire\Forms\MovimientoForm;
 use App\Livewire\Forms\PosVentaForm;
 use App\Livewire\Forms\ProductoForm;
@@ -13,15 +14,18 @@ use App\Models\Almacen;
 use App\Models\Caja;
 use App\Models\Categoria;
 use App\Models\Cliente;
+use App\Models\Compra;
 use App\Models\CompuestoProducto;
 use App\Models\Configuracion;
 use App\Models\Gasto;
+use App\Models\Invoice;
 use App\Models\Marca;
 use App\Models\PagoDeuda;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
 use App\Models\Producto;
 use App\Models\ProductoAlmacen;
+use App\Models\Tdocumento;
 use App\Models\Tgasto;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +47,7 @@ class Pos extends Component
     public ProductoForm $productoform;
     public ClientesForm $clientesForm;
     public PosVentaForm $posventaform;
+    public GenerarFactura $generarfactura;
     public $cajero;
     public $almacen_id;
     public $seleccionar_almacen;
@@ -74,6 +79,10 @@ class Pos extends Component
     private AlmacenForm $almacenform;
     private MovimientoForm $movimientoform;
 
+    public function updatedClienteForm(){
+
+    }
+
     public function mount()
     {
         $this->cajero = User::find(Auth::user()->id);
@@ -89,6 +98,45 @@ class Pos extends Component
         $this->impuesto_porcentaje = 0;
         $this->cliente_por_defecto();
         $this->cajaform->caja = $this->cajero->cajas->where('fecha_cierre', false)->first();
+    }
+
+    public function generar_factura(Posventa $posventa){
+        $this->generarfactura->reset();
+        #registrar datos
+        $this->generarfactura->TrnEFACECliNom = $posventa->cliente_name;
+        $this->generarfactura->TrnEFACECliDir = $posventa->cliente->direccion;
+        $this->generarfactura->TrnEmail = $posventa->email;
+        $this->generarfactura->cliente_id = $posventa->cliente_id;
+        $this->generarfactura->TrnBenConNIT = $posventa->cliente->nit == null ? 'CF' : $posventa->cliente->nit;
+        $this->generarfactura->tipo_documento = $posventa->cliente->tdocumento->nombre;
+        foreach ($posventa->posventadetalles as $key => $posdetalle)
+        {
+            $this->generarfactura->bienes_servicios[$key]['TrnArtNom'] = $posdetalle->producto_nombre;
+            $this->generarfactura->bienes_servicios[$key]['TrnCan'] =  $posdetalle->producto_cantidad;
+            $this->generarfactura->bienes_servicios[$key]['TrnVUn'] =  $posdetalle->producto_precio;
+            $this->generarfactura->bienes_servicios[$key]['TrnArtBienSer'] = 'B';
+            $this->generarfactura->bienes_servicios[$key]['TrnArtImpAdiUniGrav'] = 0;
+            $this->generarfactura->bienes_servicios[$key]['subtotal'] = $posdetalle->producto_cantidad*$posdetalle->producto_precio;
+            $this->generarfactura->bienes_servicios[$key]['TrnVDes'] = $posdetalle->producto_descuento;
+            $this->generarfactura->bienes_servicios[$key]['TrnArtImpAdiCod'] = 0;
+            $this->generarfactura->bienes_servicios[$key]['impuesto'] = 0;
+            $this->generarfactura->bienes_servicios[$key]['total'] =  $posdetalle->producto_cantidad*$posdetalle->producto_precio-$posdetalle->producto_descuento;
+        }
+        $invocie_id = $this->generarfactura->crear_factura();
+        $n_invocie = Invoice::find($invocie_id);
+        if ($n_invocie == true)
+        {
+        $posventa->invoice_id =  $n_invocie->id;
+        $posventa->save();
+        return $n_invocie;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public function buscar_documento(){
+        $this->clientesForm->consultarDatos();
     }
 
     public function cambiar_modo_usuario()
@@ -137,15 +185,42 @@ class Pos extends Component
         }
     }
 
-    public function modal_cliente()
+    public function modal_cliente(Cliente $cliente = null)
     {
         $this->reset('titlemodal');
         $this->clientesForm->reset();
+        if ($cliente->id == true) {
+            $this->titlemodal = 'Editar';
+            $this->clientesForm->set($cliente);
+        }
     }
 
     public function guardar_cliente()
     {
-        $this->clientesForm->store();
+
+        if (isset($this->clientesForm->cliente->id))
+        {
+            $bu_cliente = Cliente::where('nit',$this->clientesForm->nit)->where('id','<>',$this->clientesForm->cliente->id)->first();
+            if ($bu_cliente == false) {
+                $this->clientesForm->update();
+            }
+            else {
+                $this->addError('clientesForm.nit', 'no se puede registrar, porque ya existe el usuario');
+                return;
+            }
+        }
+        else {
+            #validar si el nit existe
+            $bu_cliente = Cliente::where('nit',$this->clientesForm->nit)->first();
+            if ($bu_cliente == false) {
+                $this->clientesForm->store();
+            }
+            else {
+                $this->addError('clientesForm.nit', 'no se puede registrar, porque ya existe el usuario');
+                return;
+            }
+
+        }
         $this->dispatch('cerrar_modal_cliente');
     }
 
@@ -520,11 +595,20 @@ class Pos extends Component
         );
     }
 
-    public function guardarPosVenta()
+    public function guardarPosVenta($back_null = null)
     {
+
         $almacen = Almacen::find($this->almacen_id);
         if ($almacen) {
             $cliente = Cliente::find($this->bclienteoculto);
+            if ($back_null == false && $cliente->nit <> '')
+            {
+              $resultado =  $this->clientesForm->verificarDatos($cliente->tdocumento_id,$cliente->nit);
+              if ( $resultado == false) {
+                $this->addError('nota_pago', 'la identificación no es valida');
+                return;
+              }
+            }
             $posventa = new Posventa();
             $posventa->almacen_id = $almacen->id;
             $posventa->almacen_name = $almacen->nombre;
@@ -599,6 +683,7 @@ class Pos extends Component
             $consultapdf = FacadePdf::loadView('administrador.pdf.comprobante', compact('posventa', 'configuracion'))->setPaper([0, 0, 215.25, $paper_heigth + $items_adicional * 2 * count($this->items)]);
             $this->dispatch('cerrar_modal_postventa');
             $this->reiniciar();
+
             $pdfContent = $consultapdf->output();
             if (! File::exists(storage_path('app/public/') . 'ticketpdf/')) {
                 File::makeDirectory(storage_path('app/public/') . 'ticketpdf/');
@@ -611,17 +696,44 @@ class Pos extends Component
             $datos_impresion = [];
             $datos_impresion[] = $this->simpresora;
             $datos_impresion[] = $pdf_enviar;
-            if ($this->simpresora == 'Imprimir')
+            if ($back_null == false)
             {
-                $this->dispatch('enviar_to_imprimir',$datos_impresion);
+                $n_invocie = $this->generar_factura($posventa);
+                if ($n_invocie)
+                {
+                    if ($this->simpresora == 'Imprimir')
+                    {
+
+                        $datos_impresion[1]= asset('storage/'.$n_invocie->pdf);
+                        $this->dispatch('enviar_to_imprimir',$datos_impresion);
+                    }
+                    else
+                    {
+                    return response()->download(storage_path('app/public/'.$n_invocie->pdf));
+                    }
+                }
+                else {
+                    $this->dispatch('advertencia_error');
+                }
             }
-            else {
-                return response()->streamDownload(
-                    fn () => print($pdfContent),
-                    $nombre_archivo
-                );
+
+            elseif($back_null == true)
+            {
+                if ($this->simpresora == 'Imprimir')
+                {
+                    $this->dispatch('enviar_to_imprimir',$datos_impresion);
+                }
+                else
+                {
+                    return response()->streamDownload(
+                        fn () => print($pdfContent),
+                        $nombre_archivo
+                    );
+                }
             }
-        } else {
+
+        } else
+        {
             $this->dispatch('advertencia_almacen');
         }
         $this->cliente_por_defecto();
@@ -680,7 +792,7 @@ class Pos extends Component
         $clientes = Cliente::all();
         $almacens = Almacen::all();
         $tgastos = Tgasto::all();
-
+        $documentos = Tdocumento::all();
         $productos = ProductoAlmacen::query()
         ->with('producto', 'producto.categoria', 'producto.marca', 'producto.cunitario')
         ->whereExists(function ($query) {
@@ -715,6 +827,6 @@ class Pos extends Component
         $categorias = $productos ? $productos->pluck('producto.categoria')->unique() : Categoria::all();
         $marcas =  $productos ? $productos->pluck('producto.marca')->unique() : Marca::all();
 
-        return view('livewire.pos', compact('clientes', 'almacens', 'tgastos', 'productos', 'categorias', 'marcas'))->layout('administrador.ventas.pos');
+        return view('livewire.pos', compact('documentos','clientes', 'almacens', 'tgastos', 'productos', 'categorias', 'marcas'))->layout('administrador.ventas.pos');
     }
 }

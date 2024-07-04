@@ -15,36 +15,56 @@
             <div class="modal-body">
                 <form wire:submit="guardar_cliente" id="formularioCliente">
                     <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="name" class="form-label">Nombre del Cliente <span class="text-danger">*</span></label>
+                        <div class="col-12 mb-2">
+                            <label for="tdocumento_id"><b>Tipo de Documentos</b> <span class="text-danger">*</span></label>
+                            <select class="form-select" id="tdocumento_id" wire:model.live="clientesForm.tdocumento_id">
+                                <option value="">Elegir</option>
+                                @foreach ($documentos as $doc)
+                                <option value="{{$doc->id}}">{{$doc->nombre}}</option>
+                                @endforeach
+                            </select>
+                            @error('clientesForm.tdocumento_id')
+                            <span class="error" style="color:red;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12 mb-2">
+                            <label for="clientesForm_numero_documento" class="form-label"><b>Numero Documento</b></label><br>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="clientesForm_numero_documento" autocomplete="off" placeholder="Ingresar Numero del Documento" wire:model.live="clientesForm.nit">
+                                <div class="input-group-text" wire:loading.attr="disabled" wire:target="buscar_documento" wire:click="buscar_documento()">
+                                    <i class="bi bi-search"></i> <span class="text-danger">*</span>
+                                </div>
+                            </div>
+                            @error('clientesForm.nit')
+                            <span class="error" style="color:red;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-12 mb-2">
+                            <label for="name" class="form-label"><b>Nombre del Cliente</b> <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="name" placeholder="Ingrese Nombre del Cliente"
                                 required wire:model="clientesForm.name">
                             @error('clientesForm.name')
-                                <span class="error">{{ $message }}</span>
+                                <span class="error" style="color:red;">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-sm-12">
-                            <label for="email" class="form-label">Nit</label>
-                            <input type="text" class="form-control" id="nit" placeholder="Ingrese Nit" wire:model="clientesForm.nit">
-                        </div>
-                        <div class="col-sm-12">
-                            <label for="email" class="form-label">Email</label>
+                        <div class="col-sm-12 mb-2">
+                            <label for="email" class="form-label"><b>Email</b></label>
                             <input type="text" class="form-control" id="email" placeholder="Ingrese Email" wire:model="clientesForm.email">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-6 col-lg-6">
-                            <label for="tel" class="form-label">Teléfono</label>
+                            <label for="tel" class="form-label"><b>Teléfono</b></label>
                             <input type="text" class="form-control" id="tel" placeholder="Ingrese Teléfono" wire:model="clientesForm.telefono">
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
-                            <label for="pais" class="form-label">País</label>
+                            <label for="pais" class="form-label"><b>País</b></label>
                             <input type="text" class="form-control" id="pais" placeholder="Ingrese País" wire:model="clientesForm.pais">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-6 col-lg-6">
-                            <label for="ciudad" class="form-label">Ciudad</label>
+                            <label for="ciudad" class="form-label"><b>Ciudad</b></label>
                             <input type="text" class="form-control" id="ciudad" placeholder="Ingrese Ciudad" wire:model="clientesForm.ciudad">
                         </div>
                     </div>

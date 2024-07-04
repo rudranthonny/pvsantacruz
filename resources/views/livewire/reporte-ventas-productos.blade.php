@@ -100,6 +100,7 @@
                                 <tr class="table-dark">
                                     <th class="text-center">Producto</th>
                                     <th class="text-center">Almacen</th>
+                                    <th class="text-center">Cantidad</th>
                                     <th class="text-center">Ventas</th>
                                     <th class="text-center">Descuentos</th>
                                     <th class="text-center">Costo</th>
@@ -112,8 +113,10 @@
                                     $total_ventas = 0;
                                     $total_costo = 0;
                                     $total_descuento = 0;
+                                    $total_cantidad = 0;
                                         foreach ($consulta_ventas->where('producto_id',$key) as $key2 => $ven)
                                         {
+                                            $total_cantidad = $total_cantidad+$ven->producto_cantidad;
                                             $total_ventas = $total_ventas+$ven->producto_cantidad*$ven->producto_precio;
                                             $total_costo = $total_costo+$ven->producto_cantidad*$ven->producto_compra;
                                             $total_descuento = $total_descuento + $ven->producto_descuento;
@@ -130,6 +133,7 @@
                                             @endif
                                         @endif
                                     </td>
+                                    <td class="text-center">{{$total_cantidad}}</td>
                                     <td class="text-center">{{$total_ventas}}</td>
                                     <td class="text-center">{{$total_descuento}}</td>
                                     <td class="text-center">{{$total_costo}}</td>

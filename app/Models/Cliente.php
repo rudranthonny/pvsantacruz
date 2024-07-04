@@ -15,11 +15,16 @@ class Cliente extends Model
         'nit',
         'ciudad',
         'numero_impuesto',
-        'direccion'];
+        'direccion',
+        'tdocumento_id'];
     use HasFactory;
 
     public function pagodeudas()
     {
         return $this->hasMany(PagoDeuda::class);
+    }
+
+    public function tdocumento(){
+        return $this->belongsTo(Tdocumento::class);
     }
 }

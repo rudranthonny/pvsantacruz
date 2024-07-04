@@ -57,6 +57,10 @@
     </div>
     @livewireScripts
     <script type="text/javascript">
+         window.Livewire.on('advertencia_error', () => {
+            alert('no se emitio la factura surgio un error');
+        });
+
         window.Livewire.on('enviar_to_imprimir', datos_impresion => {
             imprimir_comprobant_pdf_js(datos_impresion[0][1])
         });

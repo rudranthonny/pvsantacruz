@@ -28,7 +28,7 @@
                                         placeholder="Buscar Venta" wire:model.live='search'>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-3">
+                            <div class="col-12 col-sm-2">
                                 <label for="seleccionar_almacen" class="form-label">Almacen</label>
                                 <select class="form-select" id="seleccionar_almacen" wire:model.live="salmacen">
                                     <option value="">Elegir</option>
@@ -37,11 +37,19 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-12 col-sm-3">
+                            <div class="col-12 col-sm-2">
+                                <label for="seleccionar_facturacion" class="form-label">Facturación</label>
+                                <select class="form-select" id="seleccionar_facturacion" wire:model.live="sfacturacion">
+                                    <option value="">Todos</option>
+                                    <option value="factura">Factura</option>
+                                    <option value="sinfactura">Sin Factura</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-2">
                                 <label for="f_inicio">F.Inicio</label>
                                 <input type="date" id="f_inicio" class="form-control" wire:model.live='finicio'>
                             </div>
-                            <div class="col-12 col-sm-3">
+                            <div class="col-12 col-sm-2">
                                 <label for="f_inicio">F.Final</label>
                                 <input type="date" id="f_final" class="form-control" wire:model.live='ffinal'>
                             </div>
@@ -61,6 +69,8 @@
                                             <th>Recibo</th>
                                             <th>Almacen</th>
                                             <th>Cliente</th>
+                                            <th>Factura</th>
+                                            <th>Anulado</th>
                                             <th>Impuesto Porcentaje</th>
                                             <th>Impuesto</th>
                                             <th>Descuento</th>
@@ -76,6 +86,16 @@
                                             <td role="cell" class="text-center"  style="vertical-align: middle;">{{ "SL_".$pventa->id }}</td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $pventa->almacen_name }}</td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $pventa->cliente_name }}</td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">
+                                                @if (isset($pventa->invoice))
+                                                    <button class="btn btn-success" wire:loading.attr='disabled' wire:target='descargar_factura({{$pventa->id}})' wire:click='descargar_factura({{$pventa->id}})'><i class="fas fa-file"></i></button>
+                                                @endif
+                                            </td>
+                                            <td role="cell" class="text-center" style="vertical-align: middle;">
+                                                @if (isset($pventa->cinvoice))
+                                                    <button class="btn btn-danger" wire:loading.attr='disabled' wire:target='descargar_factura_anulada({{$pventa->id}})' wire:click='descargar_factura_anulada({{$pventa->id}})'><i class="fas fa-file"></i></button>
+                                                @endif
+                                            </td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $pventa->impuesto_porcentaje }}%</td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->impuesto_monto }}</td>
                                             <td role="cell" class="text-center" style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$pventa->descuento }}</td>
@@ -85,11 +105,18 @@
                                                 <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalDevolucion" wire:click="modal_devolucion({{$pventa->id}})">
                                                     <i class="fas fa-backward"></i>
                                                 </button>
-                                                <button class="btn btn-danger" wire:loading.attr='disabled' id="venta_descargar-{{$pventa->id}}" wire:target='descargar_venta_pdf({{$pventa->id}})' wire:click='descargar_venta_pdf({{$pventa->id}})'><i class="fas fa-download"></i></button>
+                                                <button class="btn btn-danger" wire:loading.attr='disabled' id="venta_descargar-{{$pventa->id}}" wire:target='descargar_venta_pdf({{$pventa->id}})' wire:click='descargar_venta_pdf({{$pventa->id}})'>
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                                @if (isset($pventa->invoice) && isset($pventa->cinvoice) == false)
+                                                <button type="button" class="btn btn-danger" id="anular-venta-{{$pventa->id}}"  wire:loading.attr='disabled'  wire:target='anular_factura({{$pventa->id}})'  wire:click="anular_factura({{$pventa->id}})" wire:confirm="Estas seguro de Anular esta venta">
+                                                    <i class="fas fa-eye-slash"></i>
+                                                </button>
+                                                @endif
                                             </td>
                                         </tr>
                                         <tr role="row">
-                                            <td role="cell" colspan="9" class="p-0">
+                                            <td role="cell" colspan="12" class="p-0">
                                                 <div id="tablecollapse-{{$pventa->id}}" class="accordion-collapse collapse" aria-labelledby="heading-1" data-bs-parent="#accordionExample" style="">
                                                     <div>
                                                         <table role="table" width="100%" class="table table-primary">

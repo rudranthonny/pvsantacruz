@@ -16,6 +16,10 @@ class Posventa extends Model
         return $this->morphOne('App\Models\MCaja', 'm_cajable');
     }
 
+    public function cliente(){
+        return $this->belongsTo(Cliente::class);
+    }
+
     public function posventadetalles()
     {
         return $this->hasMany(PosventaDetalle::class,'posventa_id');
@@ -41,4 +45,11 @@ class Posventa extends Model
         return $total;
     }
 
+    public function invoice(){
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function cinvoice(){
+        return $this->belongsTo(Cinvoice::class);
+    }
 }

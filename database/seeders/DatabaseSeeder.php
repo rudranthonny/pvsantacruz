@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         // llamar al sembrador de datos en Moneda
 
-        $this->call(RoleSeeder::class);
+      /*  $this->call(RoleSeeder::class);
         $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
         $this->call(MarcaSeeder::class);
@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('Administrador');
-
+        */
         /*
             $detalles = PosventaDetalle::all();
             foreach ($detalles as $key => $det)
@@ -110,7 +110,6 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
-
         foreach ($devoluciones as $key => $dev) {
             foreach ($almacen as $key2 => $alm) {
                 if ($alm->id ==  $dev->almacen_id)
@@ -131,7 +130,6 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
-
         foreach ($gastos as $key => $gato) {
             foreach ($almacen as $key2 => $alm) {
                 if ($alm->id ==  $gato->almacen_id)
@@ -152,7 +150,6 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
-
         foreach ($posventas as $key => $posventa) {
             foreach ($almacen as $key2 => $alm) {
                 if ($alm->id ==  $posventa->almacen_id)
@@ -174,5 +171,9 @@ class DatabaseSeeder extends Seeder
             }
         }
         */
+
+         $this->call(TdcoumentoSeeder::class);
+         $this->call(CfacturaSeeder::class);
+
     }
 }

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Forms\ClientesForm;
 use App\Models\Cliente;
 use App\Models\Configuracion;
+use App\Models\Tdocumento;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,6 +20,10 @@ class GestionarCliente extends Component
     public $titlemodal = 'Añadir';
     public $pagina = 5;
     public $pd_monto,$pd_detalle,$pd_opcion;
+
+    public function buscar_documento(){
+        $this->clientesForm->consultarDatos();
+    }
 
     public function modal_pagar_deuda(Cliente $cliente){
         $this->reset('pd_monto','pd_detalle','pd_opcion');
@@ -79,8 +84,9 @@ class GestionarCliente extends Component
 
     public function render()
     {
+        $documentos = Tdocumento::all();
         $clientes = Cliente::where('name','like','%'.$this->search.'%')->paginate($this->pagina); //metodo
-        return view('livewire.gestionar-clientes',compact('clientes'));
+        return view('livewire.gestionar-clientes',compact('clientes','documentos'));
     }
 
 }

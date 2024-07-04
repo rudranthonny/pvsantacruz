@@ -72,6 +72,12 @@
                         </div>
                         <div class="col-12 my-1">
                             <div class="input-group">
+                                @if ($bclienteoculto)
+                                    <div class="input-group-text" data-bs-toggle="modal" data-bs-target="#modalCliente"
+                                        wire:click='modal_cliente({{$bclienteoculto}})'>
+                                        <i class="bi bi-pencil-square"></i> <span class="text-danger">*</span>
+                                    </div>
+                                @endif
                                 <input type="text" class="form-control" id="buscar_cliente2" autocomplete="off"
                                     placeholder="Escribir Usuario" wire:model.live="bcliente">
                                 <div class="input-group-text" data-bs-toggle="modal" data-bs-target="#modalCliente"
