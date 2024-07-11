@@ -101,6 +101,7 @@ class Pos extends Component
     }
 
     public function generar_factura(Posventa $posventa){
+
         $this->generarfactura->reset();
         #registrar datos
         $this->generarfactura->TrnEFACECliNom = $posventa->cliente_name;
@@ -123,6 +124,7 @@ class Pos extends Component
             $this->generarfactura->bienes_servicios[$key]['total'] =  $posdetalle->producto_cantidad*$posdetalle->producto_precio-$posdetalle->producto_descuento;
         }
         $invocie_id = $this->generarfactura->crear_factura();
+
         $n_invocie = Invoice::find($invocie_id);
         if ($n_invocie == true)
         {
@@ -699,6 +701,7 @@ class Pos extends Component
             if ($back_null == false)
             {
                 $n_invocie = $this->generar_factura($posventa);
+
                 if ($n_invocie)
                 {
                     if ($this->simpresora == 'Imprimir')

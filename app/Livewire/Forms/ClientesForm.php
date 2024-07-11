@@ -136,6 +136,7 @@ class ClientesForm extends Form
         }
         else
         {
+
             $datos = $this->consultaDpiOrCui($bdocumento->nombre,$this->nit);
             if ($datos) {
                 if ($datos['name'] == 'receptor')

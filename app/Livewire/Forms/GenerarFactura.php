@@ -76,6 +76,7 @@ class GenerarFactura extends Form
         $this->TrnFec = date('Y-m-d');
         $this->TrnNum = $this->obtener_correlativo() + 1;
         $string = $this->generar_string();
+
         #generar recibo
         $soapclient = new SoapClient($cfactura->facturacion);
         $param = array(
@@ -97,7 +98,7 @@ class GenerarFactura extends Form
         {
             $identificador = '<TrnBenConNIT>' . $this->TrnBenConNIT . '</TrnBenConNIT>';
         } elseif ($this->tipo_documento == 'DPI') {
-            $identificador = '<TrnBenConNIT>' . $this->TrnBenConNIT . '</TrnBenConNIT>';
+            $identificador = '<TrnBenConNIT>' . $this->TrnBenConNIT . '</TrnBenConNIT><TrnBenConEspecial>2</TrnBenConEspecial>';
         } elseif ($this->tipo_documento == 'EXT') {
             $identificador = '<TrnBenConEXT>' . $this->TrnBenConNIT . '</TrnBenConEXT>';
         } elseif ($this->tipo_documento == 'CF') {
