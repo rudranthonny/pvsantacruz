@@ -13,12 +13,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="cerrar_modal_caja_x"></button>
             </div>
             <div class="modal-body">
-                    <div class="row mb-3">
-                        <div class="col-sm-12">
-                            <label for="cajaform_monto_apertura" class="form-label">Monto de Apertura</label>
-                            <input type="number" step="0.01" class="form-control" id="cajaform_monto_apertura" wire:model="cajaform.monto_apertura">
-                        </div>
+                <div class="row mb-3">
+                    <div class="col-sm-12">
+                        <label for="cajaform_monto_apertura" class="form-label">Monto de Apertura</label>
+                        <input type="number" step="0.01" class="form-control" id="cajaform_monto_apertura" wire:model="cajaform.monto_apertura">
                     </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
