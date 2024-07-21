@@ -40,12 +40,14 @@
             <td style="border: solid 1px black;text-align: center;">{{ $mov->created_at }}</td>
             <td style="border: solid 1px black;text-align: center;">
                 @if ($mov->movimientoable_type == 'App\Models\Posventa')
-                    @foreach ($mov->movimientoable->posventadetalles as $tey => $item)
-                        {{$item->producto_nombre}}
-                        @if ($mov->movimientoable->posventadetalles->count()-1 <> $tey)
-                        ,
-                        @endif
-                    @endforeach
+                    @if (isset($mov->movimientoable->posventadetalles))
+                        @foreach ($mov->movimientoable->posventadetalles as $tey => $item)
+                            {{$item->producto_nombre}}
+                            @if ($mov->movimientoable->posventadetalles->count()-1 <> $tey)
+                            ,
+                            @endif
+                        @endforeach
+                    @endif
                 @elseif($mov->movimientoable_type == 'App\Models\PagoCompra')
                     {{'COM_'.$mov->movimientoable->compra->id}}
                 @elseif($mov->movimientoable_type == 'App\Models\Devolucion')
