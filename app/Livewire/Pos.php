@@ -214,7 +214,7 @@ class Pos extends Component
         else {
             #validar si el nit existe
             $bu_cliente = Cliente::where('nit',$this->clientesForm->nit)->first();
-            if ($bu_cliente == false) {
+            if ($bu_cliente == false or $this->configuracion->facturacion == false) {
                 $this->clientesForm->store();
             }
             else {
