@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         // llamar al sembrador de datos en Moneda
 
-      /*  $this->call(RoleSeeder::class);
+        $this->call(RoleSeeder::class);
         $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
         $this->call(MarcaSeeder::class);
@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('Administrador');
-        */
+
         /*
             $detalles = PosventaDetalle::all();
             foreach ($detalles as $key => $det)
