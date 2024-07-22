@@ -1,5 +1,5 @@
 <div class="container">
-    <!--card de reportes-->
+    @if ($configuracion->rventas == true)
     <div class="row">
         <!--1er Cuadro Filtros-->
         <div class="col-12">
@@ -155,4 +155,5 @@
         </div>
         @endif
     </div>
+    @endif
 </div>

@@ -599,7 +599,9 @@ class Pos extends Component
 
     public function guardarPosVenta($back_null = null)
     {
-
+        if ($this->configuracion->facturacion == false) {
+            $back_null = true;
+        }
         $almacen = Almacen::find($this->almacen_id);
         if ($almacen) {
             $cliente = Cliente::find($this->bclienteoculto);
