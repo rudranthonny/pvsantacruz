@@ -669,7 +669,7 @@ class Pos extends Component
             }
             #pdf descargar
             $paper_examen = 0;
-            $paper_heigth = 460;
+            $paper_heigth = 480;
             $items_adicional = 18.2;
             if ($posventa->descuento > 0) {
                 $items_adicional = $items_adicional + 2;

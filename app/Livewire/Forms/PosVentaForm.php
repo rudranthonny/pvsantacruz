@@ -70,7 +70,7 @@ class PosVentaForm extends Form
     public function descargar_pdf(Posventa $posventa)
     {
             $paper_examen = 0;
-            $paper_heigth = 460;
+            $paper_heigth = 480;
             $paper_heigth = $paper_examen + $paper_heigth;
             $items_adicional = 18.2;
             if ($posventa->descuento > 0) {
