@@ -52,7 +52,7 @@ class AjusteSistemaForm extends Form
         $this->descripcion2 = $configuracion->descripcion2;
     }
 
-    public function update($imagen_logo = null){
+    public function update($imagen_logo = null,$logo_ticket = null){
         $this->validate($this->rule_ajuste);
         $this->configuracion->update($this->all());
 
@@ -61,14 +61,23 @@ class AjusteSistemaForm extends Form
             $this->eliminar_imagen();
             $this->subir_imagen($imagen_logo);
         }
+        if ($logo_ticket)
+        {
+            $this->eliminar_imagen_ticket();
+            $this->subir_imagen_ticket($logo_ticket);
+        }
     }
 
-    public function store($imagen_logo = null)
+    public function store($imagen_logo = null,$logo_ticket = null)
     {
         $this->validate($this->rule_ajuste);
         $this->configuracion = Configuracion::create($this->all());
         if ($imagen_logo) {
            $this->subir_imagen($imagen_logo);
+        }
+        if ($logo_ticket)
+        {
+            $this->subir_imagen_ticket($logo_ticket);
         }
     }
 
@@ -80,11 +89,28 @@ class AjusteSistemaForm extends Form
         $this->configuracion->save();
     }
 
+    public function subir_imagen_ticket($imagen)
+    {
+        $extension = $imagen->extension();
+        $img_empresa = $imagen->storeAs('public/logo-empresa-ticket', $this->configuracion->id.strtotime(date('Y-m-d h:i:s')).".".$extension);
+        $this->configuracion->logo_ticket = Storage::url($img_empresa);
+        $this->configuracion->save();
+    }
+
     public function eliminar_imagen()
     {
         if ($this->configuracion->logo == true)
         {
             $eliminar = str_replace('storage', 'public', $this->configuracion->logo);
+            Storage::delete([$eliminar]);
+        }
+    }
+
+    public function eliminar_imagen_ticket()
+    {
+        if ($this->configuracion->logo_ticket == true)
+        {
+            $eliminar = str_replace('storage', 'public', $this->configuracion->logo_ticket);
             Storage::delete([$eliminar]);
         }
     }

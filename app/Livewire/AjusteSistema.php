@@ -14,6 +14,7 @@ class AjusteSistema extends Component
     use WithFileUploads;
     public AjusteSistemaForm $ajustesistemaform;
     public $imagen_logo;
+    public $logo_ticket;
     public $iteration=1;
 
     public function mount(){
@@ -29,14 +30,9 @@ class AjusteSistema extends Component
 
     public function save(){
 
-        if (isset($this->ajustesistemaform->configuracion->id)) {
-            $this->ajustesistemaform->update($this->imagen_logo);
-        }
-        else {
-            $this->ajustesistemaform->store($this->imagen_logo);
-        }
+        if (isset($this->ajustesistemaform->configuracion->id)){$this->ajustesistemaform->update($this->imagen_logo,$this->logo_ticket);}
+        else{$this->ajustesistemaform->store($this->imagen_logo,$this->logo_ticket);}
         $this->mount();
-
     }
 
     public function render(){

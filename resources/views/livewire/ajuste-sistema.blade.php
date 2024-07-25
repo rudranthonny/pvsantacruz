@@ -44,6 +44,10 @@
                                 <label for="logo" class="form-label">Cambiar logo</label>
                                 <input class="form-control" type="file" id="logo" wire:model='imagen_logo'>
                             </div>
+                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                <label for="logo" class="form-label">logo ticket</label>
+                                <input class="form-control" type="file" id="logo" wire:model='logo_ticket'>
+                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12 col-md-4 col-lg-4">
