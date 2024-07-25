@@ -26,6 +26,13 @@
                             </div>
                         </div>
                         @endif
+                        @if (isset($ajustesistemaform->configuracion->logo_ticket))
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <center><img src="{{asset($ajustesistemaform->configuracion->logo_ticket)}}" width="128px" alt=""></center>
+                            </div>
+                        </div>
+                        @endif
                         <div class="row mb-3">
                             <div class="col-sm-12 col-md-4 col-lg-4">
                                 <label for="moneda_id" class="form-label">Moneda Predeterminada</label>

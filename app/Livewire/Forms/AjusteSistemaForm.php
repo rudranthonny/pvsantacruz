@@ -84,7 +84,7 @@ class AjusteSistemaForm extends Form
     public function subir_imagen($imagen)
     {
         $extension = $imagen->extension();
-        $img_empresa = $imagen->storeAs('public/logo-empresa', $this->configuracion->id.strtotime(date('Y-m-d h:i:s')).".".$extension);
+        $img_empresa = $imagen->storeAs('public/logo_empresa', $this->configuracion->id.strtotime(date('Y-m-d h:i:s')).".".$extension);
         $this->configuracion->logo = Storage::url($img_empresa);
         $this->configuracion->save();
     }
@@ -92,7 +92,7 @@ class AjusteSistemaForm extends Form
     public function subir_imagen_ticket($imagen)
     {
         $extension = $imagen->extension();
-        $img_empresa = $imagen->storeAs('public/logo-empresa-ticket', $this->configuracion->id.strtotime(date('Y-m-d h:i:s')).".".$extension);
+        $img_empresa = $imagen->storeAs('public/logo_empresa_ticket', $this->configuracion->id.strtotime(date('Y-m-d h:i:s')).".".$extension);
         $this->configuracion->logo_ticket = Storage::url($img_empresa);
         $this->configuracion->save();
     }
