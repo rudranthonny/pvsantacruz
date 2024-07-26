@@ -132,7 +132,7 @@ class AdminController extends Controller
         })->get();
 
         foreach ($querys as $query) {
-            $query['label'] =  $query->id . "-" . $query->name;
+            $query['label'] =  $query->id . "-" . $query->name." ".$query->lastname;
         }
 
         $listaempleados = $querys;
