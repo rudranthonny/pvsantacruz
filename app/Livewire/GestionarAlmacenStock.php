@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Exports\ReporteAlmacenStockExport;
+use App\Exports\ReporteGeneralAlmacenExport;
 use App\Livewire\Forms\AlmacenStockForm;
 use App\Models\Almacen;
 use App\Models\Configuracion;
@@ -26,6 +27,10 @@ class GestionarAlmacenStock extends Component
     public $pagina = 5;
     public $configuracion;
     public $productos_almacen_export;
+
+    public function descargar_reporte_general_almacen_excel(){
+        return Excel::download(new ReporteGeneralAlmacenExport, 'ReporteGeneralAlmacenProductos.xlsx');
+    }
 
     public function cambiar_estado(ProductoAlmacen $producto_almacen)
     {
