@@ -18,7 +18,7 @@
         <tr>
             <td style="border: solid 1px black;text-align: center;">{{ $pventa->created_at }}</td>
             <td style="border: solid 1px black;text-align: center;">{{ $pventa->almacen_name }}</td>
-            <td class="encabezado-body">{{ "SL_".$pventa->id }}</td>
+            <td style="border: solid 1px black;text-align: center;">{{ "SL_".$pventa->id }}</td>
             <td style="border: solid 1px black;text-align: center;">{{ $pventa->cliente_name }}</td>
             <td style="border: solid 1px black;text-align: center;">{{ $pventa->impuesto_porcentaje }}%</td>
             <td style="border: solid 1px black;text-align: center;">{{ $configuracion->moneda->simbolo.$pventa->impuesto_monto }}</td>
@@ -33,11 +33,11 @@
                 <td colspan="5" style="background-color: black;color:white;text-align:center;">
                     Total
                 </td>
-                <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('impuesto_monto')}}</td>
-                <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('descuento')}}</td>
-                <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('envio')}}</td>
-                <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$total2}}</td>
-                <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('total_pagar')}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('impuesto_monto')}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('descuento')}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('envio')}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$total2}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('total_pagar')}}</td>
             </tr>
     </tbody>
 </table>
