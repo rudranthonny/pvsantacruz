@@ -35,7 +35,7 @@
                                     <i class="bi bi-search"></i> <span class="text-danger">*</span>
                                 </div>
                             </div>
-                            @error('clientesForm.nit')
+                            @error('clientesForm.numero_documento')
                             <span class="error" style="color:red;">{{ $message }}</span>
                             @enderror
                         </div>
