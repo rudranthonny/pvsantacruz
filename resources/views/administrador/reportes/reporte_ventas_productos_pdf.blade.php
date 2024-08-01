@@ -21,6 +21,7 @@
             <tr class="table-dark">
                 <th style="text-align:center;border:solid 1px #0a0a0a;background-color: #9b9b9b;">Producto</th>
                 <th style="text-align:center;border:solid 1px #0a0a0a;background-color: #9b9b9b;">Almacen</th>
+                <th style="text-align:center;border:solid 1px #0a0a0a;background-color: #9b9b9b;">Cantidad</th>
                 <th style="text-align:center;border:solid 1px #0a0a0a;background-color: #9b9b9b;">Ventas</th>
                 <th style="text-align:center;border:solid 1px #0a0a0a;background-color: #9b9b9b;">Descuentos</th>
                 <th style="text-align:center;border:solid 1px #0a0a0a;background-color: #9b9b9b;">Costo</th>
@@ -33,8 +34,10 @@
                 $total_ventas = 0;
                 $total_costo = 0;
                 $total_descuento = 0;
+                $total_cantidad = 0;
                     foreach ($consulta_ventas->where('producto_id',$key) as $key2 => $ven)
                     {
+                        $total_cantidad = $total_cantidad+$ven->producto_cantidad;
                         $total_ventas = $total_ventas+$ven->producto_cantidad*$ven->producto_precio;
                         $total_costo = $total_costo+$ven->producto_cantidad*$ven->producto_compra;
                         $total_descuento = $total_descuento + $ven->producto_descuento;
@@ -51,6 +54,7 @@
                         @endif
                     @endif
                 </td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$total_cantidad}}</td>
                 <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$total_ventas}}</td>
                 <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$total_descuento}}</td>
                 <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$total_costo}}</td>
