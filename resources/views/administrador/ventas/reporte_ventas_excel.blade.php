@@ -14,6 +14,7 @@
         </tr>
     </thead>
     <tbody>
+        @php $total2 = 0;@endphp
         @forelse ($lista_ventas as $pventa)
         <tr>
             <td style="border: solid 1px black;text-align: center;">{{ $pventa->created_at }}</td>
@@ -81,7 +82,7 @@
     </tr>
     <tr>
         <td style="background-color: black;color:white;width:150px;text-align:center;">Ventas</td>
-        <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('total_pagar')}}</td>
+        <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('total_pagar')}}</td>
     </tr>
     <tr>
         <td style="background-color: black;color:white;width:150px;text-align:center;">Devoluciones</td>
@@ -89,7 +90,7 @@
     </tr>
     <tr>
         <td style="background-color: black;color:white;width:150px;text-align:center;">Total</td>
-        <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.($posventas->sum('total_pagar')-$total_devoluciones)}}</td>
+        <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.($lista_ventas->sum('total_pagar')-$total_devoluciones)}}</td>
     </tr>
 </table>
 <table>
@@ -98,7 +99,7 @@
     </tr>
     <tr>
         <td style="background-color: black;color:white;width:150px;text-align:center;">Ventas</td>
-        <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('total_pagar')}}</td>
+        <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$lista_ventas->sum('total_pagar')}}</td>
     </tr>
     <tr>
         <td style="background-color: black;color:white;width:150px;text-align:center;">Costo Venta</td>
@@ -106,6 +107,6 @@
     </tr>
     <tr>
         <td style="background-color: black;color:white;width:150px;text-align:center;">Utilidad</td>
-        <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.($posventas->sum('total_pagar')-$total2)}}</td>
+        <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.($lista_ventas->sum('total_pagar')-$total2)}}</td>
     </tr>
 </table>
