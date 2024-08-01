@@ -17,19 +17,41 @@
     <tbody>
         @foreach ($almacens as $almacen)
             @foreach ($almacen->productoalmacens as $proalm)
+            @if (isset($proalm->producto))
             <tr>
-                <td>{{$proalm->producto->codigo}}</td>
+                <td>
+                    @if (isset($proalm->producto))
+                    {{$proalm->producto->codigo}}
+                    @endif
+                </td>
                 <td>{{$proalm->almacen->nombre}}</td>
-                <td>{{$proalm->producto->designacion}}</td>
-                <td>{{$proalm->producto->cunidad->name}}</td>
+                <td>
+                    @if (isset($proalm->producto))
+                    {{$proalm->producto->designacion}}
+                    @endif
+                </td>
+                <td>
+                    @if (isset($proalm->producto))
+                    {{$proalm->producto->cunidad->name}}
+                    @endif
+                </td>
                 <td>{{$proalm->stock}}</td>
-                <td>{{$proalm->producto->costo}}</td>
-                <td>{{$proalm->stock*$proalm->producto->costo}}</td>
+                <td>
+                    @if (isset($proalm->producto))
+                    {{$proalm->producto->costo}}
+                    @endif
+                </td>
+                <td>
+                    @if (isset($proalm->producto))
+                    {{$proalm->stock*$proalm->producto->costo}}
+                    @endif
+                </td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
+            @endif
             @endforeach
         @endforeach
     </tbody>
