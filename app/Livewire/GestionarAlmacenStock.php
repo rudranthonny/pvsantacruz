@@ -29,7 +29,7 @@ class GestionarAlmacenStock extends Component
     public $productos_almacen_export;
 
     public function descargar_reporte_general_almacen_excel(){
-        return Excel::download(new ReporteGeneralAlmacenExport, 'ReporteGeneralAlmacenProductos.xlsx');
+        return Excel::download(new ReporteGeneralAlmacenExport($this->salmacen), 'ReporteGeneralAlmacenProductos.xlsx');
     }
 
     public function cambiar_estado(ProductoAlmacen $producto_almacen)
