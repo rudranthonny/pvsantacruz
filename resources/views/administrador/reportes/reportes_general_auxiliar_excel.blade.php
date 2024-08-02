@@ -39,7 +39,9 @@
                     @endforeach
                 @endif
             @elseif($mov->movimientoable_type == 'App\Models\PagoCompra')
+                @if (isset($mov->movimientoable->compra))
                 {{'COM_'.$mov->movimientoable->compra->id}}
+                @endif
             @elseif($mov->movimientoable_type == 'App\Models\Devolucion')
                 {{$mov->movimientoable->cliente_name}}
             @elseif($mov->movimientoable_type == 'App\Models\Gasto')
