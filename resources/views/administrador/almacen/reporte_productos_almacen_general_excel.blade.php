@@ -7,6 +7,7 @@
             <th style="background-color: black;color:white;width:120px;">UNIDAD_DE_MEDIDA</th>
             <th style="background-color: black;color:white;width:120px;">CANTIDAD</th>
             <th style="background-color: black;color:white;width:150px;">COSTO_UNITARIO</th>
+            <th style="background-color: black;color:white;width:150px;">PRECIO_UNITARIO</th>
             <th style="background-color: black;color:white;width:150px;">COSTO_TOTAL</th>
             <th style="background-color: black;color:white;width:150px;">AGRUPACION_GENERAL</th>
             <th style="background-color: black;color:white;width:150px;">SUB_AGRUPACION_1</th>
@@ -39,6 +40,11 @@
                 <td>
                     @if (isset($proalm->producto))
                     {{$proalm->producto->costo}}
+                    @endif
+                </td>
+                <td>
+                    @if (isset($proalm->producto))
+                    {{$proalm->producto->precio}}
                     @endif
                 </td>
                 <td>
