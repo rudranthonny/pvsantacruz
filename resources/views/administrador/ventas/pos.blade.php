@@ -18,21 +18,13 @@
     <script src="{{ asset('js/select2.min.js') }}"></script>
     @livewireStyles
     <style>
-        .select2-container .select2-selection--single {
-            height: 50px;
-        }
+        .select2-container .select2-selection--single {height: 50px;}
 
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 48px;
-        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {height: 48px;}
 
-        .select2-container--default .select2-selection--single {
-            padding: 0.75rem .75rem;
-        }
+        .select2-container--default .select2-selection--single {padding: 0.75rem .75rem;}
 
-        ul.ui-autocomplete {
-            z-index: 1100;
-        }
+        ul.ui-autocomplete {z-index: 1100;}
     </style>
 </head>
 
