@@ -78,7 +78,7 @@ class PosVentaForm extends Form
                     $item_recibo = $item_recibo+18.2;
                 }
                 else {
-                    $item_recibo = $item_recibo+30.4;
+                    $item_recibo = $item_recibo+36.4;
                 }
             }
             $items_adicional = 18.2;
