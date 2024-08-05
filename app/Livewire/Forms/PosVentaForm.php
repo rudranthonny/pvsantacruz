@@ -74,11 +74,11 @@ class PosVentaForm extends Form
             $paper_heigth = $paper_examen + $paper_heigth;
             $item_recibo = 0;
             foreach ($posventa->posventadetalles as $pos_det) {
-                if (strlen($pos_det->producto_nombre) <= 35) {
+                if (strlen($pos_det->producto_nombre) <= 40) {
                     $item_recibo = $item_recibo+18.2;
                 }
                 else {
-                    $item_recibo = $item_recibo+20.2;
+                    $item_recibo = $item_recibo+22.2;
                 }
             }
             $items_adicional = 18.2;
