@@ -23,7 +23,7 @@
 <body>
     @for ($i = 0; $i < $configuracion->numero_impresion+1; $i++)
         <center>
-            <img src="{{asset($configuracion->logo_ticket)}}" alt="" srcset="" width="160px;">
+            <img src="{{asset($configuracion->logo_ticket)}}" alt="" srcset="" width="{{$configuracion->width}}">
         </center>
         <center>
             <h3 style="font-size: 24px;">{{ $configuracion->name }}</h3>
