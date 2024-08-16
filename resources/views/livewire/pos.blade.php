@@ -138,7 +138,7 @@
                                             <td>{{ $configuracion->moneda->simbolo . $item['precio'] }}</td>
                                             <td>
                                                 @php $valor_cantidad = 'items.'.$key.'.cantidad';@endphp
-                                                <center><input type="number" id="item-{{$key}}-cantidad" step="0.01" class="form-control text-center"
+                                                <center><input type="number" id="item-{{$key}}-cantidad" step="1" class="form-control text-center"
                                                         style="width: 80px;" min=1
                                                         wire:model.live.debounce.800ms='{{ $valor_cantidad }}'>
                                                 </center>
