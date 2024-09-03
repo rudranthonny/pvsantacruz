@@ -7,6 +7,7 @@ use App\Models\Devolucion;
 use App\Models\DevolucionDetalle;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
+use App\Models\Producto;
 use App\Models\ProductoAlmacen;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -151,17 +152,79 @@ class DevolucionForm extends Form
         $this->movimientoform->agregar_movimiento($n_devolucion->id,$this->almacen_id,$this->total_pagar,$saldo,'-','App\Models\Devolucion','crear');
     }
 
-    public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id)
-    {
-        $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
-        if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock+$cantidad;}
-        else{
-            $b_almacen_producto = new ProductoAlmacen();
-            $b_almacen_producto->almacen_id = $almacen_id;
-            $b_almacen_producto->producto_id = $producto_id;
-            $b_almacen_producto->stock = $cantidad;
+    /*
+        public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id)
+        {
+            $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+            if ($b_almacen_producto){$b_almacen_producto->stock = $b_almacen_producto->stock+$cantidad;}
+            else{
+                $b_almacen_producto = new ProductoAlmacen();
+                $b_almacen_producto->almacen_id = $almacen_id;
+                $b_almacen_producto->producto_id = $producto_id;
+                $b_almacen_producto->stock = $cantidad;
+            }
+            $b_almacen_producto->save();
         }
-        $b_almacen_producto->save();
+    */
+    public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id,$fecha_vencimiento = null){
+        $bproducto = Producto::find($producto_id);
+        if ($bproducto->tipo == 'estandar')
+        {
+            $b_almacen_producto = ProductoAlmacen::where('producto_id',$producto_id)->where('almacen_id',$almacen_id)->first();
+            if ($b_almacen_producto)
+            {
+                $b_almacen_producto->stock = $b_almacen_producto->stock+$cantidad;
+
+                if ($b_almacen_producto->fecha_vencimiento_producto == true)
+                {
+                    if (strtotime($fecha_vencimiento) > strtotime($b_almacen_producto->fecha_vencimiento_producto) )
+                    {
+                        $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                    }
+                }
+                else
+                {
+                    $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                }
+            }
+            else
+            {
+                $b_almacen_producto = new ProductoAlmacen();
+                $b_almacen_producto->almacen_id = $almacen_id;
+                $b_almacen_producto->producto_id = $producto_id;
+                $b_almacen_producto->stock = $cantidad;
+                $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+            }
+            $b_almacen_producto->save();
+            }
+        elseif($bproducto->tipo == 'compuesto')
+        {
+            foreach ($bproducto->pcompuestos as $ley => $tcomp) {
+                $b_almacen_producto = ProductoAlmacen::where('producto_id',$tcomp->producto_asignado_id)->where('almacen_id',$almacen_id)->first();
+                if ($b_almacen_producto){
+                    $b_almacen_producto->stock = $b_almacen_producto->stock+($cantidad*$tcomp->cantidad);
+                    if ($b_almacen_producto->fecha_vencimiento_producto == true)
+                    {
+                        if (strtotime($fecha_vencimiento) > strtotime($b_almacen_producto->fecha_vencimiento_producto) )
+                        {
+                            $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                        }
+                    }
+                    else {
+                        $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                    }
+                }
+                else
+                {
+                    $b_almacen_producto = new ProductoAlmacen();
+                    $b_almacen_producto->almacen_id = $almacen_id;
+                    $b_almacen_producto->producto_id = $tcomp->producto_asignado_id;
+                    $b_almacen_producto->stock = $cantidad*$tcomp->cantidad;
+                    $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
+                }
+                $b_almacen_producto->save();
+            }
+        }
     }
 
     public function eliminar_item_devolucion($item_id)
