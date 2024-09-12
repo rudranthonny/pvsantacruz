@@ -54,7 +54,7 @@ class GestionarVentas extends Component
         });
 
         $posventas = $posventas->get();
-        return $this->posventaform->descargar_reporte_ventas_pdf($posventas,$simple = false);
+        return $this->posventaform->descargar_reporte_ventas_pdf($posventas,$simple);
     }
 
     public function anular_factura(Posventa $posventa){
