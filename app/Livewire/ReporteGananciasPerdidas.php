@@ -18,6 +18,7 @@ use App\Exports\ReporteGeneralExcel;
 use App\Models\Movimiento;
 use DateTime;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ReporteGananciasPerdidas extends Component
@@ -37,6 +38,53 @@ class ReporteGananciasPerdidas extends Component
     public $lista_pago_compras;
 
     public $almacens;
+
+    #[On('descargar-reporte-general-pdf')]
+    public function descargar_reporte_general_pdf($simple = false)
+    {
+        $monto_ventas = $this->monto_ventas;
+        $monto_compras = $this->monto_compras;
+        $monto_deuda = $this->monto_deuda;
+        $monto_devoluciones = $this->monto_devoluciones;
+        $monto_gastos = $this->monto_gastos;
+        $monto_com_by_vent = $this->monto_com_by_vent;
+        $configuracion = $this->configuracion;
+        $lista_ventas = $this->lista_ventas;
+        $lista_compras = $this->lista_compras;
+        $lista_devoluciones = $this->lista_devoluciones;
+        $lista_gastos = $this->lista_gastos;
+        $nombre_titulo = null;
+        if ($this->salmacen <> null) {
+            $balmacen = Almacen::find($this->salmacen);
+            $nombre_titulo = $balmacen->nombre;
+        }
+
+        $nombre_archivo = 'ReporteGeneral-' . date("Y-m-d H:i:s") . '.pdf';
+        $consultapdf = FacadePdf::loadView('administrador.reportes.reporte_general_pdf', compact(
+            'simple',
+            'monto_ventas',
+            'monto_compras',
+            'monto_deuda',
+            'monto_devoluciones',
+            'monto_gastos',
+            'monto_com_by_vent',
+            'configuracion',
+            'lista_ventas',
+            'lista_compras',
+            'lista_devoluciones',
+            'lista_gastos','nombre_titulo'))->setPaper('a4', 'landscape');
+        $pdfContent = $consultapdf->output();
+        return response()->streamDownload(
+            fn () => print($pdfContent),
+            $nombre_archivo
+        );
+    }
+
+
+
+    public function seleccionar_tipo_reporte(){
+        $this->dispatch('descargar_reporte');
+    }
 
     public function mount(){
         $this->fecha_inicial = date('Y-m').'-01';
@@ -66,45 +114,6 @@ class ReporteGananciasPerdidas extends Component
         $this->configuracion,
         $this->lista_ventas,$this->lista_compras,$this->lista_devoluciones,$this->lista_gastos,$nombre_titulo),
          'ReporteGeneralExcel.xlsx');
-    }
-
-    public function descargar_reporte_general_pdf()
-    {
-        $monto_ventas = $this->monto_ventas;
-        $monto_compras = $this->monto_compras;
-        $monto_deuda = $this->monto_deuda;
-        $monto_devoluciones = $this->monto_devoluciones;
-        $monto_gastos = $this->monto_gastos;
-        $monto_com_by_vent = $this->monto_com_by_vent;
-        $configuracion = $this->configuracion;
-        $lista_ventas = $this->lista_ventas;
-        $lista_compras = $this->lista_compras;
-        $lista_devoluciones = $this->lista_devoluciones;
-        $lista_gastos = $this->lista_gastos;
-        $nombre_titulo = null;
-        if ($this->salmacen <> null) {
-            $balmacen = Almacen::find($this->salmacen);
-            $nombre_titulo = $balmacen->nombre;
-        }
-
-        $nombre_archivo = 'ReporteGeneral-' . date("Y-m-d H:i:s") . '.pdf';
-        $consultapdf = FacadePdf::loadView('administrador.reportes.reporte_general_pdf', compact(
-            'monto_ventas',
-            'monto_compras',
-            'monto_deuda',
-            'monto_devoluciones',
-            'monto_gastos',
-            'monto_com_by_vent',
-            'configuracion',
-            'lista_ventas',
-            'lista_compras',
-            'lista_devoluciones',
-            'lista_gastos','nombre_titulo'))->setPaper('a4', 'landscape');
-        $pdfContent = $consultapdf->output();
-        return response()->streamDownload(
-            fn () => print($pdfContent),
-            $nombre_archivo
-        );
     }
 
     public function descargar_reporte_general_auxiliar_excel()

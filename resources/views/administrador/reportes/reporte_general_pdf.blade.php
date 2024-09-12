@@ -76,6 +76,7 @@
         </table>
     </div>
     <br>
+    @if ($simple == false)
     <div>
         <table class="table table-hover">
             <thead class="table-light">
@@ -272,5 +273,6 @@
             </tbody>
         </table>
     </div>
+    @endif
 </body>
 </html>
