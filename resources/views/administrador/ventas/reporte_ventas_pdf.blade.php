@@ -29,7 +29,7 @@
     </div>
     @php $total2 = 0;@endphp
     @php $total_devoluciones = 0; @endphp
-    @if ($simple = false)
+    @if ($simple == false)
     <div>
         <table class="table table-hover">
             <thead class="table-light">
