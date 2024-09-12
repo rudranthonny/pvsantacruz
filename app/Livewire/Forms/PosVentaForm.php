@@ -20,10 +20,10 @@ class PosVentaForm extends Form
         return Excel::download(new ReporteVentasExport($posventas), 'ReporteVentas.xlsx');
     }
 
-    public function descargar_reporte_ventas_pdf($posventas){
+    public function descargar_reporte_ventas_pdf($posventas,$simple = false){
         $configuracion = Configuracion::find(1);
         $nombre_archivo = 'ReporteDeVentas-' . date("Y-m-d H:i:s") . '.pdf';
-        $consultapdf = FacadePdf::loadView('administrador.ventas.reporte_ventas_pdf', compact('posventas', 'configuracion'))->setPaper('a4', 'landscape');
+        $consultapdf = FacadePdf::loadView('administrador.ventas.reporte_ventas_pdf', compact('posventas', 'configuracion','simple'))->setPaper('a4', 'landscape');
         $pdfContent = $consultapdf->output();
         return response()->streamDownload(
             fn () => print($pdfContent),

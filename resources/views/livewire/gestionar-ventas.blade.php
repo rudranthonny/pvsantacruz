@@ -56,7 +56,7 @@
                         </div>
                         <div class="row mb-4">
                             <div class="col-12">
-                                <button class="btn btn-outline-danger" wire:loading.attr="disabled" wire:target="descargar_reporte_ventas_pdf" wire:click="descargar_reporte_ventas_pdf"><i class="fas fa-download"></i> PDF</button>
+                                <button class="btn btn-outline-danger" wire:loading.attr="disabled" wire:target="seleccionar_tipo_reporte" wire:click="seleccionar_tipo_reporte"><i class="fas fa-download"></i> PDF</button>
                                 <button class="btn btn-outline-success" wire:loading.attr="disabled" wire:target="descargar_reporte_ventas_excel" wire:click="descargar_reporte_ventas_excel"><i class="fas fa-download"></i> EXCEL</button>
                             </div>
                         </div>
@@ -189,4 +189,26 @@
         });
     </script>
     @endscript
+    @script
+    <script type="text/javascript">
+        window.Livewire.on('descargar_reporte', () =>
+        {
+                        Swal.fire({
+            title: "¿Elegir el reporte que deseas?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Reporte Detallado",
+            denyButtonText: "Reporte Simple"
+            }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                @this.dispatch('descargar_reporte_ventas_pdf');
+            } else if (result.isDenied) 
+            {
+                @this.dispatch('descargar_reporte_ventas_pdf', { simple: true });
+            }
+            });
+        });
+    </script>
+@endscript
 </div>

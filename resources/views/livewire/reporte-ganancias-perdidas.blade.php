@@ -22,7 +22,7 @@
             <button class="btn btn-success" wire:loading.attr="disabled" wire:target="descargar_reporte_general_excel" wire:click='descargar_reporte_general_excel'>Reporte EXCEL</button>
         </div>
         <div class="col-12 col-sm-3 mb-3">
-            <button class="btn btn-danger" wire:loading.attr="disabled" wire:target="seleccionar_tipo_reporte,descargar_reporte_general_pdf" wire:click="seleccionar_tipo_reporte">Reporte PDF</button>
+            <button class="btn btn-danger" wire:loading.attr="disabled" wire:target="descargar_reporte_general_pdf" wire:click="descargar_reporte_general_pdf">Reporte PDF</button>
         </div>
         @if ($this->salmacen != '')
             <div class="col-12 col-sm-3 mb-3">
@@ -197,25 +197,3 @@
         </div>
     </div>
 </div>
-@script
-    <script type="text/javascript">
-        window.Livewire.on('descargar_reporte', () =>
-        {
-                        Swal.fire({
-            title: "¿Elegir el reporte que deseas?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Reporte Detallado",
-            denyButtonText: "Reporte Simple"
-            }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                @this.dispatch('descargar-reporte-general-pdf');
-            } else if (result.isDenied) 
-            {
-                @this.dispatch('descargar-reporte-general-pdf', { simple: true });
-            }
-            });
-        });
-    </script>
-@endscript

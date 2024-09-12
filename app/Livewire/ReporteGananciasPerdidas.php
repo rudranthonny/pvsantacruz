@@ -80,12 +80,6 @@ class ReporteGananciasPerdidas extends Component
         );
     }
 
-
-
-    public function seleccionar_tipo_reporte(){
-        $this->dispatch('descargar_reporte');
-    }
-
     public function mount(){
         $this->fecha_inicial = date('Y-m').'-01';
 

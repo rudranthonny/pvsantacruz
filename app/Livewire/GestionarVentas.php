@@ -10,6 +10,7 @@ use App\Models\Configuracion;
 use App\Models\Posventa;
 use App\Livewire\Forms\PosVentaForm;
 use App\Models\Invoice;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
@@ -27,6 +28,34 @@ class GestionarVentas extends Component
     public $search,$finicio,$ffinal,$salmacen,$sfacturacion;
     public function mount(){  $this->configuracion = Configuracion::find(1); }
 
+    public function seleccionar_tipo_reporte(){
+        $this->dispatch('descargar_reporte');
+    }
+
+    #[On('descargar_reporte_ventas_pdf')]
+    public function descargar_reporte_ventas_pdf($simple = false){
+
+        $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
+
+        $posventas->when($this->salmacen <> '',function ($q) {
+            return $q->where('almacen_id',$this->salmacen);
+        });
+
+        $posventas->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
+            return $q->where('created_at','>=',$this->finicio." 00:00:00")->where('created_at','<=',$this->ffinal." 23:59:59");
+        });
+
+        $posventas->when($this->sfacturacion == 'sinfactura'  ,function ($q) {
+            return $q->whereNull('invoice_id');
+        });
+
+        $posventas->when($this->sfacturacion == 'factura'  ,function ($q) {
+            return $q->whereNotNull('invoice_id');
+        });
+
+        $posventas = $posventas->get();
+        return $this->posventaform->descargar_reporte_ventas_pdf($posventas,$simple = false);
+    }
 
     public function anular_factura(Posventa $posventa){
         $this->generaranulacion->reset();
@@ -66,30 +95,6 @@ class GestionarVentas extends Component
 
         $posventas = $posventas->get();
         return $this->posventaform->descargar_reporte_ventas_excel($posventas);
-    }
-
-    public function descargar_reporte_ventas_pdf(){
-
-        $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
-
-        $posventas->when($this->salmacen <> '',function ($q) {
-            return $q->where('almacen_id',$this->salmacen);
-        });
-
-        $posventas->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
-            return $q->where('created_at','>=',$this->finicio." 00:00:00")->where('created_at','<=',$this->ffinal." 23:59:59");
-        });
-
-        $posventas->when($this->sfacturacion == 'sinfactura'  ,function ($q) {
-            return $q->whereNull('invoice_id');
-        });
-
-        $posventas->when($this->sfacturacion == 'factura'  ,function ($q) {
-            return $q->whereNotNull('invoice_id');
-        });
-
-        $posventas = $posventas->get();
-        return $this->posventaform->descargar_reporte_ventas_pdf($posventas);
     }
 
     public function descargar_venta_pdf(Posventa $posventa){

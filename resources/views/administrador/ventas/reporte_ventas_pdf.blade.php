@@ -10,6 +10,7 @@
 <body class="m-1 fs-12">
     <div>
         <div class="col-12">
+            @if (isset($posventas->first()->created_at))
             <table>
                 <tr>
                     <td>
@@ -23,8 +24,12 @@
                     </td>
                 </tr>
             </table>
+            @endif
         </div>
     </div>
+    @php $total2 = 0;@endphp
+    @php $total_devoluciones = 0; @endphp
+    @if ($simple = false)
     <div>
         <table class="table table-hover">
             <thead class="table-light">
@@ -108,6 +113,7 @@
             </tbody>
         </table>
     </div>
+    @endif
     <div>
         <table>
             <tr>
