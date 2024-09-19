@@ -79,6 +79,7 @@
             </tbody>
         </table>
     </div>
+    <!--Devoluciones-->
     <div>
         <table class="table table-hover">
             <thead class="table-light">
@@ -113,6 +114,62 @@
             </tbody>
         </table>
     </div>
+    <!--compras-->
+    <!--- <div>
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr class="text-center">
+                    <th  class="encabezado-dark" style="width:100px;" colspan="5">Compras</th>
+                </tr>
+                <tr class="text-center">
+                    <th class="encabezado-dark" style="width:100px;">Fecha Pago</th>
+                    <th class="encabezado-dark" style="width:100px;">Forma Pago</th>
+                    <th class="encabezado-dark" style="width:100px;">Monto Pago</th>
+                    <th class="encabezado-dark" style="width:100px;">Compra</th>
+                    <th class="encabezado-dark" style="width:100px;">Almacen</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($compras as $compra)
+                        <tr>
+                            <td class="encabezado-body">{{$compra->fecha_pago }}</td>
+                            <td class="encabezado-body">{{$compra->opcion_pago}}</td>
+                            <td class="encabezado-body">{{$compra->monto_pago }}</td>
+                            <td class="encabezado-body">{{ "COM_".$compra->compra->id }}</td>
+                            <td class="encabezado-body">{{$compra->compra->almacen->id }}</td>
+                        </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div> -->
+    <!--gastos-->
+    <!---    <div>
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th  class="encabezado-dark" style="width:100px;" colspan="5">Gastos</th>
+                        </tr>
+                        <tr class="text-center">
+                            <th class="encabezado-dark" style="width:100px;">Fecha Pago</th>
+                            <th class="encabezado-dark" style="width:100px;">Forma Pago</th>
+                            <th class="encabezado-dark" style="width:100px;">Monto Pago</th>
+                            <th class="encabezado-dark" style="width:100px;">Compra</th>
+                            <th class="encabezado-dark" style="width:100px;">Almacen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($compras as $compra)
+                                <tr>
+                                    <td class="encabezado-body">{{$compra->fecha_pago }}</td>
+                                    <td class="encabezado-body">{{$compra->opcion_pago}}</td>
+                                    <td class="encabezado-body">{{$compra->monto_pago }}</td>
+                                    <td class="encabezado-body">{{ "COM_".$compra->compra->id }}</td>
+                                    <td class="encabezado-body">{{$compra->compra->almacen->id }}</td>
+                                </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div> -->
     @endif
     <div>
         <table>
@@ -123,13 +180,32 @@
                 <td style="background-color: black;color:white;width:150px;text-align:center;">Ventas</td>
                 <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('total_pagar')}}</td>
             </tr>
+            @if ($simple == true)
+            <tr>
+                <td style="background-color: black;color:white;width:150px;text-align:center;">Compras</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$compras->sum('monto_pago')}}</td>
+            </tr>
+            <tr>
+                <td style="background-color: black;color:white;width:150px;text-align:center;">Gastos</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$gastos->sum('monto')}}</td>
+            </tr>
+            @endif
             <tr>
                 <td style="background-color: black;color:white;width:150px;text-align:center;">Devoluciones</td>
                 <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$total_devoluciones}}</td>
             </tr>
+            @php
+                if ($simple == true) {
+                    $total_a = $posventas->sum('total_pagar')-$total_devoluciones-$compras->sum('monto_pago')-$gastos->sum('monto');     
+                }
+                else {
+                    $total_a = $posventas->sum('total_pagar')-$total_devoluciones;     
+                }
+
+            @endphp
             <tr>
                 <td style="background-color: black;color:white;width:150px;text-align:center;">Total</td>
-                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.($posventas->sum('total_pagar')-$total_devoluciones)}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$total_a}}</td>
             </tr>
         </table>
     </div>

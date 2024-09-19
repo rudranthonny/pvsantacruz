@@ -9,7 +9,9 @@ use App\Models\Almacen;
 use App\Models\Configuracion;
 use App\Models\Posventa;
 use App\Livewire\Forms\PosVentaForm;
+use App\Models\Gasto;
 use App\Models\Invoice;
+use App\Models\PagoCompra;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -36,6 +38,30 @@ class GestionarVentas extends Component
     public function descargar_reporte_ventas_pdf($simple = false){
 
         $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
+        $compras = PagoCompra::query();
+        $gastos = Gasto::query();
+        
+        $gastos->when($this->salmacen <> '',function ($q) {
+            return $q->where('almacen_id',$this->salmacen);
+        });
+        $gastos->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
+            return $q->where('fecha','>=',$this->finicio)->where('fecha','<=',$this->ffinal);
+        });
+
+        $gastos = $gastos->get();
+
+        $compras->when($this->salmacen <> '',function ($q) {
+            return $q->whereExists(function ($query) {
+                $query->select()
+                    ->from('compras')
+                    ->whereColumn('compras.id', 'pago_compras.compra_id')
+                    ->where('compras.almacen_id',$this->salmacen);});
+        });
+        
+        $compras->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
+            return $q->where('fecha_pago','>=',$this->finicio)->where('fecha_pago','<=',$this->ffinal);
+        });
+        $compras = $compras->get();
 
         $posventas->when($this->salmacen <> '',function ($q) {
             return $q->where('almacen_id',$this->salmacen);
@@ -54,7 +80,7 @@ class GestionarVentas extends Component
         });
 
         $posventas = $posventas->get();
-        return $this->posventaform->descargar_reporte_ventas_pdf($posventas,$simple);
+        return $this->posventaform->descargar_reporte_ventas_pdf($posventas,$compras,$gastos,$simple);
     }
 
     public function anular_factura(Posventa $posventa){
