@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TmovimientoCajaSeeder::class);
         $this->call(AjustesSistemaSeed::class);*/
 
-        $user = User::create([
+        /*$user = User::create([
             'name' => 'Administrador',
             'lastname' => 'Rodriguez',
             'telefono' => '+51 934 665 704',
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123456789'),
         ]);
 
-        $user->assignRole('Administrador');
+        $user->assignRole('Administrador');/*
 
         /*
             $detalles = PosventaDetalle::all();
