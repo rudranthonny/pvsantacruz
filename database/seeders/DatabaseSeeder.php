@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         // llamar al sembrador de datos en Moneda
 
         $this->call(RoleSeeder::class);
-        $this->call(MonedaSeeder::class);
+        /*$this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
         $this->call(MarcaSeeder::class);
         $this->call(CategoriaSeeder::class);
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ClienteSeeder::class);
         $this->call(TgastoSeeder::class);
         $this->call(TmovimientoCajaSeeder::class);
-        $this->call(AjustesSistemaSeed::class);
+        $this->call(AjustesSistemaSeed::class);*/
 
         $user = User::create([
             'name' => 'Administrador',

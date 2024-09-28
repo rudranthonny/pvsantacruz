@@ -16,8 +16,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-
-
+        Permission::create(['name' =>'admin.ventas.reporte'])
+        /*
         Role::create(['name' => 'Administrador']);
         Role::create(['name' => 'Cajero']);
 
@@ -45,6 +45,6 @@ class RoleSeeder extends Seeder
         Permission::create(['name' =>'admin.ventas.pos'])->syncRoles(['Administrador','Cajero']);
         Permission::create(['name' =>'admin.ventas.index'])->syncRoles(['Administrador','Cajero']);
         Permission::create(['name' =>'admin.productos.consultar_barra'])->syncRoles(['Administrador','Cajero']);
-        Permission::create(['name' =>'search.buscar_cliente'])->syncRoles(['Administrador','Cajero']);
+        Permission::create(['name' =>'search.buscar_cliente'])->syncRoles(['Administrador','Cajero']);*/
     }
 }

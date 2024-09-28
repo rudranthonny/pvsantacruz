@@ -29,6 +29,11 @@
                                 <button role="button" class="btn btn-success" data-bs-toggle="modal"
                                     data-bs-target="#modalGasto"><i class="bi bi-bookmark-dash-fill"></i></button>
                             </div>
+                            @can('admin.ventas.reporte')
+                            <div class="col-auto">
+                                <a class="btn btn-primary" href="{{route('admin.ventas.index')}}" target="_blank"><i class="bi bi-bookmark-dash-fill"></i></a>
+                            </div>
+                            @endcan
                             <div class="col-auto">
                                 <form action="{{ route('logout') }}" method="post">
                                     <button class="btn btn-danger">Cerrar Sesion</button>

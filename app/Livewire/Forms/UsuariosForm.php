@@ -24,6 +24,7 @@ class UsuariosForm extends Form
     public $email;
     public $suspended;
     public $roles = [];
+    public $permisos = [];
 
     public function set(User $user){
         $this->user = $user;
@@ -54,7 +55,9 @@ class UsuariosForm extends Form
         $this->user->save();
         if ($imagen) {$this->eliminar_imagen_perfil();$this->subir_imagen_perfil($imagen);}
         $this->eliminar_roles();
+        $this->eliminar_permisos();
         $this->agregar_roles();
+        $this->agregar_permisos();
     }
 
     public function store($imagen = null)
@@ -70,7 +73,9 @@ class UsuariosForm extends Form
         $this->user = User::create($this->only('name','lastname','username','telefono','email','suspended')+['password' => bcrypt($this->username),]);
         if ($imagen) {$this->subir_imagen_perfil($imagen);}
         $this->eliminar_roles();
+        $this->eliminar_permisos();
         $this->agregar_roles();
+        $this->agregar_permisos();
     }
 
     public function eliminar_imagen_perfil(){
@@ -139,6 +144,21 @@ class UsuariosForm extends Form
         foreach ($this->roles as  $role2)
         {
             $this->user->assignRole($role2);
+        };
+    }
+
+    public function agregar_permisos()
+    {
+        foreach ($this->permisos as  $permiso){
+            $this->user->givePermissionTo($permiso);
+        };
+    }
+
+    public function eliminar_permisos()
+    {
+        foreach ($this->user->permissions as  $permiso)
+        {
+             $this->user->revokePermissionTo($permiso);
         };
     }
 

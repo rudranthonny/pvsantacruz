@@ -38,7 +38,7 @@ Route::view("gastos/tgastos", "administrador.gastos.tgastos")->middleware('can:a
 Route::view("gastos/index", "administrador.gastos.index")->middleware('can:admin.gastos.index')->name("admin.gastos.index");
 #ventas
 Route::get("pos", Pos::class)->middleware('can:admin.ventas.pos')->name("admin.ventas.pos");
-Route::view("ventas", "administrador.ventas.index")->middleware('can:admin.ventas.index')->name("admin.ventas.index");
+Route::view("ventas", "administrador.ventas.index")->middleware('can:admin.ventas.reporte')->name("admin.ventas.index");
 Route::view("cajas", "administrador.caja.index")->middleware('can:admin.ventas.index')->name("admin.cajas.index");
 Route::view("devolucions", "administrador.devolucions.index")->middleware('can:admin.ventas.index')->name("admin.devolucions.index");
 Route::view('usuarios/cambiar_password', 'administrador.personas.cambiar_password')->name('admin.usuario.cambiar');

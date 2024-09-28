@@ -12,6 +12,7 @@ use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class GestionarUsuarios extends Component
 {
@@ -28,7 +29,7 @@ class GestionarUsuarios extends Component
     public $imagen_perfil;
     public $iteration = 1;
     public $roles2 = [];
-
+    public $permisos2 = [];
     public function updatedSalmacen(){
         if ($this->salmacen) {
         $this->usuariosform->agregar_almacen($this->salmacen);
@@ -51,7 +52,7 @@ class GestionarUsuarios extends Component
 
     public function modal(User $user = null)
     {
-        $this->reset('titlemodal','imagen_perfil','roles2');
+        $this->reset('titlemodal','imagen_perfil','roles2','permisos2');
         $this->iteration++;
         $this->usuariosform->reset();
         if ($user->id == true) {
@@ -64,8 +65,17 @@ class GestionarUsuarios extends Component
 
     public function guardar()
     {
-        if (isset($this->usuariosform->user->id)) {$this->usuariosform->roles = $this->roles2; ;$this->usuariosform->update($this->imagen_perfil);}
-        else {$this->usuariosform->roles = $this->roles2;$this->usuariosform->store($this->imagen_perfil);}
+        if (isset($this->usuariosform->user->id)) 
+        {
+            $this->usuariosform->roles = $this->roles2;
+            $this->usuariosform->permisos = $this->permisos2;
+            $this->usuariosform->update($this->imagen_perfil);
+        }
+        else {
+            $this->usuariosform->roles = $this->roles2;
+            $this->usuariosform->permisos = $this->permisos2;
+            $this->usuariosform->store($this->imagen_perfil);
+        }
         $this->dispatch('cerrar_modal_user');
     }
 
@@ -85,6 +95,22 @@ class GestionarUsuarios extends Component
 
         $almacenes = Almacen::all();
         $roles = Role   ::all();
-        return view('livewire.gestionar-usuarios', compact('usuarios','almacenes','roles'));
+        $permisos = Permission::all();
+        return view('livewire.gestionar-usuarios', compact('usuarios','almacenes','roles','permisos'));
+    }
+
+    public function agregar_roles(User $user)
+    {
+        foreach ($this->roles2 as  $role2)
+        {
+            $user->assignRole($role2);
+        };
+    }
+    public function agregar_permisos(User $user)
+    {
+        foreach ($this->permisos2 as  $permiso)
+        {
+            $user->givePermissionTo($permiso);
+        };
     }
 }

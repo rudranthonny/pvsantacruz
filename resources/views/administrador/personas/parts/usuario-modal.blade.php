@@ -83,6 +83,15 @@
                                 @endforeach
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="mb-3 col-12">
+                                <label for="roles2" class="form-label">Permisos</strong></label><br>
+                                <!--role-->
+                                @foreach ($permisos as $permiso)
+                                    {{$permiso->name}} : <input type="checkbox"   class="mr-1" wire:model='permisos2' value="{{$permiso->name}}"><br>
+                                @endforeach
+                            </div>
+                        </div>
                     @endif
                     @if (isset($usuariosform->user->id))
                     @if ($usuariosform->user->id)
