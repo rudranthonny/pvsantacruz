@@ -60,6 +60,9 @@ class GestionarUsuarios extends Component
             foreach ($user->roles as $role) {
                 array_push($this->roles2,$role->name);
             }
+            foreach ($user->permissions as $permiso) {
+                array_push($this->permisos2,$permiso->name);
+            }
         }
     }
 
