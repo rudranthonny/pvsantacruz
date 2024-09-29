@@ -29,6 +29,15 @@
                                 </div>
                             </div>
                             <div class="col-12 col-sm-2">
+                                <label for="seleccionar_cajero" class="form-label">Cajero</label>
+                                <select class="form-select" id="seleccionar_cajero" wire:model.live="scajero">
+                                    <option value="">Elegir</option>
+                                    @foreach ($cajeros as $cajero)
+                                    <option value="{{$cajero->id}}">{{$cajero->ap_paterno." ".$cajero->ap_materno." ".$cajero->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-2">
                                 <label for="seleccionar_almacen" class="form-label">Almacen</label>
                                 <select class="form-select" id="seleccionar_almacen" wire:model.live="salmacen">
                                     <option value="">Elegir</option>

@@ -12,6 +12,7 @@ use App\Livewire\Forms\PosVentaForm;
 use App\Models\Gasto;
 use App\Models\Invoice;
 use App\Models\PagoCompra;
+use App\Models\User;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -27,7 +28,7 @@ class GestionarVentas extends Component
     protected $paginationTheme = 'bootstrap';
     public $pagina = 5;
     public $configuracion;
-    public $search,$finicio,$ffinal,$salmacen,$sfacturacion;
+    public $search,$finicio,$ffinal,$salmacen,$sfacturacion,$scajero;
     public function mount(){  $this->configuracion = Configuracion::find(1); }
 
     public function seleccionar_tipo_reporte(){
@@ -38,6 +39,7 @@ class GestionarVentas extends Component
     public function descargar_reporte_ventas_pdf($simple = false){
 
         $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
+        
         $compras = PagoCompra::query();
         $gastos = Gasto::query();
         
@@ -66,6 +68,9 @@ class GestionarVentas extends Component
         $posventas->when($this->salmacen <> '',function ($q) {
             return $q->where('almacen_id',$this->salmacen);
         });
+
+        $posventas->when($this->scajero <> '',function ($q) {return $q->where('cajero_id',$this->scajero);});
+
 
         $posventas->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
             return $q->where('created_at','>=',$this->finicio." 00:00:00")->where('created_at','<=',$this->ffinal." 23:59:59");
@@ -118,6 +123,8 @@ class GestionarVentas extends Component
             return $q->whereNotNull('invoice_id');
         });
 
+        $posventas->when($this->scajero <> '',function ($q) {return $q->where('cajero_id',$this->scajero);});
+
 
         $posventas = $posventas->get();
         return $this->posventaform->descargar_reporte_ventas_excel($posventas);
@@ -160,9 +167,7 @@ class GestionarVentas extends Component
             return $q->where('almacen_id',$this->salmacen);
         });
 
-        $posventas->when($this->salmacen <> '',function ($q) {
-            return $q->where('almacen_id',$this->salmacen);
-        });
+        $posventas->when($this->scajero <> '',function ($q) {return $q->where('cajero_id',$this->scajero);});
 
         $posventas->when($this->sfacturacion == 'sinfactura'  ,function ($q) {
             return $q->whereNull('invoice_id');
@@ -179,6 +184,7 @@ class GestionarVentas extends Component
         $posventas = $posventas->orderByDesc('id')->paginate($this->pagina);
 
         $almacens = Almacen::all();
-        return view('livewire.gestionar-ventas', compact('posventas','almacens'));
+        $cajeros = User::all();
+        return view('livewire.gestionar-ventas', compact('posventas','almacens','cajeros'));
     }
 }
