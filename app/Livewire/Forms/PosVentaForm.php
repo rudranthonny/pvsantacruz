@@ -6,6 +6,7 @@ use App\Exports\ReporteVentasExport;
 use App\Models\Configuracion;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
+use App\Models\User;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -20,10 +21,11 @@ class PosVentaForm extends Form
         return Excel::download(new ReporteVentasExport($posventas), 'ReporteVentas.xlsx');
     }
 
-    public function descargar_reporte_ventas_pdf($posventas,$compras,$gastos,$simple = false){
+    public function descargar_reporte_ventas_pdf($posventas,$compras,$gastos,$simple = false,$scajero = null){
+        $bcajero = User::find($scajero);
         $configuracion = Configuracion::find(1);
         $nombre_archivo = 'ReporteDeVentas-' . date("Y-m-d H:i:s") . '.pdf';
-        $consultapdf = FacadePdf::loadView('administrador.ventas.reporte_ventas_pdf', compact('posventas','gastos','compras','configuracion','simple'))->setPaper('a4', 'landscape');
+        $consultapdf = FacadePdf::loadView('administrador.ventas.reporte_ventas_pdf', compact('bcajero','posventas','gastos','compras','configuracion','simple'))->setPaper('a4', 'landscape');
         $pdfContent = $consultapdf->output();
         return response()->streamDownload(
             fn () => print($pdfContent),

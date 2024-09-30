@@ -39,10 +39,10 @@ class GestionarVentas extends Component
     public function descargar_reporte_ventas_pdf($simple = false){
 
         $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
-        
+
         $compras = PagoCompra::query();
         $gastos = Gasto::query();
-        
+
         $gastos->when($this->salmacen <> '',function ($q) {
             return $q->where('almacen_id',$this->salmacen);
         });
@@ -59,7 +59,7 @@ class GestionarVentas extends Component
                     ->whereColumn('compras.id', 'pago_compras.compra_id')
                     ->where('compras.almacen_id',$this->salmacen);});
         });
-        
+
         $compras->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
             return $q->where('fecha_pago','>=',$this->finicio)->where('fecha_pago','<=',$this->ffinal);
         });
@@ -85,7 +85,8 @@ class GestionarVentas extends Component
         });
 
         $posventas = $posventas->get();
-        return $this->posventaform->descargar_reporte_ventas_pdf($posventas,$compras,$gastos,$simple);
+        $bcajero = $this->scajero;
+        return $this->posventaform->descargar_reporte_ventas_pdf($posventas,$compras,$gastos,$simple,$bcajero);
     }
 
     public function anular_factura(Posventa $posventa){

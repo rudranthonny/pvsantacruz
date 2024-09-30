@@ -15,6 +15,9 @@
                 <tr>
                     <td>
                         <h1 class="modal-title fs-5" id="modalReporteCajaLabel">Reporte de Ventas</h1><br>
+                        @if (isset($bcajero->id))
+                            <b>Cajero : {{$bcajero->lastname." ".$bcajero->name}}</b><br>
+                        @endif
                         <b>Compras en total : {{$posventas->count()}}</b><br>
                         <b>Fecha Inicio :</b> {{$posventas->first()->created_at}}<br>
                         <b>Fecha Final :</b>  {{$posventas->sortByDesc('fecha')->first()->created_at}}
@@ -192,10 +195,10 @@
             </tr>
             @php
                 if ($simple == true) {
-                    $total_a = $posventas->sum('total_pagar')-$gastos->sum('monto');     
+                    $total_a = $posventas->sum('total_pagar')-$gastos->sum('monto');
                 }
                 else {
-                    $total_a = $posventas->sum('total_pagar')-$total_devoluciones;     
+                    $total_a = $posventas->sum('total_pagar')-$total_devoluciones;
                 }
 
             @endphp

@@ -614,6 +614,7 @@ class Pos extends Component
               }
             }
             $posventa = new Posventa();
+            $posventa->cajero_id = Auth::user()->id;
             $posventa->almacen_id = $almacen->id;
             $posventa->almacen_name = $almacen->nombre;
             $posventa->cliente_id = $this->bclienteoculto;
