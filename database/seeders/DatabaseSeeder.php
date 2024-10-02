@@ -26,12 +26,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
+        $this->call(RoleSeeder::class);
         $ventas = Posventa::all();
         foreach ($ventas as $key => $ven) 
         {
             $ven->cajero_id = isset($ven->m_caja->caja->user_id) ? $ven->m_caja->caja->user_id : NULL;
             $ven->save();
         }
+
         // \App\Models\User::factory(10)->create();
         // llamar al sembrador de datos en Moneda
 
