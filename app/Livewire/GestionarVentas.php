@@ -131,6 +131,11 @@ class GestionarVentas extends Component
         return $this->posventaform->descargar_reporte_ventas_excel($posventas);
     }
 
+    public function descargar_reporte_ventas_by_product_excel()
+    {
+        return $this->posventaform->descargar_reporte_ventas_by_producto_excel($this->salmacen,$this->finicio,$this->ffinal,$this->sfacturacion,$this->scajero);
+    }
+
     public function descargar_venta_pdf(Posventa $posventa){
         $this->posventaform->reset();
         return $this->posventaform->descargar_pdf($posventa);

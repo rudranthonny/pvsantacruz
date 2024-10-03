@@ -67,6 +67,7 @@
                             <div class="col-12">
                                 <button class="btn btn-outline-danger" wire:loading.attr="disabled" wire:target="seleccionar_tipo_reporte" wire:click="seleccionar_tipo_reporte"><i class="fas fa-download"></i> PDF</button>
                                 <button class="btn btn-outline-success" wire:loading.attr="disabled" wire:target="descargar_reporte_ventas_excel" wire:click="descargar_reporte_ventas_excel"><i class="fas fa-download"></i> EXCEL</button>
+                                <button class="btn btn-outline-success" wire:loading.attr="disabled" wire:target="descargar_reporte_ventas_by_product_excel" wire:click="descargar_reporte_ventas_by_product_excel"><i class="fas fa-download"></i> EXCEL BY PRODUCT</button>
                             </div>
                         </div>
                         <div class="row">
@@ -212,7 +213,7 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 @this.dispatch('descargar_reporte_ventas_pdf');
-            } else if (result.isDenied) 
+            } else if (result.isDenied)
             {
                 @this.dispatch('descargar_reporte_ventas_pdf', { simple: true });
             }

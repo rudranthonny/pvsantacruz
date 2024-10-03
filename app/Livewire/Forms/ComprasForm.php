@@ -445,9 +445,7 @@ class ComprasForm extends Form
         $this->total = $this->total_sin_impuesto+$this->impuesto_orden_monto-$this->descuento+$this->envio;
     }
 
-    public function eliminar_item_compra($item_id){
-        unset($this->detalle_compra[$item_id]);
-    }
+    public function eliminar_item_compra($item_id){unset($this->detalle_compra[$item_id]);}
 
     public function obtener_stock_producto(Producto $producto)
     {

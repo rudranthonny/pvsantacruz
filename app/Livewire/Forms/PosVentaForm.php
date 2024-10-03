@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Exports\ReporteVentasExport;
+use App\Exports\ReporteVentasProductoExport;
 use App\Models\Configuracion;
 use App\Models\Posventa;
 use App\Models\PosventaDetalle;
@@ -19,6 +20,10 @@ class PosVentaForm extends Form
 
     public function descargar_reporte_ventas_excel($posventas){
         return Excel::download(new ReporteVentasExport($posventas), 'ReporteVentas.xlsx');
+    }
+
+    public function  descargar_reporte_ventas_by_producto_excel($salmacen = null,$finicio = null,$ffinal = null,$sfacturacion = null, $scajero = null){
+        return Excel::download(new ReporteVentasProductoExport($salmacen,$finicio,$ffinal,$sfacturacion, $scajero), 'ReporteVentasbyProduct.xlsx');
     }
 
     public function descargar_reporte_ventas_pdf($posventas,$compras,$gastos,$simple = false,$scajero = null){
