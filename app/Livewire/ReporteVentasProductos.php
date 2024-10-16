@@ -60,7 +60,7 @@ class ReporteVentasProductos extends Component
                 $query->select()
                     ->from(DB::raw('posventas'))
                     ->whereColumn('posventa_detalles.posventa_id', 'posventas.id')
-                    ->where('estado_posventa','<>','eliminado')
+                    ->where('posventas.estado_posventa','<>','eliminado')
                     ->where('posventas.almacen_id', $this->salmacen);
             });
         });
