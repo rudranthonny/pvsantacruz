@@ -50,6 +50,7 @@ class GestionarAlmacenStock extends Component
         $this->resetPage();
     }
 
+    /*
     public function modal(ProductoAlmacen $productoalmacen = null)
     {
         $this->reset('titlemodal');
@@ -58,7 +59,7 @@ class GestionarAlmacenStock extends Component
             $this->titlemodal = 'Editar';
             $this->almacenstockform->set($productoalmacen);
         }
-    }
+    }*/
 
     public function guardar()
     {

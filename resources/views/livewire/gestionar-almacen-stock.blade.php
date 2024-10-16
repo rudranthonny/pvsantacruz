@@ -118,10 +118,12 @@
                                                     @else
                                                         <button class="btn btn-secondary" id="desactivo-producto_almacen-{{$palmacen->id}}" wire:loading.attr="disabled" wire:target='cambiar_estado({{$palmacen->id}})' wire:click='cambiar_estado({{$palmacen->id}})'><i class="fas fa-eye-slash"></i></button>
                                                     @endif
+                                                    <!--
                                                     <button type="button" class="btn btn-primary"
                                                         data-bs-toggle="modal" data-bs-target="#modalProductoAlmacen"
-                                                        wire:click="modal('{{ $palmacen->id }}')"><i
+                                                       ><i
                                                             class="fas fa-edit"></i></button>
+                                                    -->
                                                 </td>
                                             </tr>
                                         @empty
