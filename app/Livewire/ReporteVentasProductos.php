@@ -53,14 +53,21 @@ class ReporteVentasProductos extends Component
         $this->validate($this->rules_consulta);
         $this->productos = array_keys($this->lista_producto);
         $this->nombre_productos = $this->lista_producto;
-        $this->consulta_ventas = PosventaDetalle::query()->where('created_at','>=',$this->finicio." 00:00:00")->where('created_at','<=',$this->ffinal." 23:59:59");
+        $this->consulta_ventas = PosventaDetalle::query()
+        ->where('created_at','>=',$this->finicio." 00:00:00")
+        ->where('created_at','<=',$this->ffinal." 23:59:59")
+        ->whereExists(function ($query) {
+            $query->select()
+                ->from(DB::raw('posventas'))
+                ->whereColumn('posventa_detalles.posventa_id', 'posventas.id')
+                ->where('posventas.estado_posventa','<>','eliminado');
+        });
 
         $this->consulta_ventas->when($this->salmacen <> '',function ($q) {
             return $q->whereExists(function ($query) {
                 $query->select()
                     ->from(DB::raw('posventas'))
                     ->whereColumn('posventa_detalles.posventa_id', 'posventas.id')
-                    ->where('posventas.estado_posventa','<>','eliminado')
                     ->where('posventas.almacen_id', $this->salmacen);
             });
         });
