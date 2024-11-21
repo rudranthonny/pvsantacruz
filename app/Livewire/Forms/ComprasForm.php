@@ -475,10 +475,10 @@ class ComprasForm extends Form
         $this->detalle_compra[$producto->codigo]['descuento_unitario'] = 0;
         $this->detalle_compra[$producto->codigo]['nombre_producto'] = $producto->designacion;
         if ($this->detalle_compra[$producto->codigo]['metodo_impuesto'] == 'exclusivo') {
-            $this->detalle_compra[$producto->codigo]['costo_unitario'] = number_format(($this->detalle_compra[$producto->codigo]['costo']-$this->detalle_compra[$producto->codigo]['descuento_unitario']),3);
+            $this->detalle_compra[$producto->codigo]['costo_unitario'] = round(($this->detalle_compra[$producto->codigo]['costo']-$this->detalle_compra[$producto->codigo]['descuento_unitario']),4);
         }
         elseif($this->detalle_compra[$producto->codigo]['metodo_impuesto'] == 'inclusivo') {
-            $this->detalle_compra[$producto->codigo]['costo_unitario'] = number_format(($this->detalle_compra[$producto->codigo]['costo']-$this->detalle_compra[$producto->codigo]['descuento_unitario'])/(($this->detalle_compra[$producto->codigo]['impuesto_orden']+100)/100),3);
+            $this->detalle_compra[$producto->codigo]['costo_unitario'] = round(($this->detalle_compra[$producto->codigo]['costo']-$this->detalle_compra[$producto->codigo]['descuento_unitario'])/(($this->detalle_compra[$producto->codigo]['impuesto_orden']+100)/100),4);
         }
 
         $this->detalle_compra[$producto->codigo]['stock_actual'] =  $this->obtener_stock_producto($producto);
@@ -486,7 +486,7 @@ class ComprasForm extends Form
 
         $this->detalle_compra[$producto->codigo]['cantidad'] = 1;
         $this->detalle_compra[$producto->codigo]['descuento'] = $this->detalle_compra[$producto->codigo]['cantidad']*$this->detalle_compra[$producto->codigo]['descuento_unitario'];
-        $this->detalle_compra[$producto->codigo]['impuesto'] =  number_format((((str_replace(',','',$this->detalle_compra[$producto->codigo]['costo_unitario'])-str_replace(',','',$this->detalle_compra[$producto->codigo]['descuento_unitario']))*str_replace(',','',$this->detalle_compra[$producto->codigo]['cantidad']))*str_replace(',','',$producto->impuesto_orden)/100),2);
+        $this->detalle_compra[$producto->codigo]['impuesto'] =  round((((str_replace(',','',$this->detalle_compra[$producto->codigo]['costo_unitario'])-str_replace(',','',$this->detalle_compra[$producto->codigo]['descuento_unitario']))*str_replace(',','',$this->detalle_compra[$producto->codigo]['cantidad']))*str_replace(',','',$producto->impuesto_orden)/100),4);
         $this->detalle_compra[$producto->codigo]['total_parcial'] = str_replace(',','',$this->detalle_compra[$producto->codigo]['costo_unitario'])*$this->detalle_compra[$producto->codigo]['cantidad']+$this->detalle_compra[$producto->codigo]['impuesto'];
     }
 
@@ -512,15 +512,15 @@ class ComprasForm extends Form
         $this->detalle_compra[$item_id]['cantidad'] = $item_cantidad == false ? 1 : $item_cantidad;
 
         if ($this->detalle_compra[$item_id]['metodo_impuesto'] == 'exclusivo') {
-            $this->detalle_compra[$item_id]['costo_unitario'] = number_format(($this->detalle_compra[$item_id]['costo']-$this->detalle_compra[$item_id]['descuento_unitario']),3);
+            $this->detalle_compra[$item_id]['costo_unitario'] = round(($this->detalle_compra[$item_id]['costo']-$this->detalle_compra[$item_id]['descuento_unitario']),4);
         }
 
         elseif($this->detalle_compra[$item_id]['metodo_impuesto'] == 'inclusivo') {
-            $this->detalle_compra[$item_id]['costo_unitario'] = number_format(($this->detalle_compra[$item_id]['costo']-$this->detalle_compra[$item_id]['descuento_unitario'])/(($this->detalle_compra[$item_id]['impuesto_orden']+100)/100),3);
+            $this->detalle_compra[$item_id]['costo_unitario'] = round(($this->detalle_compra[$item_id]['costo']-$this->detalle_compra[$item_id]['descuento_unitario'])/(($this->detalle_compra[$item_id]['impuesto_orden']+100)/100),4);
         }
 
         $this->detalle_compra[$item_id]['descuento'] = $this->detalle_compra[$item_id]['cantidad']*$this->detalle_compra[$item_id]['descuento_unitario'];
-        $this->detalle_compra[$item_id]['impuesto'] =  number_format(((( str_replace(',','',$this->detalle_compra[$item_id]['costo_unitario'])-$this->detalle_compra[$item_id]['descuento_unitario'])*$this->detalle_compra[$item_id]['cantidad'])*$this->detalle_compra[$item_id]['impuesto_orden']/100),2);
+        $this->detalle_compra[$item_id]['impuesto'] =  round(((( str_replace(',','',$this->detalle_compra[$item_id]['costo_unitario'])-$this->detalle_compra[$item_id]['descuento_unitario'])*$this->detalle_compra[$item_id]['cantidad'])*$this->detalle_compra[$item_id]['impuesto_orden']/100),4);
         $this->detalle_compra[$item_id]['total_parcial'] = str_replace(',','',$this->detalle_compra[$item_id]['costo_unitario'])*$this->detalle_compra[$item_id]['cantidad']+str_replace(',','',$this->detalle_compra[$item_id]['impuesto']);
         $this->obtener_datos_compra();
     }
