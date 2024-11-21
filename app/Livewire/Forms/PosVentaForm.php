@@ -82,7 +82,7 @@ class PosVentaForm extends Form
             $item_recibo = 0;
             foreach ($posventa->posventadetalles as $pos_det) {
                 if (strlen($pos_det->producto_nombre) <= 40) {
-                    $item_recibo = $item_recibo+24.2;
+                    $item_recibo = $item_recibo+26.2;
                 }
                 else {
                     $item_recibo = $item_recibo+48.4;
