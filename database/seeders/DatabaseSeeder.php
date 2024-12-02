@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        $this->call(RoleSeeder::class);
+        //$this->call(RoleSeeder::class);
         $ventas = Posventa::all();
         foreach ($ventas as $key => $ven)
         {
@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
 
          $this->call(TdcoumentoSeeder::class);
          $this->call(CfacturaSeeder::class);
-
+*/
     }
-         */
+
 }
