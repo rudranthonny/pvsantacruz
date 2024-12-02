@@ -15,9 +15,9 @@ class RoleSuperSeeder extends Seeder
      */
     public function run(): void
     {
-        $administrador = Role::create(['name' => 'Super_Administrador']);
+       // $administrador = Role::create(['name' => 'Super_Administrador']);
         $permiso = Permission::where('name', 'admin.usuario.gestor')->first();
-        $permiso2 =    Permission::create(['name' =>'admin.editar.almacenstock']);
+        //$permiso2 =    Permission::create(['name' =>'admin.editar.almacenstock']);
 
         if ($permiso) {$permiso->syncRoles(['Super_Administrador']);}
 
