@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Exports\ReporteAlmacenStockExport;
 use App\Exports\ReporteGeneralAlmacenExport;
 use App\Livewire\Forms\AlmacenStockForm;
 use App\Models\Almacen;

@@ -28,17 +28,17 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RoleSeeder::class);
         $ventas = Posventa::all();
-        foreach ($ventas as $key => $ven) 
+        foreach ($ventas as $key => $ven)
         {
             $ven->cajero_id = isset($ven->m_caja->caja->user_id) ? $ven->m_caja->caja->user_id : NULL;
             $ven->save();
         }
-
+/*
         // \App\Models\User::factory(10)->create();
         // llamar al sembrador de datos en Moneda
 
-        //$this->call(RoleSeeder::class);
-        /*$this->call(MonedaSeeder::class);
+        $this->call(RoleSeeder::class);
+        $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
         $this->call(MarcaSeeder::class);
         $this->call(CategoriaSeeder::class);
@@ -49,9 +49,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ClienteSeeder::class);
         $this->call(TgastoSeeder::class);
         $this->call(TmovimientoCajaSeeder::class);
-        $this->call(AjustesSistemaSeed::class);*/
+        $this->call(AjustesSistemaSeed::class);
 
-        /*$user = User::create([
+        $user = User::create([
             'name' => 'Administrador',
             'lastname' => 'Rodriguez',
             'telefono' => '+51 934 665 704',
@@ -62,9 +62,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('Administrador');
-        */
-        // $this->call(TdcoumentoSeeder::class);
-         //$this->call(CfacturaSeeder::class);
+
+         $this->call(TdcoumentoSeeder::class);
+         $this->call(CfacturaSeeder::class);
 
     }
+         */
 }
