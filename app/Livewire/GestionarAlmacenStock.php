@@ -8,11 +8,13 @@ use App\Models\Almacen;
 use App\Models\Configuracion;
 use App\Models\ProductoAlmacen;
 use App\Models\Producto;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Illuminate\Support\Facades\Auth;
 
 class GestionarAlmacenStock extends Component
 {
@@ -49,7 +51,7 @@ class GestionarAlmacenStock extends Component
         $this->resetPage();
     }
 
-    /*
+
     public function modal(ProductoAlmacen $productoalmacen = null)
     {
         $this->reset('titlemodal');
@@ -58,10 +60,15 @@ class GestionarAlmacenStock extends Component
             $this->titlemodal = 'Editar';
             $this->almacenstockform->set($productoalmacen);
         }
-    }*/
+    }
 
     public function guardar()
     {
+        $user  = User::find(Auth::user()->id);
+        if (!$user->can('admin.editar.almacenstock')) {
+            abort(403, 'No tienes permiso para descargar este reporte.');
+        }
+
         if (isset($this->almacenstockform->productoalmacen->id)) {$this->almacenstockform->update();}
         $this->dispatch('cerrar_modal_producto_almacen');
     }

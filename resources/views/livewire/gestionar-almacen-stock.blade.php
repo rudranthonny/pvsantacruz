@@ -118,12 +118,19 @@
                                                     @else
                                                         <button class="btn btn-secondary" id="desactivo-producto_almacen-{{$palmacen->id}}" wire:loading.attr="disabled" wire:target='cambiar_estado({{$palmacen->id}})' wire:click='cambiar_estado({{$palmacen->id}})'><i class="fas fa-eye-slash"></i></button>
                                                     @endif
-                                                    <!--
-                                                    <button type="button" class="btn btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#modalProductoAlmacen"
-                                                       ><i
-                                                            class="fas fa-edit"></i></button>
-                                                    -->
+                                                    @can('admin.editar.almacenstock')
+                                                        <button
+                                                        type="button"
+                                                        id="editar-producto-{{$palmacen->id}}"
+                                                        wire:loading.attr="disabled"
+                                                        wire:target='modal({{$palmacen->id}})'
+                                                        wire:click='modal({{$palmacen->id}})'
+                                                        class="btn btn-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalProductoAlmacen">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @empty
