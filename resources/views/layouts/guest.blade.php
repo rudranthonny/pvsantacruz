@@ -6,22 +6,13 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        <!-- Styles -->
-        @livewireStyles
+        
+        <link href="navidad/bootstrap5.min.css" rel="stylesheet">
+        <link href="navidad/css/style.css" rel="stylesheet">
+        <script src="navidad/js/script.js"></script>
     </head>
     <body>
-        <div class="font-sans text-gray-900 dark:text-gray-100 antialiased">
-            {{ $slot }}
-        </div>
-
-        @livewireScripts
+        <section class="principal"> {{ $slot }} </section>
     </body>
+    
 </html>

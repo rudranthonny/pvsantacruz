@@ -31,4 +31,12 @@ class Configuracion extends Model
     {
         return $this->belongsTo(Moneda::class);
     }
+
+
+    public function showLogin()
+    {
+        $configuracion = Configuracion::find(1);
+        $logoUrl = asset('storage/' . $configuracion->logo); // Genera la URL completa
+        return view('auth.login', compact('logoUrl'));
+    }
 }

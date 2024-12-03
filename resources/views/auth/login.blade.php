@@ -1,48 +1,64 @@
 <x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-md-9 col-lg-6 col-xl-5">
+            <div class="image-container">
 
-        <x-validation-errors class="mb-4" />
-
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-                {{ session('status') }}
             </div>
-        @endif
+          </div>
+          
+          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+              <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-center">
+                    <div class="imagen_jack">
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+                    </div>
+                  </div>
 
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
+                  <div class="divider d-flex align-items-center my-4">
+                    <p class="text-center fw-bold mx-3 mb-0">Or</p>
+                  </div>
+                  <div class="col-12">
+                    <x-validation-errors class="mb-4" style="color: red;"/>
+                </div>
+                <div>
+                    <x-label for="email" value="{{ __('Email') }}" />
+                    <x-input id="email" class="form-control form-control-lg" type="email" name="email" :value="old('email')" required autofocus />
+                </div>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
+                <div class="mt-4">
+                    <x-label for="password" value="{{ __('Password') }}" />
+                    <x-input id="password" class="form-control form-control-lg" type="password" name="password" required autocomplete="current-password" />
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Checkbox -->
+                    <div class="vform-check mb-0">
+                        <x-checkbox id="remember_me" name="remember" />
+                      <label for="remember_me" class="flex items-center">
+                       Recuerdame
+                      </label>
+                    </div>
+                    @if (Route::has('password.request'))
+                        <a class="text-body" href="{{ route('password.request') }}">
+                            {{ __('Olvidaste la contraseña') }}
+                        </a>
+                    @endif
+                  </div>
 
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <x-button class="ml-4">
+                            {{ __('Ingresar') }}
+                        </x-button>
+                    </div>
+            </form>
+          </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 footer-container">
+    <!-- Copyright -->
+        <div class="text-white mb-3 mb-md-0 text-center" >
+          <b>J-NETWORK © 2024.</b>
+        </div>
+    </div>
 </x-guest-layout>
