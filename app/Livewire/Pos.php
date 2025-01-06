@@ -670,7 +670,7 @@ class Pos extends Component
             }
             #pdf descargar
             $paper_examen = 0;
-            $paper_heigth = 480;
+            $paper_heigth = 530;
             $item_recibo = 0;
             foreach ($posventa->posventadetalles as $pos_det) {
                 if (strlen($pos_det->producto_nombre) <= 40) {
