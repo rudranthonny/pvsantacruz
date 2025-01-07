@@ -159,8 +159,6 @@
         </table>
         <br>
         <center>
-            <span style="text-align: center;"><b>Gracias Por Su Compra, Vuelva Pronto.</b></span><br>
-            <span style="text-align: center;"><b>SL_{{ $posventa->id }}</b></span><br>
             <table width='100%'>
                 <tr>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -168,6 +166,8 @@
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
             </table>
+            <span style="text-align: center;"><b>Gracias Por Su Compra, Vuelva Pronto.</b></span><br>
+            <span style="text-align: center;"><b>SL_{{ $posventa->id }}</b></span><br>
         </center>
         <div class=SaltoDePagina> </div>
     @endfor
