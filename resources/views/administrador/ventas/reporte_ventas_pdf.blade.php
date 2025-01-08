@@ -31,7 +31,14 @@
         </div>
     </div>
     @php $total2 = 0;@endphp
-    @php $total_devoluciones = 0; @endphp
+    @php 
+        $total_devoluciones = 0; 
+            foreach ($posventas as $pventa) {
+                foreach ($pventa->devolucions as $dev) {
+                    $total_devoluciones = $total_devoluciones+$dev->monto_pago;
+            }
+        }
+    @endphp
     @if ($simple == false)
         <div>
             <table class="table table-hover">
@@ -62,7 +69,7 @@
                         <td class="encabezado-body">{{ $configuracion->moneda->simbolo.$pventa->descuento }}</td>
                         <td class="encabezado-body">{{ $configuracion->moneda->simbolo.$pventa->envio }}</td>
                         <td class="encabezado-body" style="text-align: center;">{{$configuracion->moneda->simbolo.($pventa->obtener_costo_venta)}}</td>
-                        <td class="encabezado-body">{{ $configuracion->moneda->simbolo.$pventa->total_pagar }}</td>
+                        <td class="encabezado-body">{{ $configuracion->moneda->simbolo.$pventa->monto_pago }}</td>
                         @php
                         $total2 = $total2 + $pventa->obtener_costo_venta;
                         @endphp
@@ -77,7 +84,7 @@
                             <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('descuento')}}</td>
                             <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('envio')}}</td>
                             <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$total2}}</td>
-                            <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('total_pagar')}}</td>
+                            <td class="text-center table-success" style="text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('monto_pago')}}</td>
                         </tr>
                 </tbody>
             </table>
@@ -99,10 +106,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $total_devoluciones = 0; @endphp
                     @forelse ($posventas as $pventa)
                         @foreach ($pventa->devolucions as $dev)
-                            @php $total_devoluciones = $total_devoluciones+$dev->monto_pago; @endphp
                             <tr>
                                 <td class="encabezado-body">{{ $pventa->created_at }}</td>
                                 <td class="encabezado-body">{{ $dev->fecha }}</td>
@@ -181,7 +186,7 @@
             </tr>
             <tr>
                 <td style="background-color: black;color:white;width:150px;text-align:center;">Ventas</td>
-                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('total_pagar')}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('monto_pago')}}</td>
             </tr>
             @if ($simple == true)
             <tr>
@@ -195,10 +200,11 @@
             </tr>
             @php
                 if ($simple == true) {
-                    $total_a = $posventas->sum('total_pagar')-$gastos->sum('monto');
+                    $total_a = $posventas->sum('monto_pago')-$gastos->sum('monto')-$total_devoluciones;
                 }
-                else {
-                    $total_a = $posventas->sum('total_pagar')-$total_devoluciones;
+                else 
+                {
+                    $total_a = $posventas->sum('monto_pago')-$total_devoluciones;
                 }
 
             @endphp
@@ -215,15 +221,15 @@
             </tr>
             <tr>
                 <td style="background-color: black;color:white;width:150px;text-align:center;">Ventas</td>
-                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$posventas->sum('total_pagar')}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.round($posventas->sum('monto_pago'),3)}}</td>
             </tr>
             <tr>
                 <td style="background-color: black;color:white;width:150px;text-align:center;">Costo Venta</td>
-                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.$total2}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.round($total2,3)}}</td>
             </tr>
             <tr>
                 <td style="background-color: black;color:white;width:150px;text-align:center;">Utilidad</td>
-                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.($posventas->sum('total_pagar')-$total2)}}</td>
+                <td style="border: solid 1px black;text-align: center;">{{$configuracion->moneda->simbolo.round(($posventas->sum('monto_pago')-$total2),3)}}</td>
             </tr>
         </table>
     </div>

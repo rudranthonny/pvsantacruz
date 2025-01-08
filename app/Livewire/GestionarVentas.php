@@ -46,6 +46,7 @@ class GestionarVentas extends Component
         $gastos->when($this->salmacen <> '',function ($q) {
             return $q->where('almacen_id',$this->salmacen);
         });
+        
         $gastos->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
             return $q->where('fecha','>=',$this->finicio)->where('fecha','<=',$this->ffinal);
         });
@@ -63,6 +64,7 @@ class GestionarVentas extends Component
         $compras->when($this->finicio != null && $this->ffinal != null  ,function ($q) {
             return $q->where('fecha_pago','>=',$this->finicio)->where('fecha_pago','<=',$this->ffinal);
         });
+
         $compras = $compras->get();
 
         $posventas->when($this->salmacen <> '',function ($q) {

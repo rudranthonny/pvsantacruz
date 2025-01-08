@@ -59,7 +59,7 @@
                             <div class="d-flex">
                                 <h5 class="purecounter mb-0 fw-bold">Total de Costos</h5>
                             </div>
-                            <p class="mb-0">{{$configuracion->moneda->simbolo}} {{$monto_com_by_vent}}</p>
+                            <p class="mb-0">{{$configuracion->moneda->simbolo}} {{round($monto_com_by_vent,3)}}</p>
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                             <div class="d-flex">
                                 <h5 class="purecounter mb-0 fw-bold">Ganacia Neta</h5>
                             </div>
-                            <p class="mb-0">{{$configuracion->moneda->simbolo}} {{$monto_ventas-$monto_com_by_vent}}</p>
+                            <p class="mb-0">{{$configuracion->moneda->simbolo}} {{round($monto_ventas-$monto_com_by_vent,3)}}</p>
                         </div>
                     </div>
                 </div>
