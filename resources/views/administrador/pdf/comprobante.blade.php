@@ -13,7 +13,7 @@
             margin-right: 2.5px;
             margin-top: 2.5px;
         }
-        h1.SaltoDePagina , .pag_1,.pag_2
+        h1.SaltoDePagina,.SaltoDePagina , .pag_1,.pag_2
         {
             PAGE-BREAK-AFTER: always;
         }
