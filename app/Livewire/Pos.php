@@ -674,10 +674,10 @@ class Pos extends Component
             $item_recibo = 0;
             foreach ($posventa->posventadetalles as $pos_det) {
                 if (strlen($pos_det->producto_nombre) <= 40) {
-                    $item_recibo = $item_recibo+18.2;
+                    $item_recibo =  $item_recibo+26.2;;
                 }
                 else {
-                    $item_recibo = $item_recibo+20.2;
+                    $item_recibo = $item_recibo+48.4;
                 }
             }
             $items_adicional = 18.2;
