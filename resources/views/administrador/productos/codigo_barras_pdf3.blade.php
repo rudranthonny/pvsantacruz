@@ -9,6 +9,22 @@ Copy code
             margin: 0px;
         }
 
+
+        .style90 .barcode {
+            font-size: 6px;
+            display: block;
+            margin: 0 auto; /* Centra el código de barras horizontalmente */
+            width: 12%; /* Ajusta este valor según el ancho deseado para el código de barras */
+        }
+
+
+        .style60 .barcode {
+            font-size: 6px;
+            display: block;
+            margin: 0 auto; /* Centra el código de barras horizontalmente */
+            width: 20%; /* Ajusta este valor según el ancho deseado para el código de barras */
+        }
+
         .style40 .barcode {
             display: block;
             margin: 0 auto; /* Centra el código de barras horizontalmente */
@@ -71,6 +87,27 @@ Copy code
             border: 1px dotted #ccc;
             padding: 3px; /* Espaciado interno */
             min-height: 180px; /* Altura mínima para mejor visualización */
+        }
+        .style90 {
+            font-size: 6px;
+            float: left;
+            width: 11%; /* Ajustado para incluir márgenes */
+            margin: 0.2%; /* Margen pequeño para separación */
+            box-sizing: border-box; /* Incluye padding y border en el cálculo del ancho */
+            border: 1px dotted #ccc;
+            padding: 3px; /* Espaciado interno */
+            min-height: 80px; /* Altura mínima para mejor visualización */
+        }
+
+        .style60 {
+            font-size: 6px;
+            float: left;
+            width: 18.3%; /* Ajustado para incluir márgenes */
+            margin: 0.2%; /* Margen pequeño para separación */
+            box-sizing: border-box; /* Incluye padding y border en el cálculo del ancho */
+            border: 1px dotted #ccc;
+            padding: 3px; /* Espaciado interno */
+            min-height: 80px; /* Altura mínima para mejor visualización */
         }
 
         .style40 {
@@ -146,18 +183,30 @@ Copy code
         .clear {
             clear: both;
         }
+
+
     </style>
 </head>
 <body>
-    <div class="row">
+    <style>
+         .barcode div {
+            margin-left: {{$barcode_margin}};
+        }
+    </style>
+    <div>
         @php $p = 1;$separador = 0;
-            if ($barcode_style_pdf == 'style40') {
+            if ($barcode_style_pdf == 'style60') {
+                $separador = 5;
+            }
+            elseif ($barcode_style_pdf == 'style90') {
+                $separador = 8;
+            }
+            elseif ($barcode_style_pdf == 'style40') {
                 $separador = 4;
             }
             elseif($barcode_style_pdf == 'style12' or $barcode_style_pdf == 'style30' or $barcode_style_pdf == 'style24' or $barcode_style_pdf == 'style18') {
                 $separador = 3;
             }
-
             elseif($barcode_style_pdf == 'style20' or $barcode_style_pdf == 'style14' or $barcode_style_pdf == 'style10') {
                 $separador = 2;
             }
@@ -171,7 +220,13 @@ Copy code
                                 </div>
                                 <center>
                                 <div textmargin="0" fontoptions="bold" class="barcode">
-                                     {!! DNS1D::getBarcodeHTML($tey, $lista_productos[$tey]['simbologia'], 1, 37) !!}
+                                    @if ($stipo_papel == 9)
+                                        <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],0.8,37) !!}</center>
+                                    @elseif ($stipo_papel == 10)
+                                        <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],0.5,37) !!}</center>
+                                    @else
+                                        <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],1,37) !!}</center>
+                                    @endif
                                 </div>
                                 </center>
                                 <div style="font-weight: bold;text-align: center;">

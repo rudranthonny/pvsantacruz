@@ -75,6 +75,8 @@
                     <option value="6">14 per sheet (4 * 1.33)</option>
                     <option value="7">12 per sheet (a4) (2.5 * 2.834)</option>
                     <option value="8">10 per sheet (4 * 2)</option>
+                    <option value="9">60 per sheet (a4)</option>
+                    <option value="10">90 per sheet (a4)</option>
                 </select>
             </div>
         </div>
@@ -99,7 +101,13 @@
                                     <span class="barcode-price">{{ $configuracion->moneda->simbolo }} {{$lista_productos[$tey]['precio']}}</span>
                                 </div>
                                 <div textmargin="0" fontoptions="bold" class="barcode">
-                                   <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],1,37) !!}</center>
+                                    @if ($stipo_papel == 9)
+                                    <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],0.8,37) !!}</center>
+                                    @elseif ($stipo_papel == 10)
+                                    <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],0.5,37) !!}</center>
+                                    @else
+                                    <center> {!! DNS1D::getBarcodeHTML($tey,$lista_productos[$tey]['simbologia'],1,37) !!}</center>
+                                    @endif
                                 </div>
                                 <div style="font-weight: bold;text-align: center;">
                                     <span class="barcode-name">{{ $tey }}</span>

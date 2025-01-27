@@ -17,6 +17,7 @@ class ImprimirCodigo extends Component
     public $buscar_producto_oculto;
     public $stipo_papel;
     public $barcode,$barcode_style,$barcode_style_pdf;
+    public $barcode_margin;
     public $lista_productos = [];
 
     public function mount(){
@@ -64,6 +65,20 @@ class ImprimirCodigo extends Component
             $this->barcode_style = 'barcode-item style10';
             $this->barcode_style_pdf = 'style10';
         }
+        elseif ($this->stipo_papel == 9) {
+            $this->barcode = 'barcodea4';
+            $this->barcode_style = 'barcode-item style60';
+            $this->barcode_style_pdf = 'style60';
+            $this->barcode_margin = '-25px';
+        }
+
+        elseif ($this->stipo_papel == 10) {
+            $this->barcode = 'barcodea4';
+            $this->barcode_style = 'barcode-item style90';
+            $this->barcode_style_pdf = 'style90';
+            $this->barcode_margin = '-18px';
+        }
+
         else {
             $this->stipo_papel = "";
         }
@@ -102,8 +117,10 @@ class ImprimirCodigo extends Component
         $barcode_style_pdf = $this->barcode_style_pdf;
         $lista_productos = $this->lista_productos;
         $configuracion = $this->configuracion;
+        $stipo_papel = $this->stipo_papel;
+        $barcode_margin = $this->barcode_margin;
         $consultapdf = FacadePdf::loadView('administrador.productos.codigo_barras_pdf3',
-        compact('configuracion','barcode','barcode_style','lista_productos','barcode_style_pdf'))
+        compact('configuracion','barcode','barcode_style','lista_productos','barcode_style_pdf','stipo_papel','barcode_margin'))
         ->setPaper('a4');
 
         $pdfContent = $consultapdf->output();

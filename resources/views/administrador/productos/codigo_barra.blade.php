@@ -68,6 +68,24 @@
             text-transform: uppercase;
         }
 
+        .barcodea4 .style90
+        {
+            font-size: 6px;
+            height: 0.91in;
+            margin: 0 0.02in;
+            padding-top: 0.05in;
+            width: 0.96in;
+        }
+
+        .barcodea4 .style60
+        {
+            font-size: 6px;
+            height: 0.91in;
+            margin: 0 0.02in;
+            padding-top: 0.05in;
+            width: 1.58in;
+        }
+
         .barcodea4 .style40 {
             height: 1.003in;
             margin: 0 0.07in;
@@ -129,6 +147,8 @@
             padding-top: 0.1in;
             width: 4in;
         }
+
+
 
     </style>
 @stop
