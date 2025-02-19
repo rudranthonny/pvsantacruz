@@ -102,7 +102,7 @@
                                             <td><input type="number" id="input_cantidad_{{$key}}" class="form-control"  min="1" wire:model.live.debounce.1000ms='{{$valor_cantidad}}' wire:click="actualizar_item_compra('{{$key}}')"></td>
                                             <td>{{$comprasform->detalle_compra[$key]['descuento']}}</td>
                                             <td>{{$comprasform->detalle_compra[$key]['impuesto']}}</td>
-                                            <td>{{number_format($comprasform->detalle_compra[$key]['total_parcial'],2)}}</td>
+                                            <td>{{round($comprasform->detalle_compra[$key]['total_parcial'])}}</td>
                                             <td>
                                                 <button class="btn btn-outline-success" id="editar_item_compra_{{$key}}"  wire:loading.attr="disabled" wire:target="editar_item_compra('{{$key}}')"  wire:click="editar_item_compra('{{$key}}')"><i class="fas fa-edit" ></i></button>
                                                 <button class="btn btn-outline-danger" id="eliminar_item_compra_{{$key}}" wire:click="eliminar_item_compra('{{$key}}')"><i class="fas fa-trash"></i></button>
@@ -187,7 +187,7 @@
                                 <tbody>
                                     <tr>
                                         <td class="bold">Total sin Impuesto</td>
-                                        <td><span>{{$comprasform->total_sin_impuesto}}</span></td>
+                                        <td><span>{{round($comprasform->total_sin_impuesto)}}</span></td>
                                     </tr>
                                     <tr>
                                         <td class="bold">Impuesto de orden</td>
@@ -215,7 +215,7 @@
                                     </tr>
                                     <tr>
                                         <td><span class="font-weight-bold">Total</span></td>
-                                        <td><span class="font-weight-bold">{{number_format($comprasform->total,2)}}</span></td>
+                                        <td><span class="font-weight-bold">{{round($comprasform->total)}}</span></td>
                                     </tr>
                                 </tbody>
                             </table>

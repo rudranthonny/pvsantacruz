@@ -282,14 +282,14 @@ class ComprasForm extends Form
         $n_compra->proveedor_id= $this->prove;
         $n_compra->almacen_id = $this->almacen;
         $n_compra->porcentaje_impuesto_orden = $this->impuesto_orden;
-        $n_compra->total_sin_impuesto = $this->total_sin_impuesto;
+        $n_compra->total_sin_impuesto = round($this->total_sin_impuesto);
         $n_compra->monto_impuesto_orden = $this->impuesto_orden_monto;
         $n_compra->monto_descuento = $this->descuento;
         $n_compra->monto_envio = $this->envio;
-        $n_compra->total = $this->total;
+        $n_compra->total = round($this->total);
         $n_compra->estado = $this->estado;
         $n_compra->nota =  $this->nota;
-        $n_compra->debido = $this->total;
+        $n_compra->debido = round($this->total);
         $n_compra->save();
         foreach ($this->detalle_compra as $key => $dcompra) {
             $n_dcompra = new Dcompra();
