@@ -69,7 +69,7 @@
                                                 <td>{{number_format($devolucionform->detalles_devolucion[$key]['producto_importe'],2)}}</td>
                                                 <td>{{$devolucionform->detalles_devolucion[$key]['producto_tipo']}}</td>
                                                 <td>
-                                                    <button class="btn btn-outline-danger" id="eliminar_item_devolucion_{{$key}}" wire:click='eliminar_item_devolucion({{$key}})'><i class="fas fa-trash"></i></button>
+                                                    <button class="btn btn-outline-danger" id="eliminar_item_devolucion_{{$key}}" wire:click='eliminar_item_devolucion("{{$key}}")'><i class="fas fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach
