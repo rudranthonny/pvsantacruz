@@ -40,7 +40,7 @@ class AdminController extends Controller
     public function buscar_productos_compra(Request $request)
     {
         $term = $request->get('term');
-        $querys = Producto::where('tipo', 'estandar')->Where(function ($query) use ($term) {
+        $querys = Producto::Where(function ($query) use ($term) {
             $query->where('designacion', 'like', '%' . $term . '%')
                 ->orWhere('codigo', 'like', '%' . $term . '%');
         })->get();

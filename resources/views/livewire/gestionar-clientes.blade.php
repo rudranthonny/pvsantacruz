@@ -78,6 +78,13 @@
                                                         wire:confirm="Estas seguro de Eliminar esta Cliente?">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
+
+                                                    <button class="btn btn-secondary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalHistorialReservas"
+                                                        wire:click="abrir_historial_reservas({{ $cliente->id }})">
+                                                        <i class="fas fa-history"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @empty
@@ -107,5 +114,6 @@
             </div>
         </div>
     </div>
+@include('administrador.cliente.modal_reservas_cliente')
 </div>
 

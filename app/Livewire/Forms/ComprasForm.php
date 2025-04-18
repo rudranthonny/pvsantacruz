@@ -242,6 +242,7 @@ class ComprasForm extends Form
     public function agregar_dcompra_dcompracompuesto(Dcompra $dcompra,Producto $producto)
     {
         if ($producto->tipo == 'compuesto') {
+
             foreach ($producto->pcompuestos as $rey => $pcom)
             {
                 $n_dcompra_compuesto = new Dcompracompuesto();
@@ -291,6 +292,7 @@ class ComprasForm extends Form
         $n_compra->nota =  $this->nota;
         $n_compra->debido = round($this->total);
         $n_compra->save();
+
         foreach ($this->detalle_compra as $key => $dcompra) {
             $n_dcompra = new Dcompra();
             $n_dcompra->metodo_descuento = $this->detalle_compra[$key]['metodo_descuento'];
@@ -313,16 +315,16 @@ class ComprasForm extends Form
             $n_dcompra->save();
             #si el producto es compuesto crear su historial para modificar
             $cproducto = Producto::find($n_dcompra->producto_id);
-            $this->agregar_dcompra_dcompracompuesto($n_dcompra,$cproducto);
-
-
-            if ($n_compra->estado == 1) {
+            #$this->agregar_dcompra_dcompracompuesto($n_dcompra,$cproducto);
+            if ($n_compra->estado == 1) 
+            {
                 $this->agregar_stock_almacen($this->detalle_compra[$key]['producto_id'],$n_dcompra->cantidad,$n_compra->almacen_id,$n_dcompra->fecha_vencimiento_producto);
             }
         }
     }
 
-    public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id,$fecha_vencimiento = null){
+    public function agregar_stock_almacen($producto_id,$cantidad,$almacen_id,$fecha_vencimiento = null)
+    {
         $bproducto = Producto::find($producto_id);
         if ($bproducto->tipo == 'estandar')
         {
@@ -352,7 +354,7 @@ class ComprasForm extends Form
                 $b_almacen_producto->fecha_vencimiento_producto = $fecha_vencimiento;
             }
             $b_almacen_producto->save();
-            }
+        }
         elseif($bproducto->tipo == 'compuesto')
         {
             foreach ($bproducto->pcompuestos as $ley => $tcomp) {

@@ -20,6 +20,16 @@ class GestionarCliente extends Component
     public $titlemodal = 'Añadir';
     public $pagina = 5;
     public $pd_monto,$pd_detalle,$pd_opcion;
+    public $historial_reservas_cliente, $reservas_historial = [];
+
+    public function abrir_historial_reservas($id)
+    {
+        $this->historial_reservas_cliente = Cliente::find($id);
+        $this->reservas_historial = $this->historial_reservas_cliente->reservas()
+            ->with('cancha')
+            ->orderBy('fingreso', 'desc')
+            ->get();
+    }
 
     public function buscar_documento(){
         $this->clientesForm->consultarDatos();

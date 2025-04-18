@@ -332,6 +332,16 @@ return [
                     'icon' => 'fas fa-folder',
                 ],
                 [
+                    'text' => 'Canchas',
+                    'route'  => 'admin.canchas',
+                    'icon' => 'fas fa-futbol',
+                ],
+                [
+                    'text' => 'Reporte Reservas',
+                    'route'  => 'admin.reservas_reporte',
+                    'icon' => 'fas fa-list',
+                ],
+                [
                     'text' => 'Marcas',
                     'route'  => 'admin.marcas',
                     'icon' => 'fas fa-tags'
