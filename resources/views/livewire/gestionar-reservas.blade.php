@@ -42,9 +42,17 @@
             },
             eventClick:function(info)
             {
-                $('#modal_edit_agenda_a').css('top', info.jsEvent.screenY-100);
-                $('#modal_edit_agenda_a').css('left',info.jsEvent.screenX-745);
-                $('#modal_edit_agenda_a').modal('toggle');
+                const modal = $('#modal_edit_agenda_a');
+                // Centrado horizontal (50% pantalla) y arriba (por ejemplo, 50px desde el top)
+                modal.css({
+                    position: 'fixed',
+                    top: '50px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 1055
+                });
+
+                modal.modal('show');
                 window.Livewire.dispatch('abrir-modal-booking',{ reserva:info.event.id,info:null});
             },
             events: @json($reservaciones),
@@ -52,50 +60,17 @@
           calendar.render();
         });
 
-        function actualizar_calendario(reservacion)
-        {
-            calendarEl = document.getElementById('calendar');
-              calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            locale: 'es',
-            dayMaxEventRows: true, // for all non-TimeGrid views
-            views: {
-                timeGrid: {
-                dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
-                }
-            },
-            dateClick:function(info){
-                
-                var actual =new Date().toDateString();
-                var actual = new Date(actual);
+        function actualizar_calendario(reservacion) {
+            if (!calendar) return; // Evitar errores si aún no se inicializó
 
-                if(info.date >= actual)
-                {
-                    $('#modal_reserva').modal('toggle');
-                    window.Livewire.dispatch('abrir-modal-booking',{ reserva:null,info:info});
-                }
-                else
-                {
-                    alert("Error: No se puede solicitar una cita en una fecha vencida");
-                }
-            },
-            eventClick:function(info){
-                $('#modal_edit_agenda_a').css('top', info.jsEvent.screenY-100);
-                $('#modal_edit_agenda_a').css('left',info.jsEvent.screenX-745);
-                $('#modal_edit_agenda_a').modal('toggle');
-                window.Livewire.dispatch('abrir-modal-booking',{ reserva:info.event.id,info:null});
-            },
-            events: JSON.parse(reservacion),
-          });
+            // Eliminar todos los eventos anteriores
+            calendar.removeAllEvents();
 
-          calendar.setOption('locale','es');
-          calendar.render();
-
+            // Agregar los nuevos eventos desde el JSON
+            const nuevosEventos = JSON.parse(reservacion);
+            nuevosEventos.forEach(evento => {
+                calendar.addEvent(evento);
+            });
         }
 
         function mostrar_avertencia_booking_eliminar(id_eliminar)
@@ -130,51 +105,6 @@
                         @this.dispatch('cambiar-estado-estatus_bokking',{ booking: id_booking });
                 }
             })
-        }
-
-        function actualizar_calendario(reservacion)
-        {
-            calendarEl = document.getElementById('calendar');
-              calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay' // 👈 Agregadas vistas semana y día
-            },
-            dayMaxEventRows: true, // for all non-TimeGrid views
-            views: {
-                timeGrid: {
-                dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
-                }
-            },
-            dateClick:function(info){
-                
-                var actual =new Date().toDateString();
-                var actual = new Date(actual);
-
-                if(info.date >= actual)
-                {
-                    $('#modal_reserva').modal('toggle');
-                    window.Livewire.dispatch('abrir-modal-booking',{ reserva:null,info:info});
-                }
-                else
-                {
-                    alert("Error: No se puede solicitar una cita en una fecha vencida");
-                }
-            },
-            eventClick:function(info){
-                $('#modal_edit_agenda_a').css('top', info.jsEvent.screenY-100);
-                $('#modal_edit_agenda_a').css('left',info.jsEvent.screenX-745);
-                $('#modal_edit_agenda_a').modal('toggle');
-                window.Livewire.dispatch('abrir-modal-booking',{ reserva:info.event.id,info:null});
-            },
-            events: JSON.parse(reservacion),
-          });
-
-          calendar.setOption('locale','es');
-          calendar.render();
-
         }
     </script>
     @endpush
