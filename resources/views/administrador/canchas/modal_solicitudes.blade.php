@@ -1,4 +1,5 @@
 <div wire:ignore.self class="modal fade" id="modal_solicitudes" tabindex="-1" aria-hidden="true">
+    @role('Administrador')
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
@@ -74,6 +75,7 @@
             </div>
         </div>
     </div>
+    @endrole
     @script
     <script>
         $wire.on('cerrar_modal_solicitudes', () => {

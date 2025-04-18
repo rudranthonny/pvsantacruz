@@ -13,15 +13,16 @@
             <div class="col-md-6 mb-4">
                 <div class="card shadow h-100 text-center position-relative">
                     <!-- Badge en esquina superior derecha -->
-                    <span 
-                    class="position-absolute top-0 end-0 badge rounded-pill bg-danger m-2"
-                    wire:click='seleccionar_cancha({{$cancha->id}})'
-                    data-bs-toggle="modal" 
-                    data-bs-target="#modal_solicitudes"
-                    >
-                       Solicitudes Anulación {{ $cancha->reservas_solicitudes->count() }}
-                    </span>
-
+                    @role('Administrador')
+                        <span 
+                        class="position-absolute top-0 end-0 badge rounded-pill bg-danger m-2"
+                        wire:click='seleccionar_cancha({{$cancha->id}})'
+                        data-bs-toggle="modal" 
+                        data-bs-target="#modal_solicitudes"
+                        >
+                        Solicitudes Anulación {{ $cancha->reservas_solicitudes->count() }}
+                        </span>
+                    @endrole
                     <div class="card-body">
                         <img src="{{ asset('imagenes/cancha.png') }}" width="125px" height="125px">
                         <h5 class="card-title mt-2"><b>{{ $cancha->name }}</b></h5>
