@@ -18,9 +18,10 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        //$Super_Administrador = User::role('Super_Administrador')->get();
-        //$Administrador = User::role('Administrador')->get();
-        //$Cajero = User::role('Cajero')->get();
+        $Super_Administrador = User::role('Super_Administrador')->get();
+        $Administrador = User::role('Administrador')->get();
+        $Cajero = User::role('Cajero')->get();
+        $Cancha = User::role('Cancha')->get();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('role_has_permissions')->truncate();
@@ -33,14 +34,15 @@ class RoleSeeder extends Seeder
         Role::create(['name' => 'Super_Administrador']);
         Role::create(['name' => 'Administrador']);
         Role::create(['name' => 'Cajero']);
+        Role::create(['name' => 'Cancha']);
         #permisos
         Permission::create(['name' =>'admin.editar.almacenstock']);
         Permission::create(['name' => 'admin.ventas.reporte'])->syncRoles(['Super_Administrador','Administrador']);
         Permission::create(['name' => 'admin.configuracion.ajustesistema'])->syncRoles(['Administrador']);
         Permission::create(['name' => 'admin.index'])->syncRoles(['Administrador','Cajero']);
         Permission::create(['name' => 'admin.moneda'])->syncRoles(['Administrador']);
-        Permission::create(['name' => 'admin.canchas'])->syncRoles(['Administrador']);
-        Permission::create(['name' => 'admin.reservas'])->syncRoles(['Administrador']);
+        Permission::create(['name' => 'admin.canchas'])->syncRoles(['Administrador','Cancha']);
+        Permission::create(['name' => 'admin.reservas'])->syncRoles(['Administrador','Cancha']);
         Permission::create(['name' => 'admin.almacen'])->syncRoles(['Administrador']);
         Permission::create(['name' => 'admin.productos'])->syncRoles(['Administrador']);
         Permission::create(['name' => 'admin.marcas'])->syncRoles(['Administrador']);
@@ -64,8 +66,12 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'admin.productos.consultar_barra'])->syncRoles(['Administrador','Cajero']);
         Permission::create(['name' => 'search.buscar_cliente'])->syncRoles(['Administrador','Cajero']);
 
-        //foreach ($Super_Administrador as $key => $sadmin) {$sadmin->assignRole('Super_Administrador');}
-        //foreach ($Administrador as $key => $admin) {$admin->assignRole('Administrador');}
-        //foreach ($Cajero as $key => $caj) {$caj->assignRole('Contabilidad');}
+        if($Super_Administrador->count() > 0){foreach ($Super_Administrador as $key => $sadmin) {$sadmin->assignRole('Super_Administrador');}}
+
+        if($Administrador->count() > 0){foreach ($Administrador as $key => $admin) {$admin->assignRole('Administrador');}}
+
+        if($Cajero->count() > 0){foreach ($Cajero as $key => $caj) {$caj->assignRole('Contabilidad');}}
+
+        if($Cancha->count() > 0){foreach ($Cancha as $key => $caj2) {$caj2->assignRole('Cancha');}}
     }
 }

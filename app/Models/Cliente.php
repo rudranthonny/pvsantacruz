@@ -47,7 +47,7 @@ class Cliente extends Model
             ->sum('horas');
 
         // Calcular cantidad de horas gratuitas disponibles
-        $gratuitas_disponibles = floor($horas_utilizadas / 1) - $horas_gratuitas_usadas;
+        $gratuitas_disponibles = floor($horas_utilizadas / 10) - $horas_gratuitas_usadas;
 
         return max(0, $gratuitas_disponibles); // nunca devolver negativo
     }

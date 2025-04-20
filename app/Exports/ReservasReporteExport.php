@@ -37,7 +37,16 @@ class ReservasReporteExport implements FromView, WithEvents
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet;
-
+                  // Agregar imagen manualmente desde AfterSheet
+                $drawing = new Drawing();
+                $drawing->setName('Logo');
+                $drawing->setDescription('Logo de Reporte');
+                $drawing->setPath(public_path('imagenes/logo.png')); // ruta al logo
+                $drawing->setHeight(80); // altura
+                $drawing->setCoordinates('A1');
+                $drawing->setOffsetX(5);
+                $drawing->setOffsetY(5);
+                $drawing->setWorksheet($sheet->getDelegate());
                 // Estilo general
                 $sheet->getDelegate()->getDefaultRowDimension()->setRowHeight(18);
                 $sheet->getDelegate()->getStyle('A1:K1000')->getFont()->setName('Calibri')->setSize(11);
@@ -76,17 +85,17 @@ class ReservasReporteExport implements FromView, WithEvents
     }
 
     public function drawings()
-{
-    $drawing = new Drawing();
-    $drawing->setName('Logo');
-    $drawing->setDescription('Logo de Reporte');
-    $drawing->setPath(public_path('imagenes/logo.png')); // ruta al logo
-    $drawing->setHeight(80); // altura del logo en px
-    $drawing->setCoordinates('A1'); // celda donde aparecerá
-    $drawing->setOffsetX(5);
-    $drawing->setOffsetY(5);
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('Logo de Reporte');
+        $drawing->setPath(public_path('imagenes/logo.png')); // ruta al logo
+        $drawing->setHeight(80); // altura del logo en px
+        $drawing->setCoordinates('A1'); // celda donde aparecerá
+        $drawing->setOffsetX(5);
+        $drawing->setOffsetY(5);
 
-    return [$drawing];
-}
+        return [$drawing];
+    }
 
 }

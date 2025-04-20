@@ -18,6 +18,7 @@ class AlmacenForm extends Form
     public $ciudad;
     public $email;
     public $codigo_postal;
+    public $monto = 0;
 
     public function __construct()
     {

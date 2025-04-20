@@ -34,6 +34,11 @@
                                 <a class="btn btn-primary" href="{{route('admin.ventas.index')}}" target="_blank"><i class="bi bi-bookmark-dash-fill"></i></a>
                             </div>
                             @endcan
+                            @role('Cancha')
+                            <div class="col-auto">
+                                <a class="btn btn-primary" href="{{route('admin.canchas')}}" target="_blank"><i class="bi bi-aspect-ratio"></i></a>
+                            </div>
+                            @endrole
                             <div class="col-auto">
                                 <form action="{{ route('logout') }}" method="post">
                                     <button class="btn btn-danger">Cerrar Sesion</button>

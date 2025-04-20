@@ -15,7 +15,9 @@
 
     <h3>REPORTE DE RESERVAS POR CANCHAS</h3>
     <h4>Del {{ \Carbon\Carbon::parse($fecha_inicio)->format('d/m/Y') }} al {{ \Carbon\Carbon::parse($fecha_fin)->format('d/m/Y') }}</h4>
-
+    <div style="text-align: center;">
+        <img src="{{public_path('imagenes/logo.png')}}" alt="" width="128px">
+    </div>
     <br>
     <h4>1. Ingresos Totales</h4>
     <p><strong>S/ {{ number_format($ingresos, 2) }}</strong></p>

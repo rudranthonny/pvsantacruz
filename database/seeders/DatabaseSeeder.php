@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RoleSeeder::class);
-        $this->call(MonedaSeeder::class);
+       /* $this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
         $this->call(MarcaSeeder::class);
         $this->call(CategoriaSeeder::class);
@@ -38,8 +38,8 @@ class DatabaseSeeder extends Seeder
         $this->call(TgastoSeeder::class);
         $this->call(TmovimientoCajaSeeder::class);
         $this->call(AjustesSistemaSeed::class);
-         $this->call(TdcoumentoSeeder::class);
-         $this->call(CfacturaSeeder::class);
+        $this->call(TdcoumentoSeeder::class);
+        $this->call(CfacturaSeeder::class);
          $user = User::create([
             'name' => 'Administrador',
             'lastname' => 'Rodriguez',
@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('Administrador');
+        */
     }
 
 }
