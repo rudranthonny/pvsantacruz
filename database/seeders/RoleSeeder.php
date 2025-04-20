@@ -70,7 +70,7 @@ class RoleSeeder extends Seeder
 
         if($Administrador->count() > 0){foreach ($Administrador as $key => $admin) {$admin->assignRole('Administrador');}}
 
-        if($Cajero->count() > 0){foreach ($Cajero as $key => $caj) {$caj->assignRole('Contabilidad');}}
+        if($Cajero->count() > 0){foreach ($Cajero as $key => $caj) {$caj->assignRole('Cajero');}}
 
         #if($Cancha->count() > 0){foreach ($Cancha as $key => $caj2) {$caj2->assignRole('Cancha');}}
     }
