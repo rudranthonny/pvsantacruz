@@ -18,7 +18,7 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $Super_Administrador = User::role('Super_Administrador')->get();
+        //$Super_Administrador = User::role('Super_Administrador')->get();
         $Administrador = User::role('Administrador')->get();
         $Cajero = User::role('Cajero')->get();
         #$Cancha = User::role('Cancha')->get();
@@ -66,7 +66,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'admin.productos.consultar_barra'])->syncRoles(['Administrador','Cajero']);
         Permission::create(['name' => 'search.buscar_cliente'])->syncRoles(['Administrador','Cajero']);
 
-        if($Super_Administrador->count() > 0){foreach ($Super_Administrador as $key => $sadmin) {$sadmin->assignRole('Super_Administrador');}}
+        //if($Super_Administrador->count() > 0){foreach ($Super_Administrador as $key => $sadmin) {$sadmin->assignRole('Super_Administrador');}}
 
         if($Administrador->count() > 0){foreach ($Administrador as $key => $admin) {$admin->assignRole('Administrador');}}
 
