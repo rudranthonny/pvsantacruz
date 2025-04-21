@@ -19,8 +19,8 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         //$Super_Administrador = User::role('Super_Administrador')->get();
-        $Administrador = User::role('Administrador')->get();
-        $Cajero = User::role('Cajero')->get();
+        //$Administrador = User::role('Administrador')->get();
+        //$Cajero = User::role('Cajero')->get();
         #$Cancha = User::role('Cancha')->get();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -68,9 +68,9 @@ class RoleSeeder extends Seeder
 
         //if($Super_Administrador->count() > 0){foreach ($Super_Administrador as $key => $sadmin) {$sadmin->assignRole('Super_Administrador');}}
 
-        if($Administrador->count() > 0){foreach ($Administrador as $key => $admin) {$admin->assignRole('Administrador');}}
+        //if($Administrador->count() > 0){foreach ($Administrador as $key => $admin) {$admin->assignRole('Administrador');}}
 
-        if($Cajero->count() > 0){foreach ($Cajero as $key => $caj) {$caj->assignRole('Cajero');}}
+        //if($Cajero->count() > 0){foreach ($Cajero as $key => $caj) {$caj->assignRole('Cajero');}}
 
         #if($Cancha->count() > 0){foreach ($Cancha as $key => $caj2) {$caj2->assignRole('Cancha');}}
     }
