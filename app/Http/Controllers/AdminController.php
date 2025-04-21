@@ -149,9 +149,9 @@ class AdminController extends Controller
         $busuario = User::find(Auth::user()->id);
         $obtener_roles = $busuario->getRoleNames();
 
-        if ($obtener_roles->first() == 'Administrador') {
+        if ($busuario->hasRole('Administrador') || $busuario->hasRole('Super_Administrador')) {
             return redirect()->route('admin.tablero');
-        } elseif ($obtener_roles->first() == 'Cajero') {
+        } elseif ($busuario->hasRole('Cajero')) {
             return redirect()->route('admin.ventas.pos');
         }
     }
