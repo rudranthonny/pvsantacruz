@@ -63,6 +63,21 @@
             </div>
         </div>
     </div>
+    <div class="row mt-2">
+         @can('admin.canchas')
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <x-adminlte-info-box title="Canchas" text="Gestión Canchas" icon="fas fa-futbol"
+                theme="danger" url="{{ route('admin.canchas') }}" />
+        </div>
+        @endcan
+        <!-- Tarjeta Categoria Gastos -->
+        @can('admin.reservas')
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <x-adminlte-info-box title="Gestionar" text="Reporte Reservas" icon="fas fa-list"
+                theme="danger" url="{{ route('admin.reservas_reporte') }}" />
+        </div>
+        @endcan
+    </div>
     <div class="row my-2">
         <div class="col-12 col-sm-8">
             <div class="card">

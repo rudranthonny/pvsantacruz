@@ -20,7 +20,7 @@
     </div>
     <br>
     <h4>1. Ingresos Totales</h4>
-    <p><strong>S/ {{ number_format($ingresos, 2) }}</strong></p>
+    <p><strong>Q. {{ number_format($ingresos, 2) }}</strong></p>
 
     <br>
     <h4>2. Reservas por Cancha</h4>
@@ -95,7 +95,7 @@
                 <td>{{ $r->cliente->name ?? '—' }}</td>
                 <td>{{ $r->cancha->name ?? '—' }}</td>
                 <td>{{ $r->horas }}</td>
-                <td>S/ {{ number_format($r->subtotal, 2) }}</td>
+                <td>Q. {{ number_format($r->subtotal, 2) }}</td>
                 <td>{{ $r->estado }}</td>
                 <td>{{ $r->gratuito ? 'Sí' : 'No' }}</td>
                 <td>

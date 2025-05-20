@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Validation\Rules\Can;
+
 return [
 
     /*
@@ -325,36 +327,43 @@ return [
                     'text' => 'Lista de Productos',
                     'route'  => 'admin.productos',
                     'icon' => 'fas fa-copy',
+                    'can' => 'admin.productos'
                 ],
                 [
                     'text' => 'Categorias',
                     'route'  => 'admin.categorias',
                     'icon' => 'fas fa-folder',
+                    'can' => 'admin.categorias'
                 ],
                 [
                     'text' => 'Canchas',
                     'route'  => 'admin.canchas',
                     'icon' => 'fas fa-futbol',
+                    'can' => 'admin.canchas'
                 ],
                 [
                     'text' => 'Reporte Reservas',
                     'route'  => 'admin.reservas_reporte',
                     'icon' => 'fas fa-list',
+                    'can' => 'admin.reservas'
                 ],
                 [
                     'text' => 'Marcas',
                     'route'  => 'admin.marcas',
-                    'icon' => 'fas fa-tags'
+                    'icon' => 'fas fa-tags',
+                    'can'  => 'admin.marcas',
                 ],
                 [
                     'text' => 'Unidades',
                     'route'  => 'admin.unidades',
-                    'icon' => 'fas fa-thumbtack'
+                    'icon' => 'fas fa-thumbtack',
+                    'can'  => 'admin.unidades',
                 ],
                 [
                     'text' => 'Codigo Barra',
                     'icon' => 'fas fa-barcode',
                     'route'  => 'admin.codigo_barra',
+                    'can'  => 'admin.codigo_barra',
                 ],
             ],
         ],
@@ -365,18 +374,22 @@ return [
                 [
                     'text' => 'POS',
                     'route'  => 'admin.ventas.pos',
+                    'can'  => 'admin.ventas.pos',
                 ],
                 [
                     'text' => 'Gestionar Ventas',
                     'route'  => 'admin.ventas.index',
+                    'can'  => 'admin.ventas.index',
                 ],
                 [
                     'text' => 'Gestionar Cajas',
                     'route'  => 'admin.cajas.index',
+                    'can'  => 'admin.ventas.index',
                 ],
                 [
                     'text' => 'Gestionar Devoluciones',
                     'route'  => 'admin.devolucions.index',
+                    'can'  => 'admin.ventas.index',
                 ],
             ],
         ],
@@ -387,10 +400,12 @@ return [
                 [
                     'text' => 'Lista de Compras',
                     'route'  => 'admin.compras',
+                    'can'  => 'admin.compras',
                 ],
                 [
                     'text' => 'Almacen Stock',
                     'route'  => 'admin.almacen_stock',
+                    'can'  => 'admin.compras',
                 ],
             ],
         ],
@@ -401,10 +416,12 @@ return [
                 [
                     'text' => 'Listas de Gastos',
                     'route'  => 'admin.gastos.index',
+                    'can' => 'admin.gastos.index',
                 ],
                 [
-                    'text'    => 'Categorias de Gastos',
-                    'route'     => 'admin.gastos.tgastos',
+                    'text'  => 'Categorias de Gastos',
+                    'route' => 'admin.gastos.tgastos',
+                    'can'   => 'admin.gastos.tgastos',
                 ],
             ],
         ],
@@ -415,14 +432,17 @@ return [
                 [
                     'text' => 'Clientes',
                     'route'  => 'admin.clientes',
+                    'can'   => 'admin.clientes',
                 ],
                 [
                     'text'    => 'Proveedores',
                     'route'     => 'admin.proveedor',
+                    'can'   => 'admin.proveedor',
                 ],
                 [
                     'text'    => 'Usuarios',
                     'route'     => 'admin.usuario',
+                    'can'   => 'admin.usuario',
                 ],
             ],
         ],
@@ -433,10 +453,12 @@ return [
                 [
                     'text' => 'Ganancias y Perdidas',
                     'route'  => 'admin.reportes.ingresos_perdidas',
+                    'can'   => 'admin.usuario',
                 ],
                 [
                     'text' => 'Ventas Productos',
                     'route'  => 'admin.reportes.ventas_productos',
+                    'can'   => 'admin.usuario',
                 ],
             ],
         ],
@@ -448,18 +470,22 @@ return [
                     'text' => 'Ajustes de Sistemas',
                     'icon'    => 'fas fa-cog',
                     'route'  => 'admin.configuracion.ajustesistema',
+                    'can'   => 'admin.usuario',
                 ],
                 [
                     'text' => 'Cambiar Logo',
                     'url'  => '#',
+                    'can'   => 'admin.usuario',
                 ],
                 [
                     'text' => 'Almacenes',
                     'route'  => 'admin.almacen',
+                    'can'   => 'admin.usuario',
                 ],
                 [
                     'text' => 'Monedas',
                     'route'  => 'admin.moneda',
+                    'can'   => 'admin.usuario',
                 ],
             ],
         ],

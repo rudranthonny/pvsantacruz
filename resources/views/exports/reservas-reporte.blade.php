@@ -13,7 +13,7 @@
     {{-- Ingresos Totales --}}
     <tr>
         <th colspan="3">Ingresos Totales</th>
-        <td colspan="3">S/ {{ number_format($ingresos, 2) }}</td>
+        <td colspan="3">Q. {{ number_format($ingresos, 2) }}</td>
     </tr>
 
     <tr><td colspan="6"></td></tr>

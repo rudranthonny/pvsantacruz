@@ -32,7 +32,7 @@
             <div class="card bg-info text-white shadow">
                 <div class="card-body text-center">
                     <h5>Ingresos Totales</h5>
-                    <h3 class="fw-bold">S/ {{ number_format($this->ingresosTotales, 2) }}</h3>
+                    <h3 class="fw-bold">Q. {{ number_format($this->ingresosTotales, 2) }}</h3>
                 </div>
             </div>
         </div>
@@ -127,7 +127,7 @@
                                 <td>{{ $r->cliente->name ?? '—' }}</td>
                                 <td>{{ $r->cancha->name ?? '—' }}</td>
                                 <td>{{ $r->horas }}</td>
-                                <td>S/ {{ number_format($r->subtotal, 2) }}</td>
+                                <td>Q. {{ number_format($r->subtotal, 2) }}</td>
                                 <td>
                                     @if ($r->estado == 'Utilizada')
                                         <span class="badge bg-primary">{{ $r->estado }}</span>
