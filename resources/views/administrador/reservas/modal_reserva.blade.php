@@ -11,7 +11,7 @@
                 <div class="col-12 p-2">
                     <div class="row my-2">
                         <div class="col-12 col-sm-4 my-2">
-                            <label for="">B.Cliente</label>
+                            <label for="">B.Cliente @if($scliente) <span style="color:red;">Falta {{$scliente->reservas_faltantes}} fecha(s)@if($scliente->fecha_proxima),{{$scliente->fecha_proxima}}@endif   </span> @endif</label>
                             <input type="text" class="form-control" wire:model.live='nro_documento' placeholder="nro_documento">
                             @error('nro_documento')<div class="p-1" style="color:red;"> {{ $message }}</div>@enderror
                         </div>
@@ -46,6 +46,16 @@
                             <label for="cantidad_horas">Cantidad Horas</label>
                             <input type="number" id='cantidad_horas'  wire:model.live='cantidad_horas' class="form-control">
                             @error('cantidad_horas')<div class="p-1" style="color:red;"> {{ $message }}</div>@enderror
+                        </div>
+                        <div class="col-12 col-sm-12 my-2">
+                            <label>Días de la semana:</label><br>
+                            @foreach(['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'] as $i => $dia)
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" wire:model="dias_semana" value="{{ $i }}">
+                                    <label class="form-check-label">{{ $dia }}</label>
+                                </div>
+                            @endforeach
+                            @error('dias_semana')<div class="text-danger small"> {{ $message }}</div>@enderror
                         </div>
                     </div>
                 </div>

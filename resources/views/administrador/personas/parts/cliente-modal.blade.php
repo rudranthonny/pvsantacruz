@@ -74,6 +74,12 @@
                             <input type="text" class="form-control" id="dirección" placeholder="Ingrese Ciudad" wire:model="clientesForm.direccion">
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <label for="Gratuito" class="form-label"><b>Gratuito</b></label>
+                            <input type="number" class="form-control" id="Gratuito" placeholder="Ingrese Ciudad" wire:model="clientesForm.gratuito">
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

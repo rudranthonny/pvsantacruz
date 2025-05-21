@@ -23,14 +23,12 @@ class Configuracion extends Model
         'cotizacion_stock',
         'almacen_id',
         'descripcion',
-        'descripcion2'
+        'descripcion2',
+        'gratuito',
     ];
     use HasFactory;
 
-    public function moneda()
-    {
-        return $this->belongsTo(Moneda::class);
-    }
+    public function moneda(){return $this->belongsTo(Moneda::class);}
 
 
     public function showLogin()

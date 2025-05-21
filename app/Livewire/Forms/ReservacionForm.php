@@ -2,7 +2,10 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Cliente;
+use App\Models\Configuracion;
 use App\Models\Reserva;
+use App\Models\ReservaUso;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Validate;
@@ -23,7 +26,6 @@ class ReservacionForm extends Form
 
     #[Rule('required|numeric|min:0')]
     public $costo;
-
     public $subtotal;
 
     #[Rule('required|exists:canchas,id')]
@@ -70,7 +72,85 @@ class ReservacionForm extends Form
             'gratuito' => $this->gratuito,
         ]);
 
+        if ($this->gratuito) {$this->registrar_reservas_utilizadas_grautitas();}
+        
+
         return 'Reserva creada correctamente';
+    }
+
+    private function registrar_reservas_utilizadas_grautitas()
+    {
+        # 1. Obtener configuración: cuántas horas se requieren para una gratuita
+        $conf = Configuracion::find(1);
+        $canthoras = $conf ? $conf->gratuito : 0;
+        # 2. Calcular cuántas horas previas deben haberse utilizado (ej: 1 gratuita por cada X)
+        $hora_registradas = $this->horas * $canthoras;
+
+        ###### paretesis si tiene horas gratuitas el cliente utilizarlo
+        $cliente = Cliente::find($this->cliente_id);
+        if ($cliente && $cliente->gratuito > 0) 
+        {
+            $hgratuitas_disponibles = $cliente->gratuito * $canthoras;
+            if ($hgratuitas_disponibles >= $hora_registradas) 
+            {
+                $cliente->gratuito -= $this->horas;
+                $cliente->save();
+                $hora_registradas = 0;
+                return;
+            } else {
+                $reservas_gratuitas_cubiertas = intdiv($hgratuitas_disponibles, $canthoras);
+                $cliente->gratuito -= $reservas_gratuitas_cubiertas;
+                $cliente->save();
+
+                $hora_registradas -= $reservas_gratuitas_cubiertas * $canthoras;
+            }
+        }  
+        # 3. Buscar reservas pagadas del cliente que están marcadas como 'Utilizada' pero aún no 'utilizado'
+        $reservas_cumplidas = Reserva::where('cliente_id', $this->cliente_id)
+            ->where('gratuito', false)
+            ->where('estado', 'Utilizada')
+            ->where('utilizado', false)
+        ->get();
+        # 4. Recorrer reservas pagadas y consumir horas disponibles hasta cumplir lo necesario
+        foreach ($reservas_cumplidas as $rcumplida) 
+        {
+            $hora_disponible = max(0, $rcumplida->horas - $rcumplida->contador);
+
+            if ($hora_registradas >= $hora_disponible) {
+                // Se usan todas las horas disponibles de esta reserva
+                $rcumplida->contador += $hora_disponible;
+                $rcumplida->utilizado = true;
+                $rcumplida->save();
+
+                // Guardar trazabilidad
+                ReservaUso::create([
+                    'reserva_id' => $this->reserva->id,
+                    'reserva_origen_id' => $rcumplida->id,
+                    'horas_utilizadas' => $hora_disponible,
+                ]);
+
+                $hora_registradas -= $hora_disponible;
+            } 
+            else {
+                // Solo se usa una parte de las horas disponibles
+                $rcumplida->contador += $hora_registradas;
+                $rcumplida->utilizado = false;
+                $rcumplida->save();
+
+                // Guardar trazabilidad
+                ReservaUso::create([
+                    'reserva_id' => $this->reserva->id,
+                    'reserva_origen_id' => $rcumplida->id,
+                    'horas_utilizadas' => $hora_registradas,
+                ]);
+
+                $hora_registradas = 0;
+            }
+            # Si ya no se necesitan más horas, salimos
+            if ($hora_registradas == 0) {
+                break;
+            }
+        }
     }
 
     public function update()
@@ -91,4 +171,6 @@ class ReservacionForm extends Form
 
         return 'Reserva actualizada correctamente';
     }
+
+    #########################################################
 }

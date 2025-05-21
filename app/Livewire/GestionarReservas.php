@@ -29,9 +29,12 @@ class GestionarReservas extends Component
     public $motivo_anulacion;
     public $nro_documento,$nombre_cliente,$telefono_cliente;
     public $scliente;
+    public array $dias_semana = []; // Guarda los días seleccionados por el usuario
+
 
     public function UpdatedNroDocumento(){
         $bcliente = Cliente::where('nit',$this->nro_documento)->first();
+       
         if ($bcliente) {
             $this->nombre_cliente = $bcliente->name;
             $this->telefono_cliente = $bcliente->telefono;
@@ -61,8 +64,8 @@ class GestionarReservas extends Component
     public function save_reserva_gratuita()
     {
         $this->cancha->costo = 0;
-        $this->reservaform->gratuito = true; // marca manual por si lo usas en `store()`
-        $this->save_reserva(); // reutiliza el método existente
+        $this->reservaform->gratuito = true; # marca manual por si lo usas en `store()`
+        $this->save_reserva(); # reutiliza el método existente
     }
 
     public function mount($id){
@@ -149,6 +152,7 @@ class GestionarReservas extends Component
             'ffinal' => 'required|date|after_or_equal:finicio',
             'time' => 'required',
             'cantidad_horas' => 'required|integer|min:1',
+            'dias_semana' => 'required|array|min:1',
         ], [
             'finicio.required' => 'La fecha de inicio es obligatoria.',
             'ffinal.required' => 'La fecha final es obligatoria.',
@@ -158,6 +162,7 @@ class GestionarReservas extends Component
             'cantidad_horas.required' => 'Debe especificar la cantidad de horas.',
             'cantidad_horas.integer' => 'Las horas deben ser un número entero.',
             'cantidad_horas.min' => 'Debe reservar al menos 1 hora.',
+            'dias_semana.required' => 'Debe seleccionar al menos un día de la semana para generar las reservas.',
         ]);
         
         $inicio = Carbon::parse($this->finicio);
@@ -173,7 +178,9 @@ class GestionarReservas extends Component
             DB::beginTransaction();
             foreach ($periodo as $fecha) 
             {
-                
+                if (!in_array($fecha->dayOfWeek, $this->dias_semana)) {
+                    continue; // saltar días que no están seleccionados
+                }
                 $fingreso = Carbon::parse($fecha->format('Y-m-d') . ' ' . $hora);
                 $fsalida = $fingreso->copy()->addHours($horas);
                 #Verificar colisión

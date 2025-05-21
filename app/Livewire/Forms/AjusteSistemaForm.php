@@ -25,6 +25,7 @@ class AjusteSistemaForm extends Form
     public $cotizacion_stock;
     public $farmacia;
     public $almacen_id;
+    public $gratuito;
 
     public $rule_ajuste = [
         'moneda_id' => 'required',
@@ -50,6 +51,7 @@ class AjusteSistemaForm extends Form
         $this->almacen_id = $configuracion->almacen_id;
         $this->descripcion = $configuracion->descripcion;
         $this->descripcion2 = $configuracion->descripcion2;
+        $this->gratuito = $configuracion->gratuito;
     }
 
     public function update($imagen_logo = null,$logo_ticket = null){

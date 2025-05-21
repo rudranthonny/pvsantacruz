@@ -45,6 +45,7 @@
                                             <th>Teléfono</th>
                                             <th>Email</th>
                                             <th>Deuda</th>
+                                            <th>Gratuito</th>
                                             <th>Accion</th>
                                         </tr>
                                     </thead>
@@ -65,6 +66,7 @@
                                                     @endif
 
                                                 </td>
+                                                <td>{{ $cliente->gratuito }}</td>
                                                 <td>
                                                     <button class="btn btn-info"  data-bs-toggle="modal" data-bs-target="#modalReporteDeudas"
                                                     wire:click="modal_reporte_deudas('{{ $cliente->id }}')"><i class="fas fa-list"></i></button>

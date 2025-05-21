@@ -28,6 +28,7 @@ class ClientesForm extends Form
     public $ciudad;
     public $numero_impuesto;
     public $direccion;
+    public $gratuito;
 
     public function set(Cliente $cliente){
         $this->cliente = $cliente;
@@ -40,6 +41,7 @@ class ClientesForm extends Form
         $this->ciudad = $cliente->ciudad;
         $this->numero_impuesto = $cliente->numero_impuesto;
         $this->direccion = $cliente->direccion;
+        $this->gratuito = $cliente->gratuito;
     }
 
     public function generar_pago_deuda($monto,$opcion,$detalle)

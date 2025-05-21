@@ -6,6 +6,7 @@ use App\Livewire\Forms\CanchaForm;
 use App\Models\Almacen;
 use App\Models\Cancha;
 use App\Models\Reserva;
+use App\Models\ReservaUso;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -23,6 +24,7 @@ class GestionarCanchas extends Component
     public function mount(){$this->almacenes = Almacen::all();}
 
     public function aceptar_anulacion(Reserva $reserva){
+        if ($reserva->gratuito) {$this->revertir_usos_gratuita($reserva);}
         $reserva->estado = 'Anulada';
         $reserva->save();
         $this->dispatch('success','Se Anulo la reserva');
@@ -34,6 +36,22 @@ class GestionarCanchas extends Component
         $this->dispatch('success','Se Rechazo la Solcitud de Anulación');
     }
 
+    public function revertir_usos_gratuita(Reserva $reserva)
+    {
+        $usos = ReservaUso::where('reserva_id', $reserva->id)->get();
+
+        foreach ($usos as $uso) {
+            $reserva_origen = Reserva::find($uso->reserva_origen_id);
+            if ($reserva_origen) {
+                $reserva_origen->contador -= $uso->horas_utilizadas;
+                if ($reserva_origen->contador < $reserva_origen->horas) {
+                    $reserva_origen->utilizado = false;
+                }
+                $reserva_origen->save();
+            }
+            $uso->delete(); // eliminar la trazabilidad
+        }
+    }
 
     public function seleccionar_cancha(Cancha $cancha){$this->scancha = $cancha;}
 

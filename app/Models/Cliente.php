@@ -16,7 +16,9 @@ class Cliente extends Model
         'ciudad',
         'numero_impuesto',
         'direccion',
-        'tdocumento_id'];
+        'tdocumento_id',
+        'gratuito',
+    ];
     use HasFactory;
 
     public function pagodeudas()
@@ -32,22 +34,56 @@ class Cliente extends Model
         return $this->hasMany(Reserva::class);
     }
 
-    public function getReservasGratuitasDisponiblesAttribute()
+    public function getFechaProximaAttribute()
     {
-        // Total de horas pagadas y utilizadas
+        $numero = $this->getReservasFaltantesAttribute();
+        $reservas = $this->reservas()
+            ->where('gratuito', false)
+            ->where('estado', 'Reservado')
+            ->orderBy('fingreso')
+        ->get();
+         // Verificar que existe la reserva en la posición deseada
+        $reserva = $reservas->get($numero); // -1 porque el índice comienza en 0
+
+        return $reserva ? $reserva->fingreso : null; // Si no existe, retorna null
+    }
+
+    public function getReservasFaltantesAttribute(){
+        $conf = Configuracion::find(1);
+        $canthoras = $conf ? $conf->gratuito : 0;
+         
         $horas_utilizadas = $this->reservas()
             ->where('gratuito', false)
             ->where('estado', 'Utilizada')
-            ->sum('horas');
+            ->where('utilizado', false)
+            ->get()
+        ->sum(function ($reserva) {return max(0, $reserva->horas - $reserva->contador); });
 
-        // Total de horas gratuitas ya usadas (reservadas o utilizadas)
-        $horas_gratuitas_usadas = $this->reservas()
-            ->where('gratuito', true)
-            ->whereIn('estado', ['Reservado', 'Utilizada'])
-            ->sum('horas');
+        if($horas_utilizadas > $canthoras){$horas_utilizadas = 0;}
+        else {$horas_utilizadas = $canthoras-$horas_utilizadas; }
 
-        // Calcular cantidad de horas gratuitas disponibles
-        $gratuitas_disponibles = floor($horas_utilizadas / 10) - $horas_gratuitas_usadas;
+        return $horas_utilizadas;
+    }
+
+    public function getReservasGratuitasDisponiblesAttribute()
+    {
+        $conf = Configuracion::find(1);
+        $canthoras = $conf ? $conf->gratuito : 0;
+        
+        // Total de horas pagadas y utilizadas
+       $horas_utilizadas = $this->reservas()
+            ->where('gratuito', false)
+            ->where('estado', 'Utilizada')
+            ->where('utilizado', false)
+            ->get()
+            ->sum(function ($reserva) {return max(0, $reserva->horas - $reserva->contador); });
+            
+       # Calcular cantidad de horas gratuitas disponibles
+       $gratuitas_disponibles = 0 + $this->gratuito;
+       
+        if ($canthoras > 0 && $horas_utilizadas > 0) {
+            $gratuitas_disponibles = floor($horas_utilizadas / $canthoras);
+        }
 
         return max(0, $gratuitas_disponibles); // nunca devolver negativo
     }

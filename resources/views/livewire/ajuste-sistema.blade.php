@@ -84,6 +84,10 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                <label for="pie_de_pagina" class="form-label">N°Reservas para Gratuito<span style="color:red;">*</span></label>
+                                <input type="number" class="form-control" id="gratuito" wire:model='ajustesistemaform.gratuito' >
+                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12">
