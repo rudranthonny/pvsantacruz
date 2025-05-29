@@ -49,7 +49,15 @@
                         </div>
                         <div class="col-12 col-sm-12 my-2">
                             <label>Días de la semana:</label><br>
-                            @foreach(['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'] as $i => $dia)
+                            @foreach([
+                                1 => 'Lunes',
+                                2 => 'Martes',
+                                3 => 'Miércoles',
+                                4 => 'Jueves',
+                                5 => 'Viernes',
+                                6 => 'Sábado',
+                                0 => 'Domingo',
+                            ] as $i => $dia)
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" wire:model="dias_semana" value="{{ $i }}">
                                     <label class="form-check-label">{{ $dia }}</label>

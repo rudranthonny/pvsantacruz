@@ -164,7 +164,6 @@ class GestionarReservas extends Component
             'cantidad_horas.min' => 'Debe reservar al menos 1 hora.',
             'dias_semana.required' => 'Debe seleccionar al menos un día de la semana para generar las reservas.',
         ]);
-        
         $inicio = Carbon::parse($this->finicio);
         $fin = Carbon::parse($this->ffinal);
         $hora = $this->time;
@@ -173,14 +172,17 @@ class GestionarReservas extends Component
         $isGratisForzado = $this->reservaform->gratuito ?? false;
        
         $periodo = CarbonPeriod::create($inicio, $fin);
+        
         try 
         {
             DB::beginTransaction();
             foreach ($periodo as $fecha) 
             {
+                
                 if (!in_array($fecha->dayOfWeek, $this->dias_semana)) {
                     continue; // saltar días que no están seleccionados
                 }
+               
                 $fingreso = Carbon::parse($fecha->format('Y-m-d') . ' ' . $hora);
                 $fsalida = $fingreso->copy()->addHours($horas);
                 #Verificar colisión
