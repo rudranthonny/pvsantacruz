@@ -79,7 +79,7 @@ class Cliente extends Model
             ->sum(function ($reserva) {return max(0, $reserva->horas - $reserva->contador); });
             
        # Calcular cantidad de horas gratuitas disponibles
-       $gratuitas_disponibles = 0 + $this->gratuito;
+       $horas_utilizadas = $horas_utilizadas + $this->gratuito;
        
         if ($canthoras > 0 && $horas_utilizadas > 0) {
             $gratuitas_disponibles = floor($horas_utilizadas / $canthoras);

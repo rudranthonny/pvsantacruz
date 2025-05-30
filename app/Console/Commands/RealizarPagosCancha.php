@@ -83,24 +83,23 @@ class RealizarPagosCancha extends Command
         $canthoras = $conf ? $conf->gratuito : 0;
         # 2. Calcular cuántas horas previas deben haberse utilizado (ej: 1 gratuita por cada X)
         $hora_registradas = $horas * $canthoras;
-
-        ###### paretesis si tiene horas gratuitas el cliente utilizarlo
+        # 3. paretesis si tiene horas gratuitas el cliente utilizarlo
         $cliente = Cliente::find($cliente_id);
         if ($cliente && $cliente->gratuito > 0) 
         {
-            $hgratuitas_disponibles = $cliente->gratuito * $canthoras;
+            $hgratuitas_disponibles = $cliente->gratuito;
+
             if ($hgratuitas_disponibles >= $hora_registradas) 
             {
-                $cliente->gratuito -= $horas;
+                $cliente->gratuito -= $hora_registradas;
                 $cliente->save();
                 $hora_registradas = 0;
                 return;
-            } else {
-                $reservas_gratuitas_cubiertas = intdiv($hgratuitas_disponibles, $canthoras);
-                $cliente->gratuito -= $reservas_gratuitas_cubiertas;
+            } 
+            else {
+                $hora_registradas = $hora_registradas-$hgratuitas_disponibles;
+                $cliente->gratuito = 0;
                 $cliente->save();
-
-                $hora_registradas -= $reservas_gratuitas_cubiertas * $canthoras;
             }
         }  
         # 3. Buscar reservas pagadas del cliente que están marcadas como 'Utilizada' pero aún no 'utilizado'

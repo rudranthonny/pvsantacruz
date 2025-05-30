@@ -68,7 +68,8 @@ class GestionarReservas extends Component
         $this->save_reserva(); # reutiliza el método existente
     }
 
-    public function mount($id){
+    public function mount($id)
+    {
         $this->cancha = Cancha::find($id);
         $this->posventaform->reset();
     }

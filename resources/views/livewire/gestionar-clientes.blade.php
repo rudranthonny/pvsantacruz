@@ -68,6 +68,7 @@
                                                 </td>
                                                 <td>{{ $cliente->gratuito }}</td>
                                                 <td>
+                                                    <a href="{{route('admin.pacientes.reservas',$cliente->id)}}" target="_blank" class="btn btn-success" id="consultar_reservas_{{$cliente->id}}" ><i class="fas fa-eye"></i></a>
                                                     <button class="btn btn-info"  data-bs-toggle="modal" data-bs-target="#modalReporteDeudas"
                                                     wire:click="modal_reporte_deudas('{{ $cliente->id }}')"><i class="fas fa-list"></i></button>
                                                     <button type="button" class="btn btn-primary"
