@@ -77,7 +77,13 @@
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <label for="Gratuito" class="form-label"><b>Gratuito</b></label>
-                            <input type="number" class="form-control" id="Gratuito" placeholder="Ingrese Ciudad" wire:model="clientesForm.gratuito">
+                            <input type="number" class="form-control" id="Gratuito" placeholder="Gratuito" wire:model="clientesForm.gratuito">
+                        </div>
+                    </div>
+                     <div class="row mb-3">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <label for="Gratuito" class="form-label"><b>Premiun</b></label>
+                            <input type="checkbox"  id="premiun" wire:model="clientesForm.premiun">
                         </div>
                     </div>
                 </form>

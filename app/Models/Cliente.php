@@ -18,6 +18,7 @@ class Cliente extends Model
         'direccion',
         'tdocumento_id',
         'gratuito',
+        'premiun',
     ];
     use HasFactory;
 

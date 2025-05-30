@@ -50,7 +50,7 @@ class RealizarPagosCancha extends Command
         {
             #verificar si hay horas gratuitas en la reserva
             $gratuitas = Cliente::find($reserva->cliente_id)->reservas_gratuitas_disponibles;
-            if ($gratuitas > 0 && $gratuitas >= $reserva->horas) 
+            if ($gratuitas > 0 && $gratuitas >= $reserva->horas && $reserva->cliente->premiun) 
             {
                 $reserva->gratuito = true;
                 $reserva->costo = 0;
@@ -67,6 +67,7 @@ class RealizarPagosCancha extends Command
                 #agregar cambio de estado
                 $reserva->posventa_detalle_id = $id_detalle;
                 $reserva->estado = 'Utilizada';
+                if($reserva->cliente->premiun == false){$reserva->gratuito = 0;}
                 $reserva->save();
                 #caja
                 $comprobante->m_caja()->create(['tmovimiento_caja_id' => '3', 'caja_id' => $caja->id, 'signo' => '+', 'monto' => $reserva->subtotal]);
