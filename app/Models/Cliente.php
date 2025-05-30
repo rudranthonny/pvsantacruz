@@ -51,14 +51,13 @@ class Cliente extends Model
     public function getReservasFaltantesAttribute(){
         $conf = Configuracion::find(1);
         $canthoras = $conf ? $conf->gratuito : 0;
-         
         $horas_utilizadas = $this->reservas()
             ->where('gratuito', false)
             ->where('estado', 'Utilizada')
             ->where('utilizado', false)
             ->get()
         ->sum(function ($reserva) {return max(0, $reserva->horas - $reserva->contador); });
-
+        $horas_utilizadas = $horas_utilizadas+$this->gratuito;
         if($horas_utilizadas > $canthoras){$horas_utilizadas = 0;}
         else {$horas_utilizadas = $canthoras-$horas_utilizadas; }
 
@@ -69,7 +68,8 @@ class Cliente extends Model
     {
         $conf = Configuracion::find(1);
         $canthoras = $conf ? $conf->gratuito : 0;
-        
+        $gratuitas_disponibles = 0;
+
         // Total de horas pagadas y utilizadas
        $horas_utilizadas = $this->reservas()
             ->where('gratuito', false)
@@ -77,10 +77,10 @@ class Cliente extends Model
             ->where('utilizado', false)
             ->get()
             ->sum(function ($reserva) {return max(0, $reserva->horas - $reserva->contador); });
-            
        # Calcular cantidad de horas gratuitas disponibles
        $horas_utilizadas = $horas_utilizadas + $this->gratuito;
-       
+        
+
         if ($canthoras > 0 && $horas_utilizadas > 0) {
             $gratuitas_disponibles = floor($horas_utilizadas / $canthoras);
         }
