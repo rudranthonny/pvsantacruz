@@ -21,7 +21,7 @@ class ReservaController extends Controller
     return $reservas->map(function ($reserva) {
         return [
             'id' => $reserva->id,
-            'title' => 'R#'.$reserva->id." ".$reserva->cancha->name,
+            'title' => 'R#'.$reserva->id,
             'start' => $reserva->fingreso,
             'end' => $reserva->fsalida,
             'color' => match ($reserva->estado) {

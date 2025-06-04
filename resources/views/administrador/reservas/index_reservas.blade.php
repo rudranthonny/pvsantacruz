@@ -45,13 +45,13 @@
      <!--full calendar-->
      <script type="text/javascript">
         Livewire.on('cerrar_modal_agenda', reservacion => {
-            actualizar_calendario(reservacion);
+            actualizar_calendario();
             ventana = document.getElementById('cerrar_ventana_modal_reserva').click();
         });
 
         Livewire.on('general_actualizar_calendario', reservacion => {
-            actualizar_calendario(reservacion);
-            //ventana = document.getElementById('cerrar_modal_agenda_a').click();
+            actualizar_calendario();
+            ventana = document.getElementById('cerrar_modal_agenda_a').click();
         });
 
         Livewire.on('error_cambio_estado', () => {

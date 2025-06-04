@@ -95,7 +95,7 @@ class GestionarReservas extends Component
     }
 
     public function obtener_reservaciones(){
-        $reservas = Reserva::where('activo',1)->get();
+      /*  $reservas = Reserva::where('activo',1)->get();
         $eventos = [];
         foreach ($reservas as $key => $reserva) {
             $habitacions = "Cancha : ";
@@ -115,7 +115,7 @@ class GestionarReservas extends Component
             ];
         }
         //$reservaciones = json_encode($eventos);
-        return $eventos;
+        return $eventos;*/
     }
 
     #[On('abrir-modal-booking')]

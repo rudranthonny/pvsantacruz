@@ -72,16 +72,8 @@
         });
 
         function actualizar_calendario(reservacion) {
-            if (!calendar) return; // Evitar errores si aún no se inicializó
-
-            // Eliminar todos los eventos anteriores
-            calendar.removeAllEvents();
-
-            // Agregar los nuevos eventos desde el JSON
-            const nuevosEventos = JSON.parse(reservacion);
-            nuevosEventos.forEach(evento => {
-                calendar.addEvent(evento);
-            });
+           if (!calendar) return;
+            calendar.refetchEvents(); 
         }
 
         function mostrar_avertencia_booking_eliminar(id_eliminar)
