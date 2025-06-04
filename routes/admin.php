@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ReservaController;
 use App\Livewire\ConsultarProducto;
 use App\Livewire\GestionarReservas;
 use App\Livewire\PacientesReservas;
@@ -53,3 +54,4 @@ Route::view("canchas", "administrador.canchas.index_canchas")->middleware('can:a
 Route::get("reservas/consultar/{id}", GestionarReservas::class)->middleware('can:admin.reservas')->name('admin.reservas');
 Route::get("reservas/pacientes/{id}", PacientesReservas::class)->middleware('can:admin.reservas')->name('admin.pacientes.reservas');
 Route::view("reservas/reportes", "administrador.reservas.index_reservas_reporte")->middleware('can:admin.reservas')->name("admin.reservas_reporte");
+Route::get("api/reservas", [ReservaController::class, 'apiReservas']);

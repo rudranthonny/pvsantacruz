@@ -150,7 +150,7 @@
                                                 @php $valor_cantidad = 'items.'.$key.'.cantidad';@endphp
                                                 <center><input type="number" id="item-{{$key}}-cantidad" step="1" class="form-control text-center"
                                                         style="width: 80px;" min=1
-                                                        wire:model.live.debounce.800ms='{{ $valor_cantidad }}'>
+                                                        wire:model.live.debounce.3200ms='{{ $valor_cantidad }}'>
                                                 </center>
                                             </td>
                                             <td>
@@ -160,7 +160,7 @@
                                                 @php $valor_producto_descuento = 'items.'.$key.'.descuento';@endphp
                                                 <center><input type="number" id="item-{{$key}}-descuento" step="0.01" class="form-control text-center"
                                                         style="width: 80px;" min=1
-                                                        wire:model.live.debounce.800ms='{{ $valor_producto_descuento }}'>
+                                                        wire:model.live.debounce.3200ms='{{ $valor_producto_descuento }}'>
                                                 </center>
                                             </td>
                                             <td>{{ $configuracion->moneda->simbolo . $item['importe'] }}</td>

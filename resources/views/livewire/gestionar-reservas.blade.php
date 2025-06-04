@@ -55,7 +55,18 @@
                 modal.modal('show');
                 window.Livewire.dispatch('abrir-modal-booking',{ reserva:info.event.id,info:null});
             },
-            events: @json($reservaciones),
+            events: {
+                url: '{{ url("admin/api/reservas") }}', // Nueva ruta API en Laravel
+                method: 'GET',
+                extraParams: function() {
+                return {
+                    cancha_id: @json($cancha->id),
+                };
+                },
+                failure: function() {
+                alert('Error al cargar las reservas.');
+                },
+            },
           });
           calendar.render();
         });

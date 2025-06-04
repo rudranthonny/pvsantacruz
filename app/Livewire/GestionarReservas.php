@@ -76,8 +76,6 @@ class GestionarReservas extends Component
 
     public function render()
     {
-        $this->reservaciones =$this->obtener_reservaciones();
-       // dd($this->reservaciones);
         $time = date('H-i-s');
         return view('livewire.gestionar-reservas',compact('time'))->extends('administrador.reservas.index_reservas');
     }
