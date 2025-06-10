@@ -25,7 +25,18 @@
                 dayMaxEventRows: 3 // adjust to 6 only for timeGridWeek/timeGridDay
                 }
             },
-
+            slotLabelFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                meridiem: 'short',
+                hour12: true
+            },
+            eventTimeFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                meridiem: 'short',
+                hour12: true
+            },
             dateClick:function(info)
             {
                 var actual =new Date().toDateString();
@@ -60,7 +71,9 @@
                 method: 'GET',
                 extraParams: function() {
                 return {
+                    
                     cancha_id: @json($cancha->id),
+                    
                 };
                 },
                 failure: function() {

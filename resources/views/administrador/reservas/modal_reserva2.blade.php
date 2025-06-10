@@ -1,4 +1,4 @@
-<div wire:ignore.self class="modal fade" id="modal_edit_agenda_a" tabindex="30000" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div wire:ignore.self class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modal_edit_agenda_a" tabindex="30000" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
