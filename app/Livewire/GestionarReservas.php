@@ -163,6 +163,7 @@ class GestionarReservas extends Component
             'cantidad_horas.min' => 'Debe reservar al menos 1 hora.',
             'dias_semana.required' => 'Debe seleccionar al menos un día de la semana para generar las reservas.',
         ]);
+        
         $inicio = Carbon::parse($this->finicio);
         $fin = Carbon::parse($this->ffinal);
         $hora = $this->time;

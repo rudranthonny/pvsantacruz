@@ -18,20 +18,25 @@ class ReservaController extends Controller
         ->whereBetween('fingreso', [$start, $end])
         ->get();
 
+
     return $reservas->map(function ($reserva) {
-        return [
-            'id' => $reserva->id,
-            'title' => 'R#'.$reserva->id,
-            'start' => $reserva->fingreso,
-            'end' => $reserva->fsalida,
-            'color' => match ($reserva->estado) {
-                'Reservado' => '#007bff',
-                'Utilizada' => '#28a745',
-                'Anulada'   => '#dc3545',
-                default     => '#6c757d',
-            },
-        ];
-    });
+    $color = match ($reserva->estado) {
+        'Reservado' => '#007bff',
+        'Utilizada' => '#28a745',
+        'Anulada'   => '#dc3545',
+        default     => '#6c757d',
+    };
+
+    $nombre_abc = $reserva->gratuito ? 'GRATUITO#' . $reserva->id : 'R#' . $reserva->id;
+    $color = $reserva->gratuito ? '#ffff00' : $color;
+    return [
+        'id' => $reserva->id,
+        'title' => $nombre_abc,
+        'start' => $reserva->fingreso,
+        'end' => $reserva->fsalida,
+        'color' => $color,
+    ];
+});
 }
 
 }
