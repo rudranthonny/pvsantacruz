@@ -23,7 +23,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row mb-4 align-items-end">
-                            <div class="col-12 col-sm-4">
+                            <div class="col-12 col-sm-4 my-1">
                                 <label  for="buscar_productos">Buscar Producto</label>
                                 <div class="input-group">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
@@ -31,7 +31,7 @@
                                         placeholder="Buscar Productos" wire:model.live='search'>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-3">
+                            <div class="col-12 col-sm-3 my-1">
                                 <label for="seleccionar_almacen">Seleccionar Almacen</label>
                                 <select class="form-select" id="seleccionar_almacen" wire:model.live="salmacen">
                                         <option value="">Todos</option>
@@ -40,7 +40,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-12 col-sm-3">
+                            <div class="col-12 col-sm-2 my-1">
                                 <label for="seleccionar_almacen">Estado del Producto</label>
                                 <select class="form-select" id="seleccionar_almacen" wire:model.live="sestado">
                                         <option value="">Elegir</option>
@@ -50,9 +50,17 @@
                                         <option value="exceso">Exceso</option>
                                 </select>
                             </div>
-                            <div class="col-12 col-sm-2 text-right">
-                                <button class="btn btn-outline-success"  wire:loading.attr="disabled" wire:target='descargar_reporte_almacen_pdf' wire:click='descargar_reporte_almacen_pdf' ><i class="fas fa-file"></i> PDF</button>
-                                <button class="btn btn-outline-success"  wire:loading.attr="disabled" wire:target='descargar_reporte_general_almacen_excel' wire:click='descargar_reporte_general_almacen_excel' ><i class="fas fa-file"></i> Reporte General</button>
+                            <div class="col-12 col-sm-3 my-1">
+                                <label for="seleccionar_categoria">Categoría</label>
+                                <select class="form-select" id="seleccionar_categoria" wire:model.live="scategoria">
+                                    <option value="">Todas</option>
+                                    @foreach ($categorias as $categoria)
+                                        <option value="{{ $categoria->id }}">{{ $categoria->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-2 text-right my-1">
+                                <button class="btn btn-outline-success"  wire:loading.attr="disabled" wire:target='descargar_reporte_almacen_pdf' wire:click='descargar_reporte_almacen_pdf' ><i class="fas fa-file"></i> PDF</button>                                <button class="btn btn-outline-success"  wire:loading.attr="disabled" wire:target='descargar_reporte_general_almacen_excel' wire:click='descargar_reporte_general_almacen_excel' ><i class="fas fa-file"></i> RG</button>
 
                                 <!--
                                     <button class="btn btn-outline-danger" wire:loading.attr="disabled" wire:target='descargar_reporte_almacen_excel' wire:click='descargar_reporte_almacen_excel'><i class="fas fa-file"></i> EXCEL</button>
@@ -60,7 +68,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 table-responsive">
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr class="text-center">

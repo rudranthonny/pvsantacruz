@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Exports\ReporteGeneralAlmacenExport;
 use App\Livewire\Forms\AlmacenStockForm;
 use App\Models\Almacen;
+use App\Models\Categoria;
 use App\Models\Configuracion;
 use App\Models\ProductoAlmacen;
 use App\Models\Producto;
@@ -21,13 +22,21 @@ class GestionarAlmacenStock extends Component
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
+    #lista
+    public $categorias;
+    #end
     public AlmacenStockForm $almacenstockform;
     public $search = '';
     public $titlemodal = 'Añadir';
-    public $salmacen,$sestado;
+    public $salmacen,$sestado,$scategoria;
     public $pagina = 5;
     public $configuracion;
     public $productos_almacen_export;
+
+    public function updatedScategoria()
+    {
+        $this->resetPage();
+    }
 
     public function descargar_reporte_general_almacen_excel(){
         return Excel::download(new ReporteGeneralAlmacenExport($this->salmacen), 'ReporteGeneralAlmacenProductos.xlsx');
@@ -44,6 +53,7 @@ class GestionarAlmacenStock extends Component
     {
         $this->salmacen = Almacen::find(1) ? Almacen::find(1)->id : null;
         $this->configuracion = Configuracion::find(1);
+        $this->categorias = Categoria::all();
     }
 
     public function updatedSearch()
@@ -81,6 +91,12 @@ class GestionarAlmacenStock extends Component
                   ->from(DB::raw('productos'))
                   ->whereColumn('producto_almacens.producto_id', 'productos.id')
                   ->where('productos.designacion','like','%'.$this->search.'%');
+        });
+
+        $productos_almacen->when($this->scategoria, function ($query) {
+            return $query->whereHas('producto', function ($q) {
+                $q->where('categoria_id', $this->scategoria);
+            });
         });
 
         $productos_almacen->when($this->salmacen <> '',function ($q) {
@@ -160,7 +176,8 @@ class GestionarAlmacenStock extends Component
         return Excel::download(new ReporteAlmacenStockExport($productos_almacen), 'ReporteProductosAlmacen.xlsx');
     }*/
 
-    public function descargar_reporte_almacen_pdf(){
+    public function descargar_reporte_almacen_pdf()
+    {
         $bproductos = Producto::all();
         $productos_almacen = ProductoAlmacen::query()->whereExists(function ($query)  {
             $query->select()
