@@ -186,6 +186,13 @@ class GestionarAlmacenStock extends Component
                   ->where('productos.designacion','like','%'.$this->search.'%');
         });
 
+
+        $productos_almacen->when($this->scategoria, function ($query) {
+            return $query->whereHas('producto', function ($q) {
+                $q->where('categoria_id', $this->scategoria);
+            });
+        });
+        
         $productos_almacen->when($this->salmacen <> '',function ($q) {
             return $q->where('almacen_id',$this->salmacen);
         });
