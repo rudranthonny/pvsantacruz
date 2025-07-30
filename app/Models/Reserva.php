@@ -20,6 +20,8 @@ class Reserva extends Model
         'user_id',
         'posventa_detalle_id',
         'gratuito',
+        'utilizado',
+        'motivo_anulacion',
     ];
     use HasFactory;
     public function cancha(){return $this->belongsTo(Cancha::class);}

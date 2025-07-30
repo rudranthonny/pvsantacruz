@@ -52,4 +52,8 @@ class Posventa extends Model
     public function cinvoice(){
         return $this->belongsTo(Cinvoice::class);
     }
+
+    public function pagorelacionados(){
+        return $this->hasMany(PagoRelacionado::class,'posventa_id');
+    }
 }

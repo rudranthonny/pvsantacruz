@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReservaController;
 use App\Livewire\ConsultarProducto;
 use App\Livewire\GestionarReservas;
+use App\Livewire\ModalReserva;
 use App\Livewire\PacientesReservas;
 use App\Livewire\Pos;
 use Illuminate\Support\Facades\Route;
@@ -55,3 +56,4 @@ Route::get("reservas/consultar/{id}", GestionarReservas::class)->middleware('can
 Route::get("reservas/pacientes/{id}", PacientesReservas::class)->middleware('can:admin.reservas')->name('admin.pacientes.reservas');
 Route::view("reservas/reportes", "administrador.reservas.index_reservas_reporte")->middleware('can:admin.reservas')->name("admin.reservas_reporte");
 Route::get("api/reservas", [ReservaController::class, 'apiReservas']);
+Route::get("reservas/modificar/{id}", ModalReserva::class)->middleware('can:admin.reservas')->name('admin.reservas_modificar');

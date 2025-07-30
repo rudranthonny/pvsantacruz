@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Forms\ClientesForm;
 use App\Models\Cliente;
 use App\Models\Configuracion;
+use App\Models\Reserva;
 use App\Models\Tdocumento;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -21,6 +22,27 @@ class GestionarCliente extends Component
     public $pagina = 5;
     public $pd_monto,$pd_detalle,$pd_opcion;
     public $historial_reservas_cliente, $reservas_historial = [];
+
+    public function estado_cliente(Cliente $cliente)
+    {
+        // Alternar el estado del cliente (activo/inactivo)
+        $nuevoEstado = !$cliente->estado;
+        $cliente->estado = $nuevoEstado;
+        $cliente->save();
+
+        if (!$nuevoEstado) 
+        {
+         
+            // Si se desactivó al cliente, marcar reservas como utilizadas
+            Reserva::where('cliente_id', $cliente->id)
+            ->where('estado', 'Utilizada')
+            ->where('utilizado', false)
+            ->update([
+                'utilizado' => true,
+                'motivo_anulacion' => 'Suspendido el cliente'
+            ]);
+        }
+    }
 
     public function abrir_historial_reservas($id)
     {

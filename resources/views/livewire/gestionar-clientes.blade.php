@@ -1,4 +1,4 @@
-<div>
+<div class="container">
     {{-- If your happiness depends on money, you will never be happy with yourself. --}}
     <!--titulo-->
     <div>
@@ -68,27 +68,29 @@
                                                 </td>
                                                 <td>{{ $cliente->gratuito }}</td>
                                                 <td>
-                                                    <a href="{{route('admin.pacientes.reservas',$cliente->id)}}" target="_blank" class="btn btn-success" id="consultar_reservas_{{$cliente->id}}" ><i class="fas fa-eye"></i></a>
+                                                    <a href="{{route('admin.pacientes.reservas',$cliente->id)}}" target="_blank" class="btn btn-success" id="consultar_reservas_{{$cliente->id}}" ><i class="fas fa-search"></i></a>
                                                     <button class="btn btn-info"  data-bs-toggle="modal" data-bs-target="#modalReporteDeudas"
                                                     wire:click="modal_reporte_deudas('{{ $cliente->id }}')"><i class="fas fa-list"></i></button>
                                                     <button type="button" class="btn btn-primary"
                                                         data-bs-toggle="modal" data-bs-target="#modalCliente"
                                                         wire:click="modal('{{ $cliente->id }}')"><i
                                                             class="fas fa-edit"></i></button>
-                                                    <button type="button" class="btn btn-danger"
-                                                        wire:click="eliminar({{ $cliente->id }})"
-                                                        id="eliminar-cliente-{{ $cliente->id }}"
-                                                        wire:confirm="Estas seguro de Eliminar esta Cliente?">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-
+                                                    
                                                     <button class="btn btn-secondary"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#modalHistorialReservas"
                                                         wire:click="abrir_historial_reservas({{ $cliente->id }})">
                                                         <i class="fas fa-history"></i>
                                                     </button>
-                                                </td>
+                                                    <button class="btn {{ $cliente->estado ? 'btn-success' : 'btn-danger' }}"
+                                                        title="{{ $cliente->estado ? 'Desactivar cliente' : 'Activar cliente' }}"
+                                                        wire:click="estado_cliente({{ $cliente->id }})"
+                                                        wire:confirm="{{ $cliente->estado 
+                                                            ? '¿Estás seguro de suspender al cliente? Se perderán las reservas para acumular horas gratuitas.' 
+                                                            : '¿Estás seguro de activar al cliente?' }}">
+                                                        <i class="fas {{ $cliente->estado ? 'fa-user-check' : 'fa-user-slash' }}"></i>
+                                                    </button>
+                                                    </td>
                                             </tr>
                                         @empty
                                         @endforelse
@@ -117,6 +119,6 @@
             </div>
         </div>
     </div>
-@include('administrador.cliente.modal_reservas_cliente')
+    @include('administrador.cliente.modal_reservas_cliente')
 </div>
 

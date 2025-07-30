@@ -7,6 +7,9 @@
     <div wire:ignore id='calendar' ></div>
     <!--claendario-->
     @push('js')
+    <script>
+        const baseRutaReserva = @json(route('admin.reservas_modificar', ['id' => '__ID__']));
+    </script>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() 
         {
@@ -53,7 +56,7 @@
             },
             eventClick:function(info)
             {
-                const modal = $('#modal_edit_agenda_a');
+                /*const modal = $('#modal_edit_agenda_a');
                 // Centrado horizontal (50% pantalla) y arriba (por ejemplo, 50px desde el top)
                 modal.css({
                     position: 'fixed',
@@ -64,7 +67,10 @@
                 });
 
                 modal.modal('show');
-                window.Livewire.dispatch('abrir-modal-booking',{ reserva:info.event.id,info:null});
+                window.Livewire.dispatch('abrir-modal-booking',{ reserva:info.event.id,info:null});*/
+                const id = info.event.id;
+                const url = baseRutaReserva.replace('__ID__', id);
+                window.open(url, '_blank');
             },
             events: {
                 url: '{{ url("admin/api/reservas") }}', // Nueva ruta API en Laravel

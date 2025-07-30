@@ -1,39 +1,12 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Services;
 
-use App\Livewire\Forms\CajaForm;
-use App\Livewire\Forms\PosVentaForm;
-use App\Models\Almacen;
-use App\Models\Caja;
-use App\Models\Cliente;
-use App\Models\Configuracion;
-use App\Models\Posventa;
-use App\Models\PosventaDetalle;
-use App\Models\Reserva;
-use App\Models\ReservaUso;
+use App\Models\{Reserva, Cliente, Configuracion, ReservaUso, Caja, Posventa, PosventaDetalle, Almacen};
 use Carbon\Carbon;
-use Illuminate\Console\Command;
 
-class RealizarPagosCancha extends Command
+class ProcesarReservasService
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:realizar-pagos-cancha';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Registrar las reservas';
-    /**
-     * Execute the console command.
-     */
-
     public function handle()
     {
         #abrir caja

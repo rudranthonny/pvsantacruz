@@ -20,6 +20,7 @@ use DateTime;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use App\Services\ProcesarReservasService;
 
 class ReporteGananciasPerdidas extends Component
 {
@@ -42,6 +43,7 @@ class ReporteGananciasPerdidas extends Component
     #[On('descargar-reporte-general-pdf')]
     public function descargar_reporte_general_pdf($simple = false)
     {
+        app(ProcesarReservasService::class)->handle();
         $monto_ventas = $this->monto_ventas;
         $monto_compras = $this->monto_compras;
         $monto_deuda = $this->monto_deuda;
@@ -234,7 +236,21 @@ class ReporteGananciasPerdidas extends Component
         $this->monto_gastos = $this->monto_gastos->where('created_at','>=',$this->fecha_inicial." 00:00:00")->where('ignorar','0')->where('created_at','<=',$this->fecha_final." 23:59:59")->sum('monto');
         $this->lista_devoluciones = $this->monto_devoluciones->where('created_at','>=',$this->fecha_inicial." 00:00:00")->where('created_at','<=',$this->fecha_final." 23:59:59")->get();
         $this->monto_devoluciones = $this->monto_devoluciones->where('created_at','>=',$this->fecha_inicial." 00:00:00")->where('created_at','<=',$this->fecha_final." 23:59:59")->sum('monto_pago');
-        $this->monto_deuda = Cliente::whereNotNull('deuda_total')->where('deuda_total','>',0)->sum('deuda_total');
+        
+        $this->monto_deuda = 0;
+        # Base query
+        $query = Posventa::with('pagorelacionados')->where('estado_posventa', 'Parcial');
+        # Filtro por almacén (solo si tiene ID válido)
+        if ($this->salmacen) {$query->where('almacen_id', $this->salmacen);}
+        # Obtener todas las posventas parciales
+        $posventas = $query->get();
+        # Sumar los montos pendientes totales
+        $monto_deuda_total = $posventas->sum('monto_pendiente');
+        # Sumar todos los pagos realizados relacionados
+        $monto_pagado_total = $posventas->flatMap->pagorelacionados->sum('monto_pagado');
+        # Resultado final
+        $this->monto_deuda = $monto_deuda_total - $monto_pagado_total;
+
         $this->almacens = Almacen::all();
         return view('livewire.reporte-ganancias-perdidas');
     }

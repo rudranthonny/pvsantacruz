@@ -17,6 +17,8 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Services\ProcesarReservasService;
+
 
 class GestionarVentas extends Component
 {
@@ -37,7 +39,8 @@ class GestionarVentas extends Component
 
     #[On('descargar_reporte_ventas_pdf')]
     public function descargar_reporte_ventas_pdf($simple = false){
-
+         // Ejecutar la lógica de reserva
+        app(ProcesarReservasService::class)->handle();
         $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
 
         $compras = PagoCompra::query();
@@ -108,6 +111,7 @@ class GestionarVentas extends Component
 
     public function descargar_reporte_ventas_excel()
     {
+         app(ProcesarReservasService::class)->handle();
         $posventas = Posventa::query()->where('cliente_name','like',"%".$this->search."%")->orderByDesc('id');
 
         $posventas->when($this->salmacen <> '',function ($q) {
