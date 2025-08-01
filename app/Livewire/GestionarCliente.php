@@ -53,22 +53,26 @@ class GestionarCliente extends Component
             ->get();
     }
 
-    public function buscar_documento(){
+    public function buscar_documento()
+    {
         $this->clientesForm->consultarDatos();
     }
 
-    public function modal_pagar_deuda(Cliente $cliente){
+    public function modal_pagar_deuda(Cliente $cliente)
+    {
         $this->reset('pd_monto','pd_detalle','pd_opcion');
         $this->clientesForm->reset();
         $this->clientesForm->set($cliente);
     }
 
-    public function modal_reporte_deudas(Cliente $cliente){
+    public function modal_reporte_deudas(Cliente $cliente)
+    {
         $this->clientesForm->reset();
         $this->clientesForm->set($cliente);
     }
 
-    public function generar_pago_deuda(){
+    public function generar_pago_deuda()
+    {
         $this->validate([
             'pd_monto'=>'required|numeric|min:1',
             'pd_opcion'=>'required',

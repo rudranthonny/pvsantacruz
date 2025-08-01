@@ -71,20 +71,21 @@
                                             <th>Accion</th>
                                         </tr>
                                     </thead>
+                                    <!--inicio-->
                                     <tbody>
                                         @forelse ($compras as $compra)
-                                            <tr class="text-center">
+                                            <tr class="text-center accordion-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#tablecollapse-{{$compra->id}}" aria-expanded="false" aria-controls="tablecollapse-{{$compra->id}}">
                                                 <td style="vertical-align: middle;">{{ $compra->fecha }}</td>
                                                 <td style="vertical-align: middle;">{{ "COM_".$compra->id }}</td>
                                                 <td style="vertical-align: middle;">{{ $compra->proveedor->name }}</td>
                                                 <td style="vertical-align: middle;">{{ $compra->almacen->nombre }}</td>
                                                 <td style="vertical-align: middle;">
                                                     @if ($compra->estado == 1)
-                                                    <span class="badge text-bg-success">Recibido</span>
+                                                        <span class="badge text-bg-success">Recibido</span>
                                                     @elseif ($compra->estado == 2)
-                                                    <span class="badge text-bg-primary">Pendiente</span>
+                                                        <span class="badge text-bg-primary">Pendiente</span>
                                                     @elseif ($compra->estado == 3)
-                                                    <span class="badge text-bg-warning">Ordenado</span>
+                                                        <span class="badge text-bg-warning">Ordenado</span>
                                                     @endif
                                                 </td>
                                                 <td style="vertical-align: middle;">{{ $configuracion->moneda->simbolo.$compra->total }}</td>
@@ -93,21 +94,21 @@
                                                 <td style="vertical-align: middle;">
                                                     @if ($compra->estado_pago == 1)
                                                         <button class="btn btn-warning"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalpagocompra"
-                                                        id="agregar-pago-compra-{{ $compra->id }}"
-                                                         wire:click="modal_pago_compra({{$compra->id}})">
-                                                        No Pagado
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#modalpagocompra"
+                                                            id="agregar-pago-compra-{{ $compra->id }}"
+                                                            wire:click="modal_pago_compra({{$compra->id}})">
+                                                            No Pagado
                                                         </button>
                                                     @elseif($compra->estado_pago == 2)
-                                                    <button class="btn btn-success" disabled>Pagado</button>
+                                                        <button class="btn btn-success" disabled>Pagado</button>
                                                     @elseif($compra->estado_pago == 3)
                                                         <button class="btn btn-primary"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalpagocompra"
-                                                        id="agregar-pago-compra-{{ $compra->id }}"
-
-                                                         >Parcial</button>
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#modalpagocompra"
+                                                            id="agregar-pago-compra-{{ $compra->id }}">
+                                                            Parcial
+                                                        </button>
                                                     @endif
                                                 </td>
                                                 <td style="vertical-align: middle;">
@@ -116,26 +117,67 @@
                                                             <i class="fas fa-ellipsis-v"></i>
                                                         </button>
                                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuAcciones-1">
-                                                        @if ($compra->estado_pago == 1)
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalCompra" id="editar-compra-{{ $compra->id }}" wire:click="modal('{{ $compra->id }}')" href="#"><i class="fas fa-edit"></i> Editar Compra</a>
-                                                        </li>
-                                                        @endif
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalreportepagoscompra" id="consultar-pago-compra-{{ $compra->id }}" wire:click="modal_pago_compra({{$compra->id}})" href="#"><i class="fas fa-pager"></i> Ver Pagos</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" wire:click="eliminar({{ $compra->id }})"
-                                                                id="eliminar-compra-{{ $compra->id }}"
-                                                                wire:confirm="Estas seguro de Eliminar esta Compra?" href="#"><i class="fas fa-trash"></i>Eliminar Compra</a>
-                                                        </li>
+                                                            @if ($compra->estado_pago == 1)
+                                                                <li>
+                                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalCompra" id="editar-compra-{{ $compra->id }}" wire:click="modal('{{ $compra->id }}')" href="#"><i class="fas fa-edit"></i> Editar Compra</a>
+                                                                </li>
+                                                            @endif
+                                                            <li>
+                                                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalreportepagoscompra" id="consultar-pago-compra-{{ $compra->id }}" wire:click="modal_pago_compra({{$compra->id}})" href="#"><i class="fas fa-pager"></i> Ver Pagos</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" wire:click="eliminar({{ $compra->id }})"
+                                                                    id="eliminar-compra-{{ $compra->id }}"
+                                                                    wire:confirm="Estas seguro de Eliminar esta Compra?" href="#"><i class="fas fa-trash"></i>Eliminar Compra</a>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </td>
                                             </tr>
+
+                                            <!-- Detalle colapsable -->
+                                            <tr>
+                                                <td colspan="10" class="p-0">
+                                                    <div id="tablecollapse-{{$compra->id}}" class="accordion-collapse collapse" aria-labelledby="heading-1" data-bs-parent="#accordionExample">
+                                                        <div>
+                                                            <table class="table table-primary table-bordered mb-0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="7" class="text-center">DETALLE DE LA COMPRA</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th class="text-center">Código</th>
+                                                                        <th class="text-center">Producto</th>
+                                                                        <th class="text-center">Cantidad</th>
+                                                                        <th class="text-center">C.uni</th>
+                                                                        <th class="text-center">Sub Total</th>
+                                                                        <th class="text-center">Impuesto</th>
+                                                                        <th class="text-center">Total Parcial</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($compra->dcompras as $dcomp)
+                                                                        <tr>
+                                                                            <td class="text-center">{{ $dcomp->codigo }}</td>
+                                                                            <td class="text-center">{{ $dcomp->nombre_producto }}</td>
+                                                                            <td class="text-center">{{ $dcomp->cantidad }}</td>
+                                                                            <td class="text-center">{{ $dcomp->costo_unitario }}</td>
+                                                                            <td class="text-center">{{ number_format($dcomp->cantidad * $dcomp->costo_unitario, 2) }}</td>
+                                                                            <td class="text-center">{{ $dcomp->impuesto }}</td>
+                                                                            <td class="text-center">{{ $dcomp->total_parcial }}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @empty
+                                            <tr><td colspan="10" class="text-center">No hay compras registradas.</td></tr>
                                         @endforelse
                                     </tbody>
+                                    <!--end-->
                                 </table>
                             </div>
                         </div>
