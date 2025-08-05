@@ -29,13 +29,13 @@ class ReporteLogs extends Component
     }
 
     public function consultar()
-    {
+    {  
         $query = ModificacionLog::with('user')
-            ->when($this->modelo, fn($q) => $q->where('loggable_type', $this->modelo))
-            ->when($this->modal_id, fn($q) => $q->where('loggable_id', $this->modal_id))
-            ->when($this->desde, fn($q) => $q->whereDate('created_at', '>=', $this->desde))
-            ->when($this->hasta, fn($q) => $q->whereDate('created_at', '<=', $this->hasta))
-            ->when($this->buscar_usuario, fn($q) => $q->where('user_id', '<=', $this->buscar_usuario));
+    ->when($this->modelo, fn($q) => $q->where('loggable_type', $this->modelo))
+    ->when($this->modal_id, fn($q) => $q->where('loggable_id', $this->modal_id))
+    ->when($this->desde, fn($q) => $q->whereDate('created_at', '>=', $this->desde))
+    ->when($this->hasta, fn($q) => $q->whereDate('created_at', '<=', $this->hasta))
+    ->when($this->buscar_usuario, fn($q) => $q->where('user_id', $this->buscar_usuario));
         $this->logs = $query->get();
     }
 
