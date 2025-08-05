@@ -22,4 +22,7 @@ class Malmacen extends Model
 
     // 🔗 Producto almacenado que fue modificado
     public function producto_almacen(){return $this->belongsTo(ProductoAlmacen::class);}
+
+    #relación
+    public function movimientos(){return $this->morphToMany('App\Models\Movimiento','movimientoable');}
 }
