@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RoleSeeder::class);
-        $this->call(MonedaSeeder::class);
+        /*$this->call(MonedaSeeder::class);
         $this->call(AlmacenSeeder::class);
         $this->call(MarcaSeeder::class);
         $this->call(CategoriaSeeder::class);
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123456789'),
         ]);
 
-        $user->assignRole('Administrador');
+        $user->assignRole('Administrador');*/
     }
 
 }
