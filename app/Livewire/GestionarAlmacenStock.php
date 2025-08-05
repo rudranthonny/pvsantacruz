@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Exports\ReporteGeneralAlmacenExport;
 use App\Livewire\Forms\AlmacenStockForm;
+use App\Livewire\Forms\MovimientoForm;
 use App\Models\Almacen;
 use App\Models\Categoria;
 use App\Models\Configuracion;
@@ -18,6 +19,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Support\Facades\Auth;
 
+
 class GestionarAlmacenStock extends Component
 {
 
@@ -27,6 +29,7 @@ class GestionarAlmacenStock extends Component
     public $categorias;
     #end
     public AlmacenStockForm $almacenstockform;
+    private MovimientoForm $movimientoform;
     public $search = '';
     public $titlemodal = 'Añadir';
     public $salmacen,$sestado,$scategoria;
@@ -80,10 +83,12 @@ class GestionarAlmacenStock extends Component
         $this->validate(['descripcion' => 'required']);
         $user  = User::find(Auth::user()->id);
         $palmacen_id= $this->almacenstockform->productoalmacen->id;
+        $saldo = $this->almacenstockform->productoalmacen->almacen->monto;
+        $almacen_id = $this->almacenstockform->productoalmacen->almacen_id;
         $palmacen_stock= $this->almacenstockform->productoalmacen->stock;
         if (!$user->can('admin.editar.almacenstock')) {abort(403, 'No tienes permiso para descargar este reporte.');}
         if (isset($this->almacenstockform->productoalmacen->id)) {$this->almacenstockform->update();}
-        #registrar en el historial del almacen
+        #registrar en el historial del producto almacen
         $n_almacen = new Malmacen();
         $n_almacen->user_id = $user->id;
         $n_almacen->producto_almacen_id = $palmacen_id;
@@ -91,6 +96,10 @@ class GestionarAlmacenStock extends Component
         $n_almacen->valor_nuevo = $this->almacenstockform->productoalmacen->stock;
         $n_almacen->descripcion = $this->descripcion;
         $n_almacen->save();
+        #registrar el historial del almacen
+        $this->movimientoform = new MovimientoForm();
+        $signo = $n_almacen->valor_nuevo >=  $n_almacen->valor_anterior ? '+' : '-';
+        $this->movimientoform->agregar_movimiento($n_almacen->id,$almacen_id,0,$saldo,$signo,'App\Models\Malmacen',$this->descripcion);
         $this->reset('descripcion');
         $this->dispatch('cerrar_modal_producto_almacen');
     }
