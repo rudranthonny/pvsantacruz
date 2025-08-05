@@ -63,6 +63,12 @@
                                 <td style="text-align:center;border: solid 1px black">Compuestos</td>
                                 <td style="text-align:center;border: solid 1px black">{{ $bproductos->where('tipo','compuesto')->count() }}</td>
                             </tr>
+                            @if ($categoria)
+                              <tr>
+                                <td style="text-align:center;border: solid 1px black">Categoria</td>
+                                <td style="text-align:center;border: solid 1px black">{{ $categoria }}</td>
+                            </tr>
+                            @endif
                     </tbody>
                 </table>
             </div>
@@ -72,12 +78,11 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="background-color: black;color:white;width:240px;text-align:center;border: solid 1px black">Categoría</th>
+                            <th style="background-color: black;color:white;width:160px;text-align:center;border: solid 1px black">Codigo</th>
                             <th style="background-color: black;color:white;width:240px;text-align:center;border: solid 1px black">Producto</th>
-                            <th style="background-color: black;color:white;width:240px;text-align:center;border: solid 1px black">Codigo</th>
-                            <th style="background-color: black;color:white;width:240px;text-align:center;border: solid 1px black">P. Venta</th>
                             <th style="background-color: black;color:white;width:180px;text-align:center;border: solid 1px black">Almacen</th>
                             <th style="background-color: black;color:white;width:120px;text-align:center;border: solid 1px black">Stock</th>
+                            <th style="background-color: black;color:white;width:120px;text-align:center;border: solid 1px black">P. Venta</th>
                             <th style="background-color: black;color:white;width:120px;text-align:center;border: solid 1px black">Stock Limite</th>
                             <th style="background-color: black;color:white;width:150px;text-align:center;border: solid 1px black">Estado</th>
                         </tr>
@@ -85,12 +90,11 @@
                     <tbody>
                         @forelse ($productos_almacen as $palmacen)
                             <tr>
-                                <td style="text-align:center;border: solid 1px black">{{ $palmacen->producto->categoria->name }}</td>
-                                <td style="text-align:center;border: solid 1px black">{{ $palmacen->producto->designacion }}</td>
                                 <td style="text-align:center;border: solid 1px black">{{ $palmacen->producto->codigo }}</td>
-                                <td style="text-align:center;border: solid 1px black">{{ $palmacen->producto->precio }}</td>
+                                <td style="text-align:center;border: solid 1px black">{{ $palmacen->producto->designacion }}</td>
                                 <td style="text-align:center;border: solid 1px black">{{ $palmacen->almacen->nombre }}</td>
                                 <td style="text-align:center;border: solid 1px black">{{ $palmacen->stock }}</td>
+                                <td style="text-align:center;border: solid 1px black">{{ $palmacen->producto->precio }}</td>
                                 <td style="text-align:center;border: solid 1px black">{{ $palmacen->producto->alerta_stock }}</td>
 
                                     @if ($palmacen->stock == 0)

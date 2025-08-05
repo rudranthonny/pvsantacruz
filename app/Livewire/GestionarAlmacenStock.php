@@ -199,6 +199,11 @@ class GestionarAlmacenStock extends Component
 
     public function descargar_reporte_almacen_pdf()
     {
+        $categoria = null;
+        if ($this->scategoria) {
+            $categoria = Categoria::find($this->scategoria)->name;
+        }
+
         $bproductos = Producto::all();
         $productos_almacen = ProductoAlmacen::query()->whereExists(function ($query)  {
             $query->select()
@@ -246,7 +251,7 @@ class GestionarAlmacenStock extends Component
         $productos_almacen =  $productos_almacen->get();
         $configuracion = Configuracion::find(1);
         $nombre_archivo = 'Reporte-productos-almacen-' . date("F j, Y, g:i a") . '.pdf';
-        $consultapdf = FacadePdf::loadView('administrador.almacen.reporte_productos_almacen_pdf', compact('productos_almacen','configuracion','bproductos'))->setPaper('a4', 'landscape');
+        $consultapdf = FacadePdf::loadView('administrador.almacen.reporte_productos_almacen_pdf', compact('productos_almacen','configuracion','bproductos','categoria'))->setPaper('a4', 'landscape');
         $pdfContent = $consultapdf->output();
         return response()->streamDownload(
             fn () => print($pdfContent),
