@@ -14,6 +14,7 @@ class AlmacenStockForm extends Form
     #[Rule('required')]
     public $producto_id;
     public $almacen_id;
+    #[Rule('required')]
     public $stock;
 
     public function set(ProductoAlmacen $productoalmacen){

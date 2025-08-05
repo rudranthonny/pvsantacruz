@@ -350,6 +350,7 @@ class ProductoForm extends Form
                         $producto_almacen->stock = $producto_almacen->stock+($cantidad*$bproducto->cunidad->valor);
                     }
                 }
+                
                 elseif ($signo == '-')
                 {
                     #descontar en compra
@@ -362,6 +363,7 @@ class ProductoForm extends Form
                         $producto_almacen->stock = $producto_almacen->stock-($cantidad*$bproducto->cunidad->valor);
                     }
                 }
+
                 $producto_almacen->save();
             }
         }

@@ -460,6 +460,11 @@ return [
                     'route'  => 'admin.reportes.ventas_productos',
                     'can'   => 'admin.usuario',
                 ],
+                [
+                    'text' => 'Reporte Caja',
+                    'route'  => 'admin.reportes.reporte_cajas',
+                    'can'   => 'admin.usuario',
+                ],
             ],
         ],
         [
@@ -473,9 +478,10 @@ return [
                     'can'   => 'admin.usuario',
                 ],
                 [
-                    'text' => 'Cambiar Logo',
-                    'url'  => '#',
-                    'can'   => 'admin.usuario',
+                    'text' => 'Logs',
+                    'route'  => 'admin.logs.index',
+                    'icon' => 'fas fa-exclamation-circle',
+                    'can' => 'admin.log.titulo'
                 ],
                 [
                     'text' => 'Almacenes',

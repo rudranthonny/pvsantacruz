@@ -15,6 +15,11 @@ class Caja extends Model
         return  $this->hasMany(MCaja::class);
     }
 
+    public function mcajas_deleted()
+    {
+        return $this->hasMany(MCaja::class)->withTrashed();
+    }
+
     public function user(){
         return  $this->belongsTo(User::class);
     }

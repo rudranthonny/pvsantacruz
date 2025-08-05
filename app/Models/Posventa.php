@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\LogsChanges;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Posventa extends Model
 {
     use HasFactory, SoftDeletes;
+    use LogsChanges;
 
     protected $fillable = [];
 
@@ -55,5 +57,10 @@ class Posventa extends Model
 
     public function pagorelacionados(){
         return $this->hasMany(PagoRelacionado::class,'posventa_id');
+    }
+
+    public function logs()
+    {
+        return $this->morphMany(ModificacionLog::class, 'loggable');
     }
 }

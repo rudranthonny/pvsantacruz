@@ -49,6 +49,7 @@ Route::view('usuarios/cambiar_password', 'administrador.personas.cambiar_passwor
 #reportes
 Route::view("reporte/ingresos_perdidas", "administrador.reportes.ingresos_perdidas")->middleware('can:admin.ventas.index')->name("admin.reportes.ingresos_perdidas");
 Route::view("reporte/ventas_productos", "administrador.reportes.reporte_ventas_productos")->middleware('can:admin.ventas.index')->name("admin.reportes.ventas_productos");
+Route::view("reporte/reporte_cajas", "administrador.reportes.reporte_cajas")->middleware('can:admin.ventas.index')->name("admin.reportes.reporte_cajas");
 #canchas
 Route::view("canchas", "administrador.canchas.index_canchas")->middleware('can:admin.canchas')->name("admin.canchas");
 #reservas
@@ -57,3 +58,5 @@ Route::get("reservas/pacientes/{id}", PacientesReservas::class)->middleware('can
 Route::view("reservas/reportes", "administrador.reservas.index_reservas_reporte")->middleware('can:admin.reservas')->name("admin.reservas_reporte");
 Route::get("api/reservas", [ReservaController::class, 'apiReservas']);
 Route::get("reservas/modificar/{id}", ModalReserva::class)->middleware('can:admin.reservas')->name('admin.reservas_modificar');
+#logs
+Route::view('logs/index', 'administrador.logs.log_index')->middleware('can:admin.log.titulo')->name('admin.logs.index');

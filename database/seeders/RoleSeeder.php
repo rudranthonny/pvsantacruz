@@ -18,10 +18,10 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        //$Super_Administrador = User::role('Super_Administrador')->get();
-        //$Administrador = User::role('Administrador')->get();
-        //$Cajero = User::role('Cajero')->get();
-        #$Cancha = User::role('Cancha')->get();
+        $Super_Administrador = Role::where('name', 'Super_Administrador')->exists() ? User::role('Super_Administrador')->get() : collect();
+        $Administrador = Role::where('name', 'Administrador')->exists() ? User::role('Administrador')->get() : collect();
+        $Cajero = Role::where('name', 'Cajero')->exists() ? User::role('Cajero')->get() : collect();
+        $Cancha = Role::where('name', 'Cancha')->exists() ? User::role('Cancha')->get() : collect();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('role_has_permissions')->truncate();
@@ -36,7 +36,7 @@ class RoleSeeder extends Seeder
         Role::create(['name' => 'Cajero']);
         Role::create(['name' => 'Cancha']);
         #permisos
-        Permission::create(['name' =>'admin.editar.almacenstock']);
+        Permission::create(['name' =>'admin.editar.almacenstock'])->syncRoles(['Super_Administrador','Administrador']);
         Permission::create(['name' => 'admin.ventas.reporte'])->syncRoles(['Super_Administrador','Administrador']);
         Permission::create(['name' => 'admin.configuracion.ajustesistema'])->syncRoles(['Administrador']);
         Permission::create(['name' => 'admin.index'])->syncRoles(['Administrador','Cajero']);
@@ -65,13 +65,13 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'admin.ventas.index'])->syncRoles(['Administrador','Cajero']);
         Permission::create(['name' => 'admin.productos.consultar_barra'])->syncRoles(['Administrador','Cajero']);
         Permission::create(['name' => 'search.buscar_cliente'])->syncRoles(['Administrador','Cajero']);
+        #CONFIGURACION
+        Permission::create(['name' =>'admin.log.titulo'])->syncRoles(['Administrador','Super_Administrador']);
+        Permission::create(['name' =>'admin.configuracion.titulo'])->syncRoles(['Administrador','Super_Administrador']);
 
-        //if($Super_Administrador->count() > 0){foreach ($Super_Administrador as $key => $sadmin) {$sadmin->assignRole('Super_Administrador');}}
-
-        //if($Administrador->count() > 0){foreach ($Administrador as $key => $admin) {$admin->assignRole('Administrador');}}
-
-        //if($Cajero->count() > 0){foreach ($Cajero as $key => $caj) {$caj->assignRole('Cajero');}}
-
-        #if($Cancha->count() > 0){foreach ($Cancha as $key => $caj2) {$caj2->assignRole('Cancha');}}
+        if($Super_Administrador->count() > 0){foreach ($Super_Administrador as $key => $sadmin) {$sadmin->assignRole('Super_Administrador');}}
+        if($Administrador->count() > 0){foreach ($Administrador as $key => $admin) {$admin->assignRole('Administrador');}}
+        if($Cajero->count() > 0){foreach ($Cajero as $key => $caj) {$caj->assignRole('Cajero');}}
+        if($Cancha->count() > 0){foreach ($Cancha as $key => $caj2) {$caj2->assignRole('Cancha');}}
     }
 }

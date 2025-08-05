@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\LogsChanges;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,12 +14,17 @@ class ProductoAlmacen extends Model
         'stock',
         ];
     use HasFactory;
+    use LogsChanges;
+
+
+    public function logs(){return $this->morphMany(ModificacionLog::class, 'loggable');}
 
     public function producto(){return $this->belongsTo(Producto::class);}
 
     public function almacen(){return $this->belongsTo(Almacen::class);}
 
-    public function getObtenerCantidadAttribute(){
+    public function getObtenerCantidadAttribute()
+    {
         $bproducto = Producto::find($this->producto_id);
         if ($bproducto->tipo == 'estandar') {$numero = $this->stock;}
 
@@ -59,5 +65,7 @@ class ProductoAlmacen extends Model
 
         else {return 0;}
     }
+
+    public function malmacens(){return $this->hasMany(Malmacen::class);}
 }
 

@@ -401,7 +401,6 @@ class Pos extends Component
         }
     }
 
-
     public function agregaritem(Producto $producto)
     {
         $stock_disponible = $this->verificar_stock_disponible($producto, $this->almacen_id,1);
@@ -613,29 +612,31 @@ class Pos extends Component
                 return;
               }
             }
+
             $posventa = new Posventa();
-            $posventa->cajero_id = Auth::user()->id;
-            $posventa->almacen_id = $almacen->id;
-            $posventa->almacen_name = $almacen->nombre;
-            $posventa->cliente_id = $this->bclienteoculto;
-            $posventa->cliente_name = $cliente->name;
-            $posventa->cliente_nit = $cliente->nit;
-            $posventa->impuesto_porcentaje = $this->impuesto_porcentaje;
-            $posventa->impuesto_monto = $this->impuesto_monto;
-            $posventa->descuento = $this->descuento ?? 0;
-            $posventa->envio = $this->envio ?? 0;
-            $posventa->descuento_items = $this->total_descuentos_items;
-            $posventa->total_pagar_previo = $this->total_previo_pagar;
-            $posventa->total_pagar = $this->total_pagar;
-            $posventa->cantidad_recibida = $this->cantidad_recibida;
-            $posventa->monto_pago = $this->monto_pago;
-            $posventa->monto_pendiente = $this->monto_pendiente;
-            $posventa->cambio = $this->cambio;
-            $posventa->nota_venta = $this->nota_venta ?? '';
-            $posventa->nota_pago = $this->nota_pago ?? '';
-            $posventa->productos_totales = collect($this->items)->count();
-            $posventa->estado_posventa = $this->monto_pendiente > 0 ? "Parcial" : "Completo";
+                $posventa->cajero_id = Auth::user()->id;
+                $posventa->almacen_id = $almacen->id;
+                $posventa->almacen_name = $almacen->nombre;
+                $posventa->cliente_id = $this->bclienteoculto;
+                $posventa->cliente_name = $cliente->name;
+                $posventa->cliente_nit = $cliente->nit;
+                $posventa->impuesto_porcentaje = $this->impuesto_porcentaje;
+                $posventa->impuesto_monto = $this->impuesto_monto;
+                $posventa->descuento = $this->descuento ?? 0;
+                $posventa->envio = $this->envio ?? 0;
+                $posventa->descuento_items = $this->total_descuentos_items;
+                $posventa->total_pagar_previo = $this->total_previo_pagar;
+                $posventa->total_pagar = $this->total_pagar;
+                $posventa->cantidad_recibida = $this->cantidad_recibida;
+                $posventa->monto_pago = $this->monto_pago;
+                $posventa->monto_pendiente = $this->monto_pendiente;
+                $posventa->cambio = $this->cambio;
+                $posventa->nota_venta = $this->nota_venta ?? '';
+                $posventa->nota_pago = $this->nota_pago ?? '';
+                $posventa->productos_totales = collect($this->items)->count();
+                $posventa->estado_posventa = $this->monto_pendiente > 0 ? "Parcial" : "Completo";
             $posventa->save();
+
             $this->almacenform = new AlmacenForm();
             $this->movimientoform = new MovimientoForm();
             $saldo = $this->almacenform->agregar_descontar_monto_almacen($posventa->almacen_id, $posventa->monto_pago,'+');
@@ -648,8 +649,8 @@ class Pos extends Component
             $cliente->deuda_total += $this->monto_pendiente;
             $cliente->save();
 
-            foreach ($this->items as $item) {
-                // $producto->stock -= $item['cantidad'];
+            foreach ($this->items as $item) 
+            {
                 $posventa_detalle = new PosventaDetalle();
                 $posventa_detalle->producto_id = $item['id'];
                 $posventa_detalle->producto_codigo = $item['codigo'];
@@ -667,6 +668,8 @@ class Pos extends Component
                 $posventa_detalle->save();
                 $bcodigo = Producto::where('codigo', $item['codigo'])->first();
                 $this->productoform->actualizar_stock_producto($bcodigo->id, $posventa->almacen_id, '-', $posventa_detalle->producto_cantidad);
+                #registrar almacen serie
+                
             }
             #pdf descargar
             $paper_examen = 0;

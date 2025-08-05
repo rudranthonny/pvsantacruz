@@ -7,6 +7,7 @@ use App\Livewire\Forms\AlmacenStockForm;
 use App\Models\Almacen;
 use App\Models\Categoria;
 use App\Models\Configuracion;
+use App\Models\Malmacen;
 use App\Models\ProductoAlmacen;
 use App\Models\Producto;
 use App\Models\User;
@@ -32,13 +33,15 @@ class GestionarAlmacenStock extends Component
     public $pagina = 5;
     public $configuracion;
     public $productos_almacen_export;
+    public $descripcion = '';
 
     public function updatedScategoria()
     {
         $this->resetPage();
     }
 
-    public function descargar_reporte_general_almacen_excel(){
+    public function descargar_reporte_general_almacen_excel()
+    {
         return Excel::download(new ReporteGeneralAlmacenExport($this->salmacen), 'ReporteGeneralAlmacenProductos.xlsx');
     }
 
@@ -73,13 +76,22 @@ class GestionarAlmacenStock extends Component
     }
 
     public function guardar()
-    {
+    {   
+        $this->validate(['descripcion' => 'required']);
         $user  = User::find(Auth::user()->id);
-        if (!$user->can('admin.editar.almacenstock')) {
-            abort(403, 'No tienes permiso para descargar este reporte.');
-        }
-
+        $palmacen_id= $this->almacenstockform->productoalmacen->id;
+        $palmacen_stock= $this->almacenstockform->productoalmacen->stock;
+        if (!$user->can('admin.editar.almacenstock')) {abort(403, 'No tienes permiso para descargar este reporte.');}
         if (isset($this->almacenstockform->productoalmacen->id)) {$this->almacenstockform->update();}
+        #registrar en el historial del almacen
+        $n_almacen = new Malmacen();
+        $n_almacen->user_id = $user->id;
+        $n_almacen->producto_almacen_id = $palmacen_id;
+        $n_almacen->valor_anterior = $palmacen_stock;
+        $n_almacen->valor_nuevo = $this->almacenstockform->productoalmacen->stock;
+        $n_almacen->descripcion = $this->descripcion;
+        $n_almacen->save();
+        $this->reset('descripcion');
         $this->dispatch('cerrar_modal_producto_almacen');
     }
 
