@@ -88,7 +88,7 @@
                                     <tbody>
                                         @forelse ($productos_almacen as $palmacen)
                                             <tr class="text-center">
-                                                <td>{{ $palmacen->producto->designacion }}</td>
+                                                <td>{{ $palmacen->id."-".$palmacen->producto->designacion }}</td>
                                                 <td>{{ $palmacen->almacen->nombre }}</td>
                                                 @if ($configuracion->farmacia == 1)
                                                 <td>{{ $palmacen->fecha_vencimiento_producto }}</td>
