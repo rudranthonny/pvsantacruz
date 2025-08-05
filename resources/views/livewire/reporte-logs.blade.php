@@ -9,20 +9,24 @@
         <div class="row g-2 mb-3">
             <div class="col-md-4">
                 <label>Modelo</label>
-                <select class="form-select" wire:model="modelo">
+                <select class="form-select" wire:model.live="modelo">
                     <option value="Elegir">Elegir</option>
                     @foreach($modelosDisponibles as $clave => $nombre)
                         <option value="{{ $clave }}">{{ $nombre }}</option>
                     @endforeach
                 </select>
             </div>
+             <div class="col-md-3">
+                <label>ID Modal</label>
+                <input type="text" class="form-control" wire:model.live="modal_id">
+            </div>
             <div class="col-md-3">
                 <label>Desde</label>
-                <input type="date" class="form-control" wire:model="desde">
+                <input type="date" class="form-control" wire:model.live="desde">
             </div>
             <div class="col-md-3">
                 <label>Hasta</label>
-                <input type="date" class="form-control" wire:model="hasta">
+                <input type="date" class="form-control" wire:model.live="hasta">
             </div>
            <div class="col-md-3">
                 <label>Lista de Usuarios</label>
