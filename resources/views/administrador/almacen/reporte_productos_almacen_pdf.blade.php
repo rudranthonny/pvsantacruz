@@ -81,9 +81,9 @@
                             <th style="background-color: black;color:white;width:160px;text-align:center;border: solid 1px black">Codigo</th>
                             <th style="background-color: black;color:white;width:240px;text-align:center;border: solid 1px black">Producto</th>
                             <th style="background-color: black;color:white;width:180px;text-align:center;border: solid 1px black">Almacen</th>
-                            <th style="background-color: black;color:white;width:120px;text-align:center;border: solid 1px black">Stock</th>
+                            <th style="background-color: black;color:white;width:60px;text-align:center;border: solid 1px black">Stock</th>
                             <th style="background-color: black;color:white;width:120px;text-align:center;border: solid 1px black">P. Venta</th>
-                            <th style="background-color: black;color:white;width:120px;text-align:center;border: solid 1px black">Stock Limite</th>
+                            <th style="background-color: black;color:white;width:60px;text-align:center;border: solid 1px black">Stock Limite</th>
                             <th style="background-color: black;color:white;width:150px;text-align:center;border: solid 1px black">Estado</th>
                         </tr>
                     </thead>
