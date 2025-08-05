@@ -64,7 +64,7 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ class_basename($log->loggable_type) }}</td>
-                                <td>{{ $log->loggable_id }}</td>
+                                <td>{{ $log->loggable_id."-"}} @if (isset($log->loggable->producto->id)){{$log->loggable->producto->designacion}} @endif</td>
                                 <td>{{ $log->campo_modificado }}</td>
                                 <td>{{ $log->valor_anterior }}</td>
                                 <td>{{ $log->valor_nuevo }}</td>
