@@ -32,16 +32,16 @@
                             <th>Tipo Movimiento</th>
                             <th>Signo</th>
                             <th>Monto</th>
-                            <th>Origen</th>
                             <th>Fecha</th>
+                             <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($caja->mcajas_deleted as $mov)
                             <tr @if($mov->trashed()) class="table-danger" @endif>
-                                <td>{{ $mov->tipo->name ?? '-' }}</td>
+                                <td>{{ $mov->tmovmientocaja->name ?? '-' }}</td>
                                 <td>{{ $mov->signo }}</td>
-                                <td>S/ {{ number_format($mov->monto, 2) }}</td>
+                                <td>Q. {{ number_format($mov->monto, 2) }}</td>
                                 <td>{{ $mov->created_at }}</td>
                                 <td>
                                     @if($mov->trashed())
