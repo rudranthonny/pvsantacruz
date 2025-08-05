@@ -61,7 +61,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="formularioUnidad" class="btn btn-primary">{{ $titlemodal }}</button>
+                <button type="submit" wire:loading.attr='disabled' wire:target='guardar' form="formularioUnidad" class="btn btn-primary">{{ $titlemodal }}</button>
             </div>
         </div>
     </div>
