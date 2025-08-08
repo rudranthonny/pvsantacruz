@@ -111,7 +111,10 @@ class GestionarAlmacenStock extends Component
             $query->select()
                   ->from(DB::raw('productos'))
                   ->whereColumn('producto_almacens.producto_id', 'productos.id')
-                  ->where('productos.designacion','like','%'.$this->search.'%');
+                  ->where(function ($q) {
+                        $q->where('productos.designacion', 'like', '%' . $this->search . '%')
+                        ->orWhere('productos.codigo', 'like', '%' . $this->search . '%');
+                    });
         });
 
         $productos_almacen->when($this->scategoria, function ($query) {

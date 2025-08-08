@@ -73,6 +73,7 @@
                                     <thead class="table-light">
                                         <tr class="text-center">
                                             <th>Producto</th>
+                                            <th>Codigo</th>
                                             <th>Almacen</th>
                                             @if ($configuracion->farmacia == 1)
                                             <th>Fecha Vencimiento</th>
@@ -89,6 +90,7 @@
                                         @forelse ($productos_almacen as $palmacen)
                                             <tr class="text-center">
                                                 <td>{{ $palmacen->id."-".$palmacen->producto->designacion }}</td>
+                                                <td>{{ $palmacen->producto->codigo }}</td>
                                                 <td>{{ $palmacen->almacen->nombre }}</td>
                                                 @if ($configuracion->farmacia == 1)
                                                 <td>{{ $palmacen->fecha_vencimiento_producto }}</td>

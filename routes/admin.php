@@ -53,6 +53,7 @@ Route::view("reporte/reporte_cajas", "administrador.reportes.reporte_cajas")->mi
 #canchas
 Route::view("canchas", "administrador.canchas.index_canchas")->middleware('can:admin.canchas')->name("admin.canchas");
 #reservas
+Route::view("reservas/administrar", "administrador.reservas.index_reservas_administrar")->middleware('can:admin.canchas')->name("admin.reservas_administrar");
 Route::get("reservas/consultar/{id}", GestionarReservas::class)->middleware('can:admin.reservas')->name('admin.reservas');
 Route::get("reservas/pacientes/{id}", PacientesReservas::class)->middleware('can:admin.reservas')->name('admin.pacientes.reservas');
 Route::view("reservas/reportes", "administrador.reservas.index_reservas_reporte")->middleware('can:admin.reservas')->name("admin.reservas_reporte");

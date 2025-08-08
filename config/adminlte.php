@@ -320,6 +320,31 @@ return [
         ],
         // ['header' => 'account_settings'],
         [
+            'text' => 'Reservas',
+            'icon' => 'fas fa-fw fa-ticket-alt',
+            'submenu' => [
+                [
+                    'text' => 'Canchas',
+                    'route'  => 'admin.canchas',
+                    'icon' => 'fas fa-futbol',
+                    'can' => 'admin.canchas'
+                ],
+                [
+                    'text' => 'Gestionar Reservas',
+                    'route'  => 'admin.reservas_administrar',
+                    'icon' => 'fas fa-futbol',
+                    'can' => 'admin.canchas'
+                ],
+                [
+                    'text' => 'Reporte Reservas',
+                    'route'  => 'admin.reservas_reporte',
+                    'icon' => 'fas fa-list',
+                    'can' => 'admin.reservas'
+                ],
+            
+            ],
+        ],
+        [
             'text' => 'Productos',
             'icon' => 'fas fa-fw fa-ticket-alt',
             'submenu' => [
@@ -334,18 +359,6 @@ return [
                     'route'  => 'admin.categorias',
                     'icon' => 'fas fa-folder',
                     'can' => 'admin.categorias'
-                ],
-                [
-                    'text' => 'Canchas',
-                    'route'  => 'admin.canchas',
-                    'icon' => 'fas fa-futbol',
-                    'can' => 'admin.canchas'
-                ],
-                [
-                    'text' => 'Reporte Reservas',
-                    'route'  => 'admin.reservas_reporte',
-                    'icon' => 'fas fa-list',
-                    'can' => 'admin.reservas'
                 ],
                 [
                     'text' => 'Marcas',
