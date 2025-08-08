@@ -29,6 +29,11 @@ class AdministrarReservas extends Component
                 ->when($this->ffinal, fn($q) =>
                     $q->whereDate('fingreso', '<=', $this->ffinal)
                 )
+                ->when($this->searchCliente, function ($q) {
+                    $q->whereHas('cliente', function ($sub) {
+                        $sub->where('name', 'like', '%' . $this->searchCliente . '%');
+                    });
+                })
                 ->whereNull('posventa_detalle_id')
                 ->pluck('id')
                 ->toArray();
@@ -37,16 +42,26 @@ class AdministrarReservas extends Component
         }
     }
 
+
     public function eliminarSeleccionadas()
     {
-        Reserva::whereIn('id', $this->seleccionadas)
+        $reservas = Reserva::whereIn('id', $this->seleccionadas)
             ->whereNull('posventa_detalle_id')
-            ->delete();
+            ->get();
+
+        foreach ($reservas as $reserva) {
+            if ($reserva->gratuito) {
+                $this->revertir_usos_gratuita($reserva);
+            }
+
+            $reserva->estado = 'Anulada';
+            $reserva->motivo_anulacion = 'Eliminación masiva desde el panel'; // Puedes personalizar este texto
+            $reserva->save();
+        }
 
         $this->reset('seleccionadas', 'selectAll');
-        session()->flash('message', 'Reservas seleccionadas eliminadas correctamente.');
+        session()->flash('message', 'Reservas seleccionadas anuladas correctamente.');
     }
-
     public function updatedSearchCliente()
     {
         $this->resetPage();
