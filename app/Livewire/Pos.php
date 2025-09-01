@@ -261,6 +261,7 @@ class Pos extends Component
     {
         $balmacen = Almacen::find($this->almacen_id);
         $this->seleccionar_almacen = $balmacen == true ? $balmacen->id : null;
+        $this->items = [];
         $this->reset(['categoria_id', 'marca_id']);
     }
 
