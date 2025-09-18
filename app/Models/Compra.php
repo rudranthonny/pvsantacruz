@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\LogsChanges;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,9 @@ class Compra extends Model
         'almacen_id',
     ];
     use HasFactory;
+    use LogsChanges;
+
+    public function logs(){return $this->morphMany(ModificacionLog::class, 'loggable');}
 
     public function movimientoable(){
         return $this->morphTo();

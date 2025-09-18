@@ -20,8 +20,10 @@ class ReporteLogs extends Component
     public $modelosDisponibles = [
         'App\Models\Posventa'    => 'Ventas',
         'App\Models\ProductoAlmacen'    => 'Productos de Almacen',
+        'App\Models\Compra'    => 'Compra',
+        'App\Models\Dcompra'    => 'Detalle de Compra',
     ];
-    
+
     public function mount(){
         $this->desde = date('Y-m-d');
         $this->hasta = date('Y-m-d');
@@ -29,7 +31,7 @@ class ReporteLogs extends Component
     }
 
     public function consultar()
-    {  
+    {
         $query = ModificacionLog::with('user')
     ->when($this->modelo, fn($q) => $q->where('loggable_type', $this->modelo))
     ->when($this->modal_id, fn($q) => $q->where('loggable_id', $this->modal_id))
